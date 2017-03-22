@@ -58,7 +58,7 @@ export class NearMeComponent implements OnInit {
   }
 
   initList() {
-    const key = this.timeLimit + ':' + this.place;
+    const key = this.timeLimit + ':' + this.place + ':' + (this.group && this.group.id || '');
     if (this.current === key) {
       return;
     }
