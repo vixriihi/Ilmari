@@ -58,6 +58,7 @@ h1 small {
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: 10000;
 }
 
 :host >>> .menubar .mat-disabled .mat-slide-toggle-thumb {

@@ -23,7 +23,7 @@ import { LoaderService } from './services/loader.service';
 export class IlmComponent implements OnInit {
   @ViewChild(FormComponent) form: FormComponent;
   @ViewChild(MdSidenav) sideNav: MdSidenav;
-  activePage = 'nearMe';
+  activePage = 'form';
   savePublically = false;
   record = false;
   records = 0;

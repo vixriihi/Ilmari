@@ -3,7 +3,7 @@ import { FormService } from '../../services/form.service';
 import { StoreService, Stored } from '../../services/store.service';
 import { Field } from './field/field.component';
 import { MdDialog } from '@angular/material';
-import { SelectFieldsComponent } from './select-fields/select-fields.component';
+import { SettingsComponent } from './settings/settings.component';
 
 @Component({
   selector: 'ilm-extra',
@@ -25,7 +25,7 @@ export class ExtraComponent implements OnInit, OnChanges {
   fields = [];
   allFields = [];
   userFormFields: {[formId: string]: string[]} = {};
-  settingsDialog: SelectFieldsComponent;
+  settingsDialog: SettingsComponent;
   useSpeech = false;
 
   constructor(
@@ -134,7 +134,7 @@ export class ExtraComponent implements OnInit, OnChanges {
   }
 
   openFieldSelectDialog() {
-    const dialogRef = this.dialog.open(SelectFieldsComponent, {
+    const dialogRef = this.dialog.open(SettingsComponent, {
       disableClose: true,
       height: '100%',
       width: '95%'
@@ -150,7 +150,7 @@ export class ExtraComponent implements OnInit, OnChanges {
     dialogRef.afterClosed().subscribe(result => this.updateSettings(result, dialogRef, onFormChange));
   }
 
-  private setSettingDialog(component: SelectFieldsComponent) {
+  private setSettingDialog(component: SettingsComponent) {
     component.userSelected = this.userFormFields[this.formId] || [];
     component.allFields = this.allFields;
     component.selectedForm = this.formId;

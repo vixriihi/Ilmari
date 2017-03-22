@@ -1,17 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { MdDialog, MdIconRegistry, MdSidenav, MdSlideToggleChange, MdSnackBar } from '@angular/material';
-import { FormComponent } from './form/form.component';
-import { LocationStoreService } from './services/location-store.service';
-import { FormService } from './services/form.service';
-import { environment } from '../environments/environment';
-import { InfoComponent } from './info/info.component';
-import { DocumentDatabase } from './db/document.database';
-import { StoreDatabase } from './db/store.database';
-import { UserService } from './services/user.service';
-import { Observable } from 'rxjs/Observable';
-import { TaxaDatabase } from './db/taxa.database';
-import { LoginComponent } from './login/login.component';
+import { MdIconRegistry } from '@angular/material';
 
 @Component({
   selector: 'ilm-root',

@@ -33,7 +33,7 @@ import { FormEffects } from './form/form.efects';
 import { ExtraComponent } from './form/extra/extra.component';
 import { FieldComponent } from './form/extra/field/field.component';
 import { SelectComponent } from './form/extra/field/select/select.component';
-import { SelectFieldsComponent } from './form/extra/select-fields/select-fields.component';
+import { SettingsComponent } from './form/extra/settings/settings.component';
 import { UserService } from './services/user.service';
 import { ImageService } from './services/image.service';
 import { DocumentService } from './services/document.service';
@@ -63,7 +63,7 @@ const appRoutes: Routes = [
     MapDialogComponent,
     InfoComponent,
     LoginComponent,
-    SelectFieldsComponent,
+    SettingsComponent,
     SpeechSelectComponent,
     TaxonModalComponent
   ],
@@ -80,7 +80,7 @@ const appRoutes: Routes = [
     ExtraComponent,
     FieldComponent,
     SelectComponent,
-    SelectFieldsComponent,
+    SettingsComponent,
     NearMeComponent,
     SpeechInputComponent,
     SpeechSelectComponent,

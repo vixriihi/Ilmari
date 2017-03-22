@@ -1,19 +1,16 @@
 import { Component, Input, OnChanges, OnInit, Output, EventEmitter } from '@angular/core';
 import { Field } from '../field/field.component';
 import { MdDialogRef } from '@angular/material';
-import { StoreService, Stored } from '../../../services/store.service';
 import { FormService } from '../../../services/form.service';
 import { environment } from '../../../../environments/environment';
-import { DocumentService } from '../../../services/document.service';
-import { LocationStoreService } from '../../../services/location-store.service';
 import { SpeechService } from '../../../services/speech.service';
 
 @Component({
-  selector: 'ilm-select-fields',
-  templateUrl: './select-fields.component.html',
-  styleUrls: ['./select-fields.component.css']
+  selector: 'ilm-settings',
+  templateUrl: './settings.component.html',
+  styleUrls: ['./settings.component.css']
 })
-export class SelectFieldsComponent implements OnInit, OnChanges {
+export class SettingsComponent implements OnInit, OnChanges {
 
   @Input() allFields: Field[];
   @Input() userSelected: string[];
@@ -35,7 +32,7 @@ export class SelectFieldsComponent implements OnInit, OnChanges {
 
 
   constructor(
-    public dialogRef: MdDialogRef<SelectFieldsComponent>,
+    public dialogRef: MdDialogRef<SettingsComponent>,
     public formService: FormService,
     private speechService: SpeechService
   ) {
