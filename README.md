@@ -14,9 +14,9 @@ Currently all the data is send to apitest.laji.fi.
 | Choose form fields  | Available   |
 | Group observations  | Available   |
 | Group gatherings    | Not started |
-| Add images          | Not started |
+| Add images          | WIP         |
 | Voice input         | Available   |
-| User login          | Availabel   |
+| User login          | Available   |
 | Close by species    | Available   |
 | Taxon card          | Available   |
 | Tests               | Not started |
