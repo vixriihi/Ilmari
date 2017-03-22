@@ -1,0 +1,10 @@
+.extras {
+  margin: -10px;
+}
+.select-fields {
+  float: right;
+}
+
+:host >>> .select-fields svg {
+  fill: #2980B9;
+}

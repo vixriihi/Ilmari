@@ -1,0 +1,68 @@
+@import "../../variables";
+
+$map-size: 135px;
+$file-wrap: 10 + $map-size;
+
+.unit-form {
+  padding: 10px 10px 60px 10px;
+}
+
+.mapWrap {
+  position: relative;
+  width: #{$map-size};
+}
+
+.mapOverlay {
+  position: absolute;
+  width: #{$map-size};
+  height: #{$map-size};
+  z-index: 10;
+}
+
+.group-select, .adjust-button {
+  float: left;
+  width: #{$button-width};
+}
+
+.time-wrap {
+  float: left;
+  width: 100%;
+  @media screen and (min-width: $break-small) {
+    margin-left: 10px;
+    width: calc(50% - 10px);
+  }
+}
+
+.taxon-input, .time-input {
+  float: left;
+  width: calc(100% - #{$button-width});
+}
+
+.taxon-wrap {
+  float: left;
+  width: 100%;
+  @media screen and (min-width: $break-small) {
+    width: 50%;
+  }
+}
+
+.smallMap {
+  float: left;
+  width: #{$map-size};
+  height: #{$map-size};
+  margin-right: 10px;
+}
+
+.file.input {
+  float: left;
+  width: calc(100% - #{$file-wrap});
+}
+
+.form-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+

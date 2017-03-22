@@ -1,0 +1,6 @@
+<div class="clear"></div>
+<div *ngFor="let field of fields; trackBy: field?.path" class="extras">
+  <ilm-field [field]="field" [value]="value[field.path]" (valueChange)="onFieldChange(field.path, $event)"></ilm-field>
+</div>
+<div class="clear"></div>
+<button md-icon-button class="select-fields" (click)="openFieldSelectDialog()" type="button"><md-icon [svgIcon]="'settings'"></md-icon></button>

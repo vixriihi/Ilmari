@@ -1,0 +1,26 @@
+<div class="info" *ngIf="info === 'about'">
+  <h1>ILMARI</h1>
+  <div class="ilmari-icon"></div>
+  <small>v. {{version}}</small>
+  <p>
+    Tämä sovellus käyttää Suomen Lajitietokeskuksen avoimia <a href="https://api.laji.fi">rajapintoja</a>
+    ja tarjoaa mobiiliystävällisen tavan ilmoittaa lajihavaintoja <a href="https://beta.laji.fi">laji.fi:hin</a>.
+    Sovellus toimii myös offline-tilassa, mukaan lukien kartta (kunhan olet ensin käynyt kartalla kohdissa, joiden haluat näkyvän offline).
+  </p>
+  <p>
+    Vaikka olenkin töissä Luomuksessa, niin tämä ei ole Lajitietokeskuksen virallinen sovellus.
+    Tämä sovelluksen tarkoituksena on ollut rakentaa sovellus, jonka avulla voimme lasteni kanssa viettää yhteistä aikaa luonnossa.
+  </p>
+  <p>
+    Sovellus käyttää mm. seuraavia web-tekniikkoja: Angular, Material design, Redux, IndexDB ja Service Worker.
+  </p>
+  <p>
+    Tekijä: Ville-Matti Riihikoski
+  </p>
+</div>
+<div class="info howto" *ngIf="info === 'howto'">
+  <h1>Käyttöohje</h1>
+  <p>
+    TODO
+  </p>
+</div>

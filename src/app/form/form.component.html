@@ -1,0 +1,71 @@
+<div class="flex-container"
+     fxLayout="column"
+     fxFill>
+  <form class="unit-form" #ilmForm="ngForm" fxFlex="grow">
+    <div class="taxon-wrap">
+      <div class="taxon-input">
+        <md-input-container>
+          <input name="name" #name mdInput [formControl]="nameControl" [ngModel]="(formState | async)?.name" placeholder="Nimi" [mdAutocomplete]="names">
+        </md-input-container>
+      </div>
+      <div class="group-select">
+        <ilm-groups [activeGroup]="activeGroup" (onSelect)="selectGroup($event)"></ilm-groups>
+      </div>
+    </div>
+    <md-autocomplete #names="mdAutocomplete" [displayWith]="displayTaxon">
+      <md-option *ngFor="let option of filteredOptions | async" [value]="option">
+        {{ option.value }}
+      </md-option>
+    </md-autocomplete>
+    <div class="time-wrap">
+      <div class="time-input">
+        <md-input-container>
+          <input name="date" [ngModel]="(formState | async)?.date" (ngModelChange)="updateDate($event)" mdInput placeholder="Aika" type="datetime">
+        </md-input-container>
+      </div>
+      <div class="adjust-button">
+        <button md-icon-button (click)="hereAndNow()" mdTooltip="tässä ja nyt" type="button"><md-icon [svgIcon]="'adjust'"></md-icon></button>
+      </div>
+    </div>
+    <div class="clear"></div>
+    <div class="mapWrap">
+      <div class="mapOverlay" (click)="showMap()"></div>
+      <div class="smallMap">
+        <ilm-map [location]="(formState | async)?.location"
+                 [showControls]="false"
+        ></ilm-map>
+      </div>
+    </div>
+    <div class="file input">
+      <ilm-file-list></ilm-file-list>
+    </div>
+    <div class="extra-wrap">
+      <ilm-extra
+              [groupId]="activeGroup"
+              [value]="(formState | async)?.extra"
+              (valueChange)="updateExtra($event)"
+              (settingsChange)="onSettingChange($event)"
+              (userFieldsChange)="setUserFields($event)"
+      ></ilm-extra>
+    </div>
+  </form>
+  <div fxFlex="none" class="form-footer">
+    <md-toolbar color="primary">
+      <ilm-speech-input
+              *ngIf="useSpeech"
+              [fields]="fields"
+              [group]="activeGroup.id"
+              (onValue)="setValueBySpeech($event)"
+      ></ilm-speech-input>
+      <span class="fill-remaining"></span>
+      <span>
+        <button *ngIf="record && hasName" md-raised-button color="accent" (click)="saveForm()" tabindex="-1">
+          <md-icon svgIcon="plus"></md-icon>
+        </button>
+        <button *ngIf="!(record && hasName)" md-raised-button color="accent" (click)="sendDocument()" tabindex="-1">
+          <md-icon svgIcon="save"></md-icon>
+        </button>
+      </span>
+    </md-toolbar>
+  </div>
+</div>

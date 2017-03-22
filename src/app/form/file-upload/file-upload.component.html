@@ -1,0 +1,11 @@
+<label class="uploader" ondragover="return false;"
+       [class.loaded]="loaded"
+       [style.outlineColor]="dragging ? activeColor : baseColor"
+       (dragenter)="handleDragEnter()"
+       (dragleave)="handleDragLeave()"
+       (drop)="handleDrop($event)">
+
+  <md-icon *ngIf="imageSrc.length == 0" [svgIcon]="'camera'" class="upload"></md-icon>
+  <img [src]="imageSrc" (load)="handleImageLoad()" [class.loaded]="imageLoaded" alt="ladattu kuva"/>
+  <input *ngIf="!imageLoaded" type="file" name="file" accept="image/*;capture=camera" (change)="handleInputChange($event)">
+</label>

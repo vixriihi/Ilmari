@@ -1,0 +1,13 @@
+<button md-icon-button [mdMenuTriggerFor]="menu" tabIndex="-1" type="button">
+  <md-icon [svgIcon]="activeGroup?.icon || 'infinity'"></md-icon>
+</button>
+<md-menu #menu="mdMenu" [overlapTrigger]="false">
+  <button md-menu-item *ngIf="enableAll" (click)="select({id: '', name: 'Kaikki'})">
+    <md-icon [svgIcon]="'infinity'"></md-icon>
+    <span>Kaikki</span>
+  </button>
+  <button md-menu-item *ngFor="let group of rootGroups | async" (click)="select(group)">
+    <md-icon [svgIcon]="group.icon"></md-icon>
+    <span>{{group.name}}</span>
+  </button>
+</md-menu>

@@ -1,0 +1,22 @@
+.info {
+  margin-top: -23px;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.ilmari-icon {
+  background-image: url("/assets/icons/Ilmari-192.png");
+  height: 128px;
+  width: 128px;
+  background-size: contain;
+  margin: 0 auto;
+}
+
+p {
+  margin: 20px auto 0 auto;
+  max-width: 300px;
+}
+
+.howto p {
+  text-align: left;
+}

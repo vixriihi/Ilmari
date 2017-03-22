@@ -1,0 +1,61 @@
+<md-sidenav-container class="app-container">
+  <md-sidenav #sidenav class="app-sidenav">
+    <md-toolbar class="sidenav-header">
+      <span>Valikko</span>
+    </md-toolbar>
+    <md-nav-list class="nav-pages">
+      <md-list-item>
+        <a (click)="showPage('form')" [ngClass]="{active: activePage === 'form'}" md-line>Ilmoita havaintojasi</a>
+      </md-list-item>
+      <md-list-item>
+        <a (click)="showPage('nearMe')" [ngClass]="{active: activePage === 'nearMe'}" md-line>Havaintoja lähelläni</a>
+      </md-list-item>
+    </md-nav-list>
+    <md-list class="settings-list">
+      <h3 md-subheader>Muuta</h3>
+      <md-list-item>
+        <button md-button (click)="openInfo('howto')">Käyttöohjeet</button>
+      </md-list-item>
+      <md-list-item>
+        <button md-button (click)="openInfo('about')">Tietoa sovelluksesta</button>
+      </md-list-item>
+      <md-list-item>
+        <button md-button (click)="clearLocal()">Tyhjennä paikallisesti tallennettu data</button>
+      </md-list-item>
+    </md-list>
+  </md-sidenav>
+  <div class="app-sidenav-content">
+    <div class="flex-container"
+         fxLayout="column"
+         fxFill>
+      <div fxFlex="none">
+        <md-toolbar color="primary" class="menubar">
+          <button md-button (click)="sidenav.open()" class="menu-button" tabindex="-1 ">
+            <md-icon [svgIcon]="'menu'"></md-icon>
+          </button>
+          <span><h1>ilmari <small>(testiversio)</small></h1></span>
+          <span class="fill-remaining"></span>
+          <span class="units" *ngIf="activePage === 'form'">
+            <md-chip-list *ngIf="record">
+              <md-chip color="primary" selected="true"  mdTooltip="Havaintoja havaintoerässä" mdTooltipPosition="left">
+                {{records}}
+              </md-chip>
+            </md-chip-list>
+          </span>
+          <md-slide-toggle *ngIf="activePage === 'form'" [checked]="record" [disabled]="record" (change)="toggleRecording($event)" color="warn" tabindex="-1" [mdTooltip]="record ? 'Tallennus käynnissä' : 'Aloita reitin tallennus'"></md-slide-toggle>
+        </md-toolbar>
+      </div>
+      <div class="loader">
+        <md-progress-bar *ngIf="loaderService.showLoader" mode="indeterminate"></md-progress-bar>
+      </div>
+      <div fxFlex="grow" class="content">
+        <ilm-form [hidden]="activePage !== 'form'"
+                  [record]="record"
+                  (onSave)="onSave($event)"
+                  (onDocumentSend)="onSend($event)"
+        ></ilm-form>
+        <ilm-near-me [hidden]="activePage !== 'nearMe'"></ilm-near-me>
+      </div>
+    </div>
+  </div>
+</md-sidenav-container>

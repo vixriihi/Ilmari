@@ -1,0 +1,107 @@
+<div class="flex-container near-me"
+     fxLayout="column"
+     fxFill>
+  <div class="near-me" fxFlex="grow">
+    <md-progress-circle
+      *ngIf="loading"
+      class="loader"
+      [color]="'primary'"
+      [mode]="'indeterminate'">
+    </md-progress-circle>
+    <div class="taxon-wrap">
+      <div class="taxon-input">
+        <md-input-container>
+          <input name="taxon" type="search" #name mdInput [formControl]="taxonControl" [ngModel]="taxon" placeholder="Rajaa tuloksia" [mdAutocomplete]="names">
+        </md-input-container>
+      </div>
+      <div class="taxon-info" *ngIf="taxon.key">
+        <button md-icon-button type="button" (click)="showTaxon(taxon.key)">
+          <md-icon [svgIcon]="'info'"></md-icon>
+        </button>
+      </div>
+      <div class="group-select">
+        <ilm-groups (onSelect)="selectGroup($event)" [enableAll]="true"></ilm-groups>
+      </div>
+    </div>
+    <div class="clear"></div>
+    <div class="time-wrap">
+      <md-button-toggle-group [value]="timeLimit" name="time" (change)="timeChange($event)">
+        <md-button-toggle value="">
+          kaikki
+        </md-button-toggle>
+        <md-button-toggle value="-365/0">
+          vuosi
+        </md-button-toggle>
+        <md-button-toggle value="-7/0">
+          7d
+        </md-button-toggle>
+        <md-button-toggle value="-2/0">
+          1d
+        </md-button-toggle>
+      </md-button-toggle-group>
+    </div>
+
+    <div class="place-wrap">
+      <md-button-toggle-group [value]="place" name="place" (change)="placeChange($event)">
+        <md-button-toggle value="">
+          kaikki
+        </md-button-toggle>
+        <md-button-toggle [value]="3">
+          10km<sup>2</sup>
+        </md-button-toggle>
+        <md-button-toggle [value]="4">
+          1km<sup>2</sup>
+        </md-button-toggle>
+        <md-button-toggle [value]="5">
+          100m<sup>2</sup>
+        </md-button-toggle>
+      </md-button-toggle-group>
+      <span class="grid">
+        {{grid}}
+      </span>
+    </div>
+
+    <div class="clear"></div>
+
+    <md-autocomplete #names="mdAutocomplete"
+                     (optionSelections)="selectTaxon($event)"
+                     [displayWith]="displayTaxon">
+      <md-option *ngFor="let option of filteredOptions | async" [value]="option">
+        {{ option.value }}
+      </md-option>
+    </md-autocomplete>
+
+    <ngx-datatable
+        class="material fullscreen"
+        [rows]="rows"
+        [headerHeight]="50"
+        [footerHeight]="50"
+        [rowHeight]="40"
+        [columnMode]="'flex'"
+        [trackByProp]="'id'"
+        [scrollbarV]="true"
+        [messages]="{
+          emptyMessage: '',
+          totalMessage: 'yhteensä'
+        }"
+    >
+      <ngx-datatable-column prop="name" name="Laji" [flexGrow]="4">
+        <template let-row="row" ngx-datatable-cell-template>
+          <a (click)="showTaxon(row.id)" class="link">
+            {{row.speciesNameFinnish || row.scientificName}}
+          </a>
+        </template>
+      </ngx-datatable-column>
+      <ngx-datatable-column prop="count" name="Havlkm"  [flexGrow]="2">
+        <template let-value="value" ngx-datatable-cell-template>
+          {{value}}
+        </template>
+      </ngx-datatable-column>
+      <ngx-datatable-column prop="individualCountSum" name="Ykslkm"  [flexGrow]="2">
+        <template let-value="value" ngx-datatable-cell-template>
+          {{value || 1}}
+        </template>
+      </ngx-datatable-column>
+    </ngx-datatable>
+  </div>
+</div>

@@ -1,0 +1,130 @@
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule, Routes } from '@angular/router';
+import { HttpModule } from '@angular/http';
+import { IlmComponent } from './ilm.component';
+import { GroupsComponent } from './groups/groups.component';
+import { GroupsService } from './services/groups.service';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MaterialRootModule } from '@angular/material';
+import { AgmCoreModule } from 'angular2-google-maps/core';
+import { MapComponent } from './map/map.component';
+import { FormComponent } from './form/form.component';
+import { FileUploadComponent } from './form/file-upload/file-upload.component';
+import { FileListComponent } from './form/file-list/file-list.component';
+import { environment } from '../environments/environment';
+import { Ng2Webstorage } from 'ng2-webstorage';
+import { AutocompleteService } from './services/autocomplete.service';
+import 'hammerjs';
+import { StoreModule } from '@ngrx/store';
+import { MapDialogComponent } from './map-dialog/map-dialog.component';
+import { LocationStoreService } from './services/location-store.service';
+import { FormService } from './services/form.service';
+import { InfoComponent } from './info/info.component';
+import { StoreService } from './services/store.service';
+import { DocumentDatabase } from './db/document.database';
+import { StoreDatabase } from './db/store.database';
+import { rootReducer } from './reducers/index';
+import { StoreLogMonitorModule } from '@ngrx/store-log-monitor';
+import { FormActions } from './form/form.actions';
+import { EffectsModule } from '@ngrx/effects';
+import { FormEffects } from './form/form.efects';
+import { ExtraComponent } from './form/extra/extra.component';
+import { FieldComponent } from './form/extra/field/field.component';
+import { SelectComponent } from './form/extra/field/select/select.component';
+import { SelectFieldsComponent } from './form/extra/select-fields/select-fields.component';
+import { UserService } from './services/user.service';
+import { ImageService } from './services/image.service';
+import { DocumentService } from './services/document.service';
+import { NearMeComponent } from './near-me/near-me.component';
+import { WindowRef } from './ref/window.ref';
+import { WarehouseService } from './services/warehouse.service';
+import { SpeechService } from './services/speech.service';
+import { TaxonService } from './services/taxon.service';
+import { SpeechInputComponent } from './form/speech-input/speech-input.component';
+import { SpeechSelectComponent } from './form/speech-input/types/speech-select/speech-select.component';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { TaxonComponent } from './taxon/taxon.component';
+import { TaxaDatabase } from './db/taxa.database';
+import { TaxonModalComponent } from './taxon-modal/taxon-modal.component';
+import { LoginComponent } from './login/login.component';
+import { IlmRootComponent } from './ilm-root.component';
+import { LoginSuccessComponent } from './login-success/login-success.component';
+import { LoaderService } from './services/loader.service';
+
+const appRoutes: Routes = [
+  { path: 'user/login', component: LoginSuccessComponent },
+  { path: '**', component: IlmComponent }
+];
+
+@NgModule({
+  entryComponents: [
+    MapDialogComponent,
+    InfoComponent,
+    LoginComponent,
+    SelectFieldsComponent,
+    SpeechSelectComponent,
+    TaxonModalComponent
+  ],
+  declarations: [
+    IlmRootComponent,
+    IlmComponent,
+    GroupsComponent,
+    MapComponent,
+    FormComponent,
+    FileUploadComponent,
+    FileListComponent,
+    MapDialogComponent,
+    InfoComponent,
+    ExtraComponent,
+    FieldComponent,
+    SelectComponent,
+    SelectFieldsComponent,
+    NearMeComponent,
+    SpeechInputComponent,
+    SpeechSelectComponent,
+    TaxonComponent,
+    TaxonModalComponent,
+    LoginComponent,
+    LoginSuccessComponent
+  ],
+  imports: [
+    RouterModule.forRoot(appRoutes),
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpModule,
+    Ng2Webstorage,
+    EffectsModule.run(FormEffects),
+    StoreModule.provideStore(rootReducer),
+    StoreLogMonitorModule,
+    MaterialRootModule,
+    FlexLayoutModule,
+    AgmCoreModule.forRoot({
+      apiKey: environment.mapsToken
+    }),
+    NgxDatatableModule
+  ],
+  providers: [
+    GroupsService,
+    AutocompleteService,
+    LocationStoreService,
+    FormService,
+    DocumentDatabase,
+    StoreDatabase,
+    TaxaDatabase,
+    StoreService,
+    FormActions,
+    UserService,
+    ImageService,
+    DocumentService,
+    WindowRef,
+    SpeechService,
+    WarehouseService,
+    TaxonService,
+    LoaderService
+  ],
+  bootstrap: [IlmRootComponent]
+})
+export class IlmModule { }

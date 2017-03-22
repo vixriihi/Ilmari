@@ -1,0 +1,16 @@
+<div class="map-container">
+  <sebm-google-map
+    #map
+    [latitude]="location?.lat"
+    [longitude]="location?.lng"
+    [zoom]="location?.zoom"
+    [disableDefaultUI]="true"
+    [disableDoubleClickZoom]="true"
+    [mapTypeControl]="showControls"
+    [streetViewControl]="false"
+    [zoomControl]="showControls"
+    (zoomChange)="_setZoom($event)"
+    (centerChange)="_setMarkerCenter($event)">
+  </sebm-google-map>
+  <div id="dot"><img src="/assets/dot.svg" alt="." /></div>
+</div>

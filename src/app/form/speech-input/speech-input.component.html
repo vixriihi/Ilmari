@@ -1,0 +1,11 @@
+<div class="record-button">
+  <button *ngIf="!speechRecording" md-icon-button (click)="startSpeech()" mdTooltip="Sanele havainto" type="button">
+    <md-icon [svgIcon]="'mic-off'"></md-icon>
+  </button>
+  <button *ngIf="speechRecording" md-icon-button (click)="stopSpeech()" mdTooltip="Lopeta sanelu" type="button">
+    <md-icon [svgIcon]="'mic'"></md-icon>
+  </button>
+  <span *ngIf="speechRecording">
+    {{label}}?
+  </span>
+</div>

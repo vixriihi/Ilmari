@@ -1,0 +1,6 @@
+<md-select [placeholder]="field?.label" [name]="field?.path" [ngModel]="value" (ngModelChange)="updateValue($event)" mdInput #model="ngModel">
+  <md-option *ngIf="hasReset" (click)="model.reset()"></md-option>
+  <md-option *ngFor="let option of options" [value]="option.key">
+    {{ option.value }}
+  </md-option>
+</md-select>

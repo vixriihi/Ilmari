@@ -1,0 +1,60 @@
+<div md-dialog-content>
+  <md-tab-group>
+    <md-tab label="Asetukset">
+      <md-list class="settings-list">
+        <h3 md-subheader>Lomakkeen asetukset</h3>
+        <md-list-item>
+          <md-select [placeholder]="'Lomakepohja'" [(ngModel)]="selectedForm" (ngModelChange)="onFormSelect.emit($event)">
+            <md-option *ngFor="let form of forms$ | async" [value]="form.id">
+              {{ form.title }}
+            </md-option>
+          </md-select>
+        </md-list-item>
+        <md-list-item>
+          <md-select [placeholder]="'Kuvien ' + imageRights?.title" [(ngModel)]="selectedImageRights" (ngModelChange)="onImageRightsSelect.emit($event)">
+            <md-option *ngFor="let right of imageRights?.select" [value]="right.key">
+              {{ right.value }}
+            </md-option>
+          </md-select>
+        </md-list-item>
+        <md-list-item class="public-toggle checkbox">
+          <div md-line>
+            <md-checkbox (change)="togglePublic()" [checked]="savePublically">Tallenna havaintoerät julkisesti</md-checkbox>
+          </div>
+        </md-list-item>
+        <md-list-item class="speech-toggle checkbox" *ngIf="isSpeechCapable">
+          <div md-line>
+            <md-checkbox (change)="toggleSpeech()" [checked]="useSpeech">Käytä äänisyötettä (kokeellinen)</md-checkbox>
+          </div>
+        </md-list-item>
+      </md-list>
+    </md-tab>
+    <md-tab label="Lomakkeen kentät">
+      <md-list>
+        <h3 md-subheader>Aktiiviset kentät</h3>
+        <md-list-item *ngIf="_selectedFields.length === 0">
+          <p md-line>Ei kenttiä</p>
+        </md-list-item>
+        <md-list-item *ngFor="let field of _selectedFields; let i=index;">
+          <div class="move">
+            <button *ngIf="i > 0" md-icon-button (click)="moveUp(field)" type="button"><md-icon [svgIcon]="'up'"></md-icon></button>
+            <button *ngIf="i < (_selectedFields.length - 1)" md-icon-button (click)="moveDown(field)" type="button"><md-icon [svgIcon]="'down'"></md-icon></button>
+          </div>
+          <md-checkbox (change)="unselect(field)" [checked]="true" md-list-avatar class="field-select" id="{{'selected-' + field.path}}"></md-checkbox>
+          <label for="{{'input-selected-' + field.path}}" md-line>{{field.label}}</label>
+          <label for="{{'input-selected-' + field.path}}" md-line><small>{{field.level}}</small></label>
+        </md-list-item>
+        <md-divider></md-divider>
+        <h3 md-subheader>Kaikki kentät</h3>
+        <md-list-item *ngFor="let field of _fields">
+          <md-checkbox (change)="select(field)" [checked]="false" md-list-avatar class="field-select" id="{{field.path}}"></md-checkbox>
+          <label for="{{'input-' + field.path}}" md-line>{{field.label}}</label>
+          <label for="{{'input-' + field.path}}" md-line><small>{{field.level}}</small></label>
+        </md-list-item>
+      </md-list>
+    </md-tab>
+  </md-tab-group>
+</div>
+<div md-dialog-actions>
+  <button md-button color="primary" md-raised-button (click)="close()">Valmis</button>
+</div>

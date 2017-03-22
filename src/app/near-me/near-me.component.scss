@@ -1,0 +1,84 @@
+@import "../../variables";
+
+.near-me {
+  padding: 10px;
+}
+.count {
+  display: inline-block;
+  float: right;
+}
+.loader {
+  z-index: 1000;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin: -50px 0 0 -50px;
+}
+
+sup {
+  position: absolute;
+  margin-top: -5px;
+}
+
+.taxon-input {
+  float: left;
+  width: calc(100% - #{$button-width * 2});
+}
+
+.taxon-wrap {
+  float: left;
+  width: 100%;
+}
+
+.time-wrap, .place-wrap {
+  float: left;
+  margin: 0 10px 10px 0;
+ }
+
+.taxon-info {
+  float: left;
+}
+
+.grid {
+  display: block;
+  padding-top: 8px;
+  font-size: 9px;
+  height: 9px;
+}
+
+.group-select {
+  float: right;
+}
+
+.fullscreen {
+  height: calc(100vh - 240px);
+  min-height: 260px;
+}
+
+.place-wrap md-button-toggle-group {
+  margin-right: 8px;
+}
+
+:host /deep/ {
+  .pager .pages a {
+    margin: 0 !important;
+    min-width: 22px !important;
+  }
+  .pager li:not(.pages) {
+    max-width: 20px;
+    margin: 0;
+    a {
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+  }
+  .datatable-body-cell:nth-of-type(2), .datatable-header-cell:nth-of-type(2) {
+    text-align: right !important;
+  }
+  .datatable-body-cell:nth-of-type(3), .datatable-header-cell:nth-of-type(3) {
+    text-align: right !important;
+  }
+  .mat-input-container {
+    width: 100%;
+  }
+}

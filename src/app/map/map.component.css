@@ -1,0 +1,14 @@
+.sebm-google-map-container, .map-container {
+  height: 100%;
+  position: relative;
+}
+#dot {
+  position:absolute;
+  width:5px;
+  height:5px;
+  left:50%;
+  top:50%;
+  margin-top:-5px;
+  margin-left:-5px;
+  pointer-events: none;
+}

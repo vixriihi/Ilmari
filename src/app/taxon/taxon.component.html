@@ -1,0 +1,35 @@
+<md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
+<md-card class="taxon-card" *ngIf="taxon">
+  <md-card-header>
+    <md-card-title><h2 class="vernacularName">{{taxon.info.vernacularName}}</h2></md-card-title>
+    <md-card-subtitle>
+      <span [ngClass]="{cursive: taxon.info.cursiveName}">
+        {{taxon.info.scientificName}}
+      </span>
+      <span *ngIf="taxon.info.synonyms">
+        (
+        <span *ngFor="let synonym of taxon.info.synonyms">
+          <span [ngClass]="{cursive: synonym.cursiveName}">
+            {{synonym.scientificName}}
+          </span>
+        </span>
+        )
+      </span>
+    </md-card-subtitle>
+  </md-card-header>
+  <img *ngIf="taxon.media.length > 0" md-card-image src="{{taxon.media[0].fullURL}}">
+  <md-card-content>
+    <span *ngIf="taxon.media.length > 0" class="image-caption">Kuva: {{taxon.media[0].author}} {{taxon.media[0].licenseDescription || taxon.media[0].licenseAbbreviation}}</span>
+    <div *ngIf="taxon.info.alsoKnownAs">
+      Tunnetaan myös nimillä: <span *ngFor="let known of taxon.info.alsoKnownAs">{{known | json}}</span>
+    </div>
+    <div *ngFor="let descriptions of taxon.descriptions">
+      <div *ngFor="let description of descriptions.groups">
+        <div class="info-card" *ngFor="let variable of description.variables">
+          <h3>{{variable.title}}</h3>
+          <div [innerHtml]="variable.content"></div>
+        </div>
+      </div>
+    </div>
+  </md-card-content>
+</md-card>

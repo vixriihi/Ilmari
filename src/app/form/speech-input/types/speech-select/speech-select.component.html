@@ -1,0 +1,8 @@
+<md-list>
+  <md-list-item *ngFor="let item of valueOptions">
+    <md-divider></md-divider>
+    <div md-line (click)="select(item)" class="link">
+      {{item.value}}
+    </div>
+  </md-list-item>
+</md-list>

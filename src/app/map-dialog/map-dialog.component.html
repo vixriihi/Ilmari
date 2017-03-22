@@ -1,0 +1,16 @@
+<md-dialog-content>
+  <ilm-map [location]="(location | async)"></ilm-map>
+</md-dialog-content>
+<md-dialog-actions>
+  <button md-fab color="primary"
+          class="my-location"
+          (click)="setToMyLocation()" tabindex="1">
+    <md-icon svgIcon="my-location"></md-icon>
+  </button>
+  <span class="fill-remaining"></span>
+  <button
+    md-raised-button
+    color="primary"
+    (click)="selectLocation()">
+    Valitse</button>
+</md-dialog-actions>

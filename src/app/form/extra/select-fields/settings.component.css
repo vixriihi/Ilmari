@@ -1,0 +1,22 @@
+.field-select {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.move {
+  width: 110px;
+}
+
+.move button {
+  float: left;
+}
+
+:host >>> .checkbox .mat-list-text {
+  overflow: visible !important;
+}
+
+:host >>> .checkbox .mat-list-text .mat-line {
+  min-height: 46px;
+  padding-top: 10px;
+  overflow: visible;
+}

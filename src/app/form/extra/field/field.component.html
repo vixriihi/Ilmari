@@ -1,0 +1,18 @@
+<div [ngSwitch]="field.name">
+  <div *ngSwitchDefault>
+    <div [ngSwitch]="field.type">
+      <div *ngSwitchCase="'text'" class="field text">
+        <md-input-container>
+          <input [name]="field.path" [ngModel]="value" (ngModelChange)="updateValue($event)" mdInput [placeholder]="field.label">
+        </md-input-container>
+      </div>
+      <div *ngSwitchCase="'select'" class="field select">
+        <ilm-select [field]="field" [value]="value" (valueChange)="updateValue($event)"></ilm-select>
+      </div>
+      <div *ngSwitchCase="'checkbox'" class="field checkbox">
+        <md-checkbox [ngModel]="value" (ngModelChange)="updateValue($event)">{{field.label}}</md-checkbox>
+      </div>
+      <div *ngSwitchDefault></div>
+    </div>
+  </div>
+</div>
