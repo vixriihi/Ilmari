@@ -3,7 +3,8 @@
 Is a webapp/mobileapp that uses [api](https://api.laji.fi) provided by 
 [Finnish Biodiversity Information Facility](https://beta.laji.fi).
 It's main purpose is to be a mobile friendly way to send observation data.
-**This is still very much work in progress**.
+**This is still very much work in progress**. 
+Currently all the data is send to apitest.laji.fi. 
  
 ## Current status
 | Feature             | Status      |
@@ -15,7 +16,7 @@ It's main purpose is to be a mobile friendly way to send observation data.
 | Group gatherings    | Not started |
 | Add images          | Not started |
 | Voice input         | Available   |
-| User login          | Not started |
+| User login          | Availabel   |
 | Close by species    | Available   |
 | Taxon card          | Available   |
 | Tests               | Not started |
@@ -23,7 +24,7 @@ It's main purpose is to be a mobile friendly way to send observation data.
 
 ## Settings up development environment
 Clone this repository with command `git clone https://github.com/viltsu/Ilmari`.
-Go to directory and run `npm run start` for a dev server. 
+Go to directory and run `npm run start` for a dev server (naturally you need to have npm and node installed for this to work). 
 
 Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
