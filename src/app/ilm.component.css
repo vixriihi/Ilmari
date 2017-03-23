@@ -53,14 +53,6 @@ h1 small {
   margin-right: 10px;
 }
 
-.loader {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 10000;
-}
-
 :host >>> .menubar .mat-disabled .mat-slide-toggle-thumb {
   background-color: #f44336 !important;
 }

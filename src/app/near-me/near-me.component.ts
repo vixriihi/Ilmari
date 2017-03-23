@@ -10,7 +10,6 @@ import { AutocompleteService, TaxonAutocomplete } from '../services/autocomplete
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { Subscription } from 'rxjs/Subscription';
 import { Stored, StoreService } from '../services/store.service';
-import { LoaderService } from '../services/loader.service';
 
 @Component({
   selector: 'ilm-near-me',
@@ -27,6 +26,7 @@ export class NearMeComponent implements OnInit {
   public place = 0;
   public grid = '';
   public rows = [];
+  public loader = false;
   public taxonControl = new FormControl();
   public filteredOptions: Observable<TaxonAutocomplete[]>;
 
@@ -39,8 +39,7 @@ export class NearMeComponent implements OnInit {
     private storeService: StoreService,
     public warehouseService: WarehouseService,
     public locationSerivce: LocationStoreService,
-    public dialog: MdDialog,
-    public loader: LoaderService
+    public dialog: MdDialog
   ) {
     this.storeService.get(Stored.DATE_FILTER, this.timeLimit)
       .subscribe(time => this.timeLimit = time);
@@ -49,7 +48,7 @@ export class NearMeComponent implements OnInit {
   }
 
   ngOnInit() {
-    setTimeout(this.initList.bind(this), 500);
+    this.initList();
     this.filteredOptions = this.taxonControl.valueChanges
       .map(name => this.autocompleteService.makeValue(name))
       .do(name => this.taxon = name)
@@ -63,7 +62,7 @@ export class NearMeComponent implements OnInit {
       return;
     }
     this.current = key;
-    this.loader.showLoader = true;
+    this.loader = true;
     this.rows = [];
     if (this.subList) {
       this.subList.unsubscribe();
@@ -71,7 +70,8 @@ export class NearMeComponent implements OnInit {
     this.subList = this.locationSerivce.getCurrentLocation()
       .map(pos => {
         if (!this.place) {
-          this.grid ='';
+          console.log('NO PLACFE');
+          this.grid = '';
           return {};
         }
         this.grid = this.locationSerivce
@@ -108,7 +108,7 @@ export class NearMeComponent implements OnInit {
         this.table.offset = 0;
         this.rows = result;
         this.allRows = [...result];
-        this.loader.showLoader = false;
+        this.loader = false;
       });
   }
 

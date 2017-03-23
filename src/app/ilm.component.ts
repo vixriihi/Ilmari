@@ -13,7 +13,6 @@ import { Observable } from 'rxjs/Observable';
 import { TaxaDatabase } from './db/taxa.database';
 import { LoginComponent } from './login/login.component';
 import { Stored, StoreService } from './services/store.service';
-import { LoaderService } from './services/loader.service';
 
 @Component({
   selector: 'ilm-root',
@@ -24,6 +23,7 @@ export class IlmComponent implements OnInit {
   @ViewChild(FormComponent) form: FormComponent;
   @ViewChild(MdSidenav) sideNav: MdSidenav;
   activePage = 'form';
+  nearMeActive = false;
   savePublically = false;
   record = false;
   records = 0;
@@ -41,8 +41,7 @@ export class IlmComponent implements OnInit {
     public snackBar: MdSnackBar,
     public formService: FormService,
     public userService: UserService,
-    public dialog: MdDialog,
-    public loaderService: LoaderService
+    public dialog: MdDialog
   ) {
     iconRegistry.addSvgIconSet(sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/icons.svg'));
   }
@@ -117,6 +116,9 @@ export class IlmComponent implements OnInit {
   }
 
   showPage(page) {
+    if (page === 'nearMe') {
+      this.nearMeActive = true;
+    }
     this.activePage = page;
     this.sideNav.close();
   }

@@ -51,7 +51,6 @@ import { TaxonModalComponent } from './taxon-modal/taxon-modal.component';
 import { LoginComponent } from './login/login.component';
 import { IlmRootComponent } from './ilm-root.component';
 import { LoginSuccessComponent } from './login-success/login-success.component';
-import { LoaderService } from './services/loader.service';
 
 const appRoutes: Routes = [
   { path: 'user/login', component: LoginSuccessComponent },
@@ -122,8 +121,7 @@ const appRoutes: Routes = [
     WindowRef,
     SpeechService,
     WarehouseService,
-    TaxonService,
-    LoaderService
+    TaxonService
   ],
   bootstrap: [IlmRootComponent]
 })

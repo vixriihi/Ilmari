@@ -45,16 +45,13 @@
           <md-slide-toggle *ngIf="activePage === 'form'" [checked]="record" [disabled]="record" (change)="toggleRecording($event)" color="warn" tabindex="-1" [mdTooltip]="record ? 'Tallennus käynnissä' : 'Aloita reitin tallennus'"></md-slide-toggle>
         </md-toolbar>
       </div>
-      <div class="loader">
-        <md-progress-bar *ngIf="loaderService.showLoader" mode="indeterminate"></md-progress-bar>
-      </div>
       <div fxFlex="grow" class="content">
         <ilm-form [hidden]="activePage !== 'form'"
                   [record]="record"
                   (onSave)="onSave($event)"
                   (onDocumentSend)="onSend($event)"
         ></ilm-form>
-        <ilm-near-me [hidden]="activePage !== 'nearMe'"></ilm-near-me>
+        <ilm-near-me [hidden]="activePage !== 'nearMe'" *ngIf="nearMeActive"></ilm-near-me>
       </div>
     </div>
   </div>

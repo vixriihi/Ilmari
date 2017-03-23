@@ -1,13 +1,10 @@
+<div class="loader">
+  <md-progress-bar *ngIf="loader" mode="indeterminate"></md-progress-bar>
+</div>
 <div class="flex-container near-me"
      fxLayout="column"
      fxFill>
   <div class="near-me" fxFlex="grow">
-    <md-progress-circle
-      *ngIf="loading"
-      class="loader"
-      [color]="'primary'"
-      [mode]="'indeterminate'">
-    </md-progress-circle>
     <div class="taxon-wrap">
       <div class="taxon-input">
         <md-input-container>
@@ -64,7 +61,6 @@
     <div class="clear"></div>
 
     <md-autocomplete #names="mdAutocomplete"
-                     (optionSelections)="selectTaxon($event)"
                      [displayWith]="displayTaxon">
       <md-option *ngFor="let option of filteredOptions | async" [value]="option">
         {{ option.value }}
