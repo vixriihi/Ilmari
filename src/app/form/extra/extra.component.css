@@ -1,10 +1,13 @@
+.extras-wrap {
+  margin-top: 20px;
+}
 .extras {
-  margin: -10px;
+  margin-right: -10px;
 }
 .select-fields {
   float: right;
+  margin-bottom: 10px;
 }
-
 :host >>> .select-fields svg {
   fill: #2980B9;
 }

@@ -57,21 +57,8 @@ cdk-focus-trap {
   flex: 1 1 auto;
 }
 
-.mat-input-placeholder-wrapper::after{
-  content:'\00a0' !important;
-}
-
-.mat-select-placeholder.mat-floating-placeholder {
-  top: -16px !important;
-}
-
 .mat-sidenav-content {
   width: 100%;
-}
-
-.extra-wrap .mat-input-wrapper {
-  margin-bottom: 0 !important;
-  padding-bottom: 0 !important;
 }
 
 .clear {

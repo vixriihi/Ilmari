@@ -1,34 +1,25 @@
 @import '../../../../variables';
 
+.field, .subField {
+  width: calc(100% - 20px);
+  min-height: 45px;
+}
+/*
 .field {
-  margin: 25px 0 0 0;
-  float: left;
-  width: calc(100% - 20px);
-  padding: 0 0 0 10px;
-  min-height: 35px;
-  /*
   @media screen and (min-width: $break-small) {
     width: calc(50% - 20px);
   }
   @media screen and (min-width: $break-big) {
     width: calc(33.3% - 15px);
   }
-  */
 }
 
-.subField {
-  margin: 0;
-  float: left;
-  width: calc(100% - 20px);
-  padding: 0;
-  min-height: 35px;
-  /*
-  @media screen and (min-width: $break-small) {
-    width: calc(50% - 20px);
-  }
-  @media screen and (min-width: $break-big) {
-    width: calc(33.3% - 15px);
-  }
-  */
+ */
+
+.select {
+  margin-top: 13px;
 }
 
+.checkbox {
+  margin-top: 22px;
+}
