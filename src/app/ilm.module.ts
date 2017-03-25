@@ -51,6 +51,7 @@ import { LoginComponent } from './login/login.component';
 import { IlmRootComponent } from './ilm-root.component';
 import { LoginSuccessComponent } from './login-success/login-success.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CollectionComponent } from './form/extra/field/collection/collection.component';
 
 const appRoutes: Routes = [
   { path: 'user/login', component: LoginSuccessComponent },
@@ -86,7 +87,8 @@ const appRoutes: Routes = [
     TaxonComponent,
     TaxonModalComponent,
     LoginComponent,
-    LoginSuccessComponent
+    LoginSuccessComponent,
+    CollectionComponent
   ],
   imports: [
     BrowserAnimationsModule,

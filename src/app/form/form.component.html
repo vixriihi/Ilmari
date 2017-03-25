@@ -5,7 +5,7 @@
     <div class="taxon-wrap">
       <div class="taxon-input">
         <md-input-container>
-          <input name="name" #name mdInput [formControl]="nameControl" [ngModel]="(formState | async)?.name" placeholder="Nimi" [mdAutocomplete]="names">
+          <input name="name" type="search" #name mdInput [formControl]="nameControl" [ngModel]="(formState | async)?.name" placeholder="Nimi" [mdAutocomplete]="names">
         </md-input-container>
       </div>
       <div class="group-select">
@@ -58,12 +58,14 @@
               (onValue)="setValueBySpeech($event)"
       ></ilm-speech-input>
       <span class="fill-remaining"></span>
-      <span>
+      <span *ngIf="hasName || record || formStates.length > 0">
         <button *ngIf="record && hasName" md-raised-button color="accent" (click)="saveForm()" tabindex="-1">
           <md-icon svgIcon="plus"></md-icon>
         </button>
         <button *ngIf="!(record && hasName)" md-raised-button color="accent" (click)="sendDocument()" tabindex="-1">
-          <md-icon svgIcon="save"></md-icon>
+          <span *ngIf="!hasName && formStates.length === 0">tyhjennä</span>
+          <span *ngIf="!hasName && record && formStates.length > 0">Lähetä</span>
+          <md-icon *ngIf="hasName" svgIcon="save"></md-icon>
         </button>
       </span>
     </md-toolbar>

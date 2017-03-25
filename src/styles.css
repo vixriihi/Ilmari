@@ -61,6 +61,10 @@ cdk-focus-trap {
   content:'\00a0' !important;
 }
 
+.mat-select-placeholder.mat-floating-placeholder {
+  top: -16px !important;
+}
+
 .mat-sidenav-content {
   width: 100%;
 }

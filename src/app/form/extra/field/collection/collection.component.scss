@@ -1,0 +1,11 @@
+@import "../../../../../variables";
+
+.collection-input {
+  float: left;
+  width: calc(100% - #{$button-width});
+}
+
+.collection-wrap {
+  float: left;
+  width: 100%;
+}

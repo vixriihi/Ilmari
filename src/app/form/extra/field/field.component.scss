@@ -6,14 +6,29 @@
   width: calc(100% - 20px);
   padding: 0 0 0 10px;
   min-height: 35px;
+  /*
   @media screen and (min-width: $break-small) {
     width: calc(50% - 20px);
   }
   @media screen and (min-width: $break-big) {
     width: calc(33.3% - 15px);
   }
+  */
 }
 
-.field.text {
-  margin: 15px 0 10px 0
+.subField {
+  margin: 0;
+  float: left;
+  width: calc(100% - 20px);
+  padding: 0;
+  min-height: 35px;
+  /*
+  @media screen and (min-width: $break-small) {
+    width: calc(50% - 20px);
+  }
+  @media screen and (min-width: $break-big) {
+    width: calc(33.3% - 15px);
+  }
+  */
 }
+

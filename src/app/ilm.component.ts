@@ -47,6 +47,7 @@ export class IlmComponent implements OnInit {
   }
 
   ngOnInit() {
+    // this.clearLocal();
     this.checkLogin();
     this.formService.getForm(environment.imageForm)
       .map(form => form.fields || [])

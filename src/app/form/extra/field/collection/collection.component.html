@@ -1,0 +1,13 @@
+<div *ngFor="let idx of idxs; let isFirst=first" class="extras">
+  <div class="collection-wrap">
+    <div class="collection-input">
+      <ilm-field  [subField]="true" [field]="newField" [value]="value[idx]" (valueChange)="onValueChange(idx, $event)"></ilm-field>
+    </div>
+    <div class="add-collection" *ngIf="isFirst">
+      <button md-icon-button (click)="add()" type="button"><md-icon [svgIcon]="'circle-plus'"></md-icon></button>
+    </div>
+    <div class="add-collection" *ngIf="!isFirst">
+      <button md-icon-button (click)="del(idx)" type="button"><md-icon [svgIcon]="'circle-minus'"></md-icon></button>
+    </div>
+  </div>
+</div>

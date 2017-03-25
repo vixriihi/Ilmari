@@ -1,16 +1,19 @@
 <div [ngSwitch]="field.name">
   <div *ngSwitchDefault>
     <div [ngSwitch]="field.type">
-      <div *ngSwitchCase="'text'" class="field text">
+      <div *ngSwitchCase="'text'" class="text" [ngClass]="{field: !subField, subField: subField}">
         <md-input-container>
           <input [name]="field.path" [ngModel]="value" (ngModelChange)="updateValue($event)" mdInput [placeholder]="field.label">
         </md-input-container>
       </div>
-      <div *ngSwitchCase="'select'" class="field select">
+      <div *ngSwitchCase="'select'" class="select" [ngClass]="{field: !subField, subField: subField}">
         <ilm-select [field]="field" [value]="value" (valueChange)="updateValue($event)"></ilm-select>
       </div>
-      <div *ngSwitchCase="'checkbox'" class="field checkbox">
+      <div *ngSwitchCase="'checkbox'" class="checkbox" [ngClass]="{field: !subField, subField: subField}">
         <md-checkbox [ngModel]="value" (ngModelChange)="updateValue($event)">{{field.label}}</md-checkbox>
+      </div>
+      <div *ngSwitchCase="'collection'" class="collection" [ngClass]="{field: !subField, subField: subField}">
+        <ilm-collection [value]="value || []" (valueChange)="updateValue($event)" [field]="field"></ilm-collection>
       </div>
       <div *ngSwitchDefault></div>
     </div>

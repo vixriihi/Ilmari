@@ -18,6 +18,7 @@ export interface Field {
 })
 export class FieldComponent implements OnInit {
 
+  @Input() subField = false;
   @Input() field: Field;
   @Input() value: any;
   @Output() valueChange = new EventEmitter<any>();
@@ -28,6 +29,7 @@ export class FieldComponent implements OnInit {
   }
 
   updateValue(value) {
+    console.log('VALUE update', value);
     this.value = value;
     this.valueChange.emit(value);
   }
