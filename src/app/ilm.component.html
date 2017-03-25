@@ -48,8 +48,8 @@
       <div fxFlex="grow" class="content">
         <ilm-form [hidden]="activePage !== 'form'"
                   [record]="record"
-                  (onSave)="onSave($event)"
-                  (onDocumentSend)="onSend($event)"
+                  (onSave)="onSave()"
+                  (onDocumentSend)="onSend()"
         ></ilm-form>
         <ilm-near-me [hidden]="activePage !== 'nearMe'" *ngIf="nearMeActive"></ilm-near-me>
       </div>

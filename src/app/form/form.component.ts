@@ -105,7 +105,9 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
     return this.formState
       .take(1)
       .switchMap(data => {
-        this.speech.stopSpeech();
+        if (this.speech) {
+          this.speech.stopSpeech();
+        }
         data.group = this.activeGroup.id;
         const document: FormState = JSON.parse(JSON.stringify(data));
         this.autocompleteService.addUsedTaxon(data.name, this.activeGroup.id);

@@ -1,4 +1,3 @@
-import './polyfills.ts';
 import './rxjs-operators';
 
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';

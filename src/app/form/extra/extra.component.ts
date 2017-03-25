@@ -22,6 +22,7 @@ export class ExtraComponent implements OnInit, OnChanges {
   savePublically = false;
   subItems = ['collection', 'fieldset'];
   skip = ['editors', 'dateBegin', 'dateEnd', 'geometry', 'images', 'taxon', 'taxonID'];
+  field: any;
   fields = [];
   allFields = [];
   userFormFields: {[formId: string]: string[]} = {};
@@ -117,7 +118,9 @@ export class ExtraComponent implements OnInit, OnChanges {
     if (form.fields) {
       form.fields.map(field => {
         if (this.subItems.indexOf(field.type) > -1 && field.fields) {
-          this.pickFields(field, field.type === 'collection' ? path + '/' + field.name + '/*' : path + '/' + field.name, field.name, result);
+          this.pickFields(
+            field, field.type === 'collection' ? path + '/' + field.name + '/*' : path + '/' + field.name, field.name, result
+          );
         } else if (this.skip.indexOf(field.name) === -1) {
           field['path'] = path + '/' + field.name;
           field['level'] = level;

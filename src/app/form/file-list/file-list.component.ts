@@ -14,6 +14,7 @@ export class FileListComponent implements OnInit {
 
   images = [{idx: 0, img: '', filename: ''}];
   idx = 1;
+  image: any;
 
   constructor(private storeService: StoreService,
               private userService: UserService,

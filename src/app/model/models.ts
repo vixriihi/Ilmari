@@ -28,7 +28,6 @@ export * from './News';
 export * from './Person';
 export * from './PersonToken';
 export * from './Point';
-export * from './Point2d';
 export * from './Polygon';
 export * from './Profile';
 export * from './Property';

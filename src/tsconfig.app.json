@@ -5,14 +5,20 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "target": "es5",
     "lib": [
       "es2016",
       "dom"
     ],
     "outDir": "../out-tsc/app",
-    "target": "es5",
     "module": "es2015",
-    "baseUrl": ""
+    "baseUrl": "",
+    "types": [
+      "fast-json-patch",
+      "hammerjs",
+      "node",
+      "proj4"
+    ]
   },
   "exclude": [
     "test.ts",

@@ -82,21 +82,21 @@
         }"
     >
       <ngx-datatable-column prop="name" name="Laji" [flexGrow]="4">
-        <template let-row="row" ngx-datatable-cell-template>
+        <ng-template let-row="row" ngx-datatable-cell-template>
           <a (click)="showTaxon(row.id)" class="link">
             {{row.speciesNameFinnish || row.scientificName}}
           </a>
-        </template>
+        </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column prop="count" name="Havlkm"  [flexGrow]="2">
-        <template let-value="value" ngx-datatable-cell-template>
+        <ng-template let-value="value" ngx-datatable-cell-template>
           {{value}}
-        </template>
+        </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column prop="individualCountSum" name="Ykslkm"  [flexGrow]="2">
-        <template let-value="value" ngx-datatable-cell-template>
+        <ng-template let-value="value" ngx-datatable-cell-template>
           {{value || 1}}
-        </template>
+        </ng-template>
       </ngx-datatable-column>
     </ngx-datatable>
   </div>

@@ -7,7 +7,7 @@ import { IlmComponent } from './ilm.component';
 import { GroupsComponent } from './groups/groups.component';
 import { GroupsService } from './services/groups.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MaterialRootModule } from '@angular/material';
+import { LiveAnnouncer, MaterialRootModule } from '@angular/material';
 import { AgmCoreModule } from 'angular2-google-maps/core';
 import { MapComponent } from './map/map.component';
 import { FormComponent } from './form/form.component';
@@ -26,7 +26,6 @@ import { StoreService } from './services/store.service';
 import { DocumentDatabase } from './db/document.database';
 import { StoreDatabase } from './db/store.database';
 import { rootReducer } from './reducers/index';
-import { StoreLogMonitorModule } from '@ngrx/store-log-monitor';
 import { FormActions } from './form/form.actions';
 import { EffectsModule } from '@ngrx/effects';
 import { FormEffects } from './form/form.efects';
@@ -51,6 +50,7 @@ import { TaxonModalComponent } from './taxon-modal/taxon-modal.component';
 import { LoginComponent } from './login/login.component';
 import { IlmRootComponent } from './ilm-root.component';
 import { LoginSuccessComponent } from './login-success/login-success.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const appRoutes: Routes = [
   { path: 'user/login', component: LoginSuccessComponent },
@@ -89,6 +89,7 @@ const appRoutes: Routes = [
     LoginSuccessComponent
   ],
   imports: [
+    BrowserAnimationsModule,
     RouterModule.forRoot(appRoutes),
     BrowserModule,
     FormsModule,
@@ -97,7 +98,6 @@ const appRoutes: Routes = [
     Ng2Webstorage,
     EffectsModule.run(FormEffects),
     StoreModule.provideStore(rootReducer),
-    StoreLogMonitorModule,
     MaterialRootModule,
     FlexLayoutModule,
     AgmCoreModule.forRoot({
@@ -106,6 +106,7 @@ const appRoutes: Routes = [
     NgxDatatableModule
   ],
   providers: [
+    LiveAnnouncer,
     GroupsService,
     AutocompleteService,
     LocationStoreService,
