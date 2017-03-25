@@ -86,7 +86,7 @@ export class DocumentService {
         if (!data.gatheringEvent) {
           data.gatheringEvent = {};
         }
-        data.gatheringEvent.leg = data.gatheringEvent.leg || [s2.id] || [];
+        data.gatheringEvent.leg = [s2.id, ...data.gatheringEvent.leg];
         return {document: data, token: s4};
       })
       .switchMap(docWrap => this.http.post(environment.apiBase +

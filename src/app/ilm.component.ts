@@ -96,7 +96,6 @@ export class IlmComponent implements OnInit {
       width: '95%'
     });
     dialog.afterClosed().subscribe(data => {
-      console.log('CLOSED with', data);
       this.storeService.put(Stored.USER_TOKEN, data)
         .subscribe(() => this.checkLogin());
     });

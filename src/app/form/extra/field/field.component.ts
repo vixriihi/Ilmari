@@ -29,7 +29,6 @@ export class FieldComponent implements OnInit {
   }
 
   updateValue(value) {
-    console.log('VALUE update', value);
     this.value = value;
     this.valueChange.emit(value);
   }

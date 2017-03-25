@@ -70,7 +70,6 @@ export class NearMeComponent implements OnInit {
     this.subList = this.locationSerivce.getCurrentLocation()
       .map(pos => {
         if (!this.place) {
-          console.log('NO PLACFE');
           this.grid = '';
           return {};
         }

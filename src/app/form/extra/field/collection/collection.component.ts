@@ -53,13 +53,11 @@ export class CollectionComponent implements OnInit, OnChanges {
   }
 
   private initSubField() {
-    console.log('INIT sub field');
     if (this.field.options.target_element) {
       this.newField = this.field.options.target_element;
     }
     if (!this.newField.options && this.field.options) {
       this.newField.options = JSON.parse(JSON.stringify(this.field.options));
-      // this.newField.options.value_options = this.field.options.value_options;
     }
     if (!this.newField.label) {
       this.newField.label = this.field.label;
@@ -67,7 +65,6 @@ export class CollectionComponent implements OnInit, OnChanges {
   }
 
   private initCollections() {
-    console.log('INIT COLLECTION');
     this.idxs = [];
     for (let i = 0; i < this.current; i++) {
       this.idxs.push(i);
