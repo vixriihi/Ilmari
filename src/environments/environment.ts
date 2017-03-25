@@ -11,5 +11,5 @@ export const environment = {
   login: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/login?target=KE.601&next=%2Fuser%2Flogin&allowUnapproved=false&redirectMethod=GET',
   mapsToken: 'AIzaSyAXsondK_Ruyf5NEDk_1Zy5IIB_LGb4L-M',
   imageForm: 'JX.111712',
-  whiteListForms: ['JX.519', 'JX.652']
+  whiteListForms: ['JX.519']
 };
