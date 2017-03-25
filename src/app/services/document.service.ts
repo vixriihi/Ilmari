@@ -65,6 +65,9 @@ export class DocumentService {
       if (patches.length > 0) {
         jsonpatch.apply(document, patches);
       }
+      if (!unit.recordBasis) {
+        unit.recordBasis = Units.RecordBasisEnum.RecordBasisHumanObservation;
+      }
     });
     return Observable.of(document);
   }
