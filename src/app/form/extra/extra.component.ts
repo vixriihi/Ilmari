@@ -28,6 +28,11 @@ export class ExtraComponent implements OnInit, OnChanges {
   userFormFields: {[formId: string]: string[]} = {};
   settingsDialog: SettingsComponent;
   useSpeech = false;
+  overrideFields = {
+    'leg': {
+      'label': 'Muut havainnoitsijat'
+    }
+  };
 
   constructor(
     private formService: FormService,
@@ -122,6 +127,9 @@ export class ExtraComponent implements OnInit, OnChanges {
             field, field.type === 'collection' ? path + '/' + field.name + '/*' : path + '/' + field.name, field.name, result
           );
         } else if (this.skip.indexOf(field.name) === -1) {
+          if (this.overrideFields[field.name]) {
+            field = Object.assign({}, field, this.overrideFields[field.name]);
+          }
           field['path'] = path + '/' + field.name;
           field['level'] = level;
           result.push(field);

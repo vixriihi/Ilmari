@@ -26,6 +26,7 @@ export class DocumentService {
   formStatesToDocument(states: FormState[], gatheringData: Gatherings): Observable<Document> {
     const gathering: Gatherings = {};
     const document: Document = {
+      gatheringEvent: {},
       gatherings: [gathering]
     };
 
@@ -33,9 +34,6 @@ export class DocumentService {
       gathering.geometry = gatheringData.geometry;
     }
     if (gatheringData.dateBegin) {
-      if (!document.gatheringEvent) {
-        document.gatheringEvent = {};
-      }
       document.gatheringEvent.dateBegin = document.gatheringEvent.dateBegin || gatheringData.dateBegin;
       document.gatheringEvent.dateEnd = document.gatheringEvent.dateEnd || gatheringData.dateEnd;
     }
@@ -57,12 +55,17 @@ export class DocumentService {
       };
       const patches = [];
       Object.keys(state.extra).map(path => {
-        const normalizePath = path
-          .replace(/\/units\/\*\//g, '/units/' + idx + '/')
-          .replace(/\/\*\//g, '/0/');
-        patches.push({'op': 'replace', 'path': normalizePath, 'value': state.extra[path] });
+        if (typeof state.extra[path] !== 'undefined') {
+          console.log(state.extra[path]);
+          const normalizePath = path
+            .replace(/\/units\/\*\//g, '/units/' + idx + '/')
+            .replace(/\/\*\//g, '/0/');
+          patches.push({'op': 'replace', 'path': normalizePath, 'value': state.extra[path] });
+        }
       });
       if (patches.length > 0) {
+        console.log(document);
+        console.log(patches);
         jsonpatch.apply(document, patches);
       }
       if (!unit.recordBasis) {
@@ -86,7 +89,7 @@ export class DocumentService {
         if (!data.gatheringEvent) {
           data.gatheringEvent = {};
         }
-        data.gatheringEvent.leg = [s2.id, ...data.gatheringEvent.leg];
+        data.gatheringEvent.leg = data.gatheringEvent.leg ? [s2.id, ...data.gatheringEvent.leg] : [s2.id];
         return {document: data, token: s4};
       })
       .switchMap(docWrap => this.http.post(environment.apiBase +
