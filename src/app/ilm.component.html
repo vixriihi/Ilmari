@@ -42,13 +42,19 @@
               </md-chip>
             </md-chip-list>
           </span>
-          <md-slide-toggle *ngIf="activePage === 'form'" [checked]="record" [disabled]="record" (change)="toggleRecording($event)" color="warn" tabindex="-1" [mdTooltip]="record ? 'Tallennus käynnissä' : 'Aloita reitin tallennus'"></md-slide-toggle>
+          <md-slide-toggle *ngIf="activePage === 'form'"
+                           [checked]="record"
+                           [disabled]="record"
+                           (change)="toggleRecording($event)"
+                           color="warn" tabindex="-1"
+                           [mdTooltip]="record ? 'Tallennus käynnissä' : 'Aloita reitin tallennus'"></md-slide-toggle>
         </md-toolbar>
       </div>
       <div fxFlex="grow" class="content">
         <ilm-form [hidden]="activePage !== 'form'"
                   [record]="record"
                   (onSave)="onSave()"
+                  (onRemove)="onRemove()"
                   (onDocumentSend)="onSend()"
         ></ilm-form>
         <ilm-near-me [hidden]="activePage !== 'nearMe'" *ngIf="nearMeActive"></ilm-near-me>

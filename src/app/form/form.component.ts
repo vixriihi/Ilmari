@@ -33,6 +33,7 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
   @Input() record: boolean;
   @Output() onDocumentSend = new EventEmitter();
   @Output() onSave = new EventEmitter();
+  @Output() onRemove = new EventEmitter();
   @Output() nameChange = new EventEmitter();
 
   formStates: FormState[] = [];
@@ -162,7 +163,7 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
 
   saveForm() {
     this.save().subscribe(data => {
-      this.formStates.push(data);
+      this.formStates = [...this.formStates, data];
       this.onSave.emit(data);
       this.snackBar.open('Havainto lisätty', undefined, {
         duration: 1500
@@ -189,6 +190,14 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
         })
         .subscribe();
     });
+  }
+
+  removeState(idx) {
+    this.onRemove.emit(true);
+    this.formStates = [
+      ...this.formStates.slice(0, idx),
+      ...this.formStates.slice(idx + 1)
+    ];
   }
 
   onSettingChange(settings) {

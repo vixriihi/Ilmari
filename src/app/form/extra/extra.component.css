@@ -5,7 +5,8 @@
   margin-right: -10px;
 }
 .select-fields {
-  float: right;
+  position: absolute;
+  right: 10px;
   margin-bottom: 10px;
 }
 :host >>> .select-fields svg {

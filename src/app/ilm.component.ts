@@ -70,6 +70,9 @@ export class IlmComponent implements OnInit {
   onSave() {
     this.records++;
   }
+  onRemove() {
+    this.records--;
+  }
 
   toggleRecording(record: MdSlideToggleChange) {
     if (record.checked) {
