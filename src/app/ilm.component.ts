@@ -27,7 +27,7 @@ export class IlmComponent implements OnInit {
   activePage = 'form';
   nearMeActive = false;
   currentVersion = 1;
-  savePublically = false;
+  savePublicly = false;
   imageRights;
   forms$;
 

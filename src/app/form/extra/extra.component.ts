@@ -19,7 +19,7 @@ export class ExtraComponent implements OnInit, OnChanges {
 
   formId = 'JX.519';
   imageRights = 'MZ.intellectualRightsARR';
-  savePublically = false;
+  savePublicly = false;
   subItems = ['collection', 'fieldset'];
   skip = ['editors', 'dateBegin', 'dateEnd', 'geometry', 'images', 'taxon', 'taxonID'];
   field: any;
@@ -43,8 +43,8 @@ export class ExtraComponent implements OnInit, OnChanges {
       .subscribe(fields => this.userFormFields = fields);
     this.storeService.get(Stored.ACTIVE_FORM, this.formId)
       .subscribe(formId => this.formId = formId);
-    this.storeService.get(Stored.SAVE_PUBLIC, this.savePublically)
-      .subscribe(value => this.savePublically = value);
+    this.storeService.get(Stored.SAVE_PUBLIC, this.savePublicly)
+      .subscribe(value => this.savePublicly = value);
     this.storeService.get(Stored.IMAGE_RIGHTS, this.imageRights)
       .subscribe(value => this.imageRights = value );
     this.storeService.get(Stored.ACTIVE_FORM, this.formId)
@@ -166,18 +166,18 @@ export class ExtraComponent implements OnInit, OnChanges {
     component.allFields = this.allFields;
     component.selectedForm = this.formId;
     component.selectedImageRights = this.imageRights;
-    component.savePublically = this.savePublically;
+    component.savePublically = this.savePublicly;
     component.useSpeech = this.useSpeech;
   }
 
   private updateSettings(result, dialogRef, onFormChange) {
     this.userFormFields[this.formId] = (dialogRef.componentInstance._selectedFields || []).map(field => field.path);
     this.imageRights = result.selectedImageRights;
-    this.savePublically = result.savePublically;
+    this.savePublicly = result.savePublicly;
     this.useSpeech = result.useSpeech;
     this.fields = this.pickSelectedFields(this.allFields);
     this.storeService.set(Stored.IMAGE_RIGHTS, this.imageRights);
-    this.storeService.set(Stored.SAVE_PUBLIC, this.savePublically);
+    this.storeService.set(Stored.SAVE_PUBLIC, this.savePublicly);
     this.storeService.set(Stored.USE_SPEECH, this.useSpeech);
     this.storeService.set(Stored.SELECTED_FIELDS, this.userFormFields);
     onFormChange.unsubscribe();
