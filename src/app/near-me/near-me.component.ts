@@ -136,7 +136,6 @@ export class NearMeComponent implements OnInit {
   showTaxon(taxon) {
     const taxonDialog = this.dialog.open(TaxonModalComponent, {height: '95%', width: '95%'});
     taxonDialog.componentInstance.taxonId = taxon;
-
   }
 
   selectGroup(group) {

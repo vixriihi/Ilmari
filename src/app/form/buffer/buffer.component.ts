@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormState } from '../form.reducer';
+import { MdDialog } from '@angular/material';
+import { TaxonModalComponent } from '../../taxon-modal/taxon-modal.component';
 
 @Component({
   selector: 'ilm-buffer',
@@ -13,7 +15,7 @@ export class BufferComponent implements OnInit, OnChanges {
 
   states: {idx: number, data: FormState, added: string}[];
 
-  constructor() { }
+  constructor(public dialog: MdDialog) { }
 
   ngOnInit() {
     this.initList();
@@ -29,6 +31,11 @@ export class BufferComponent implements OnInit, OnChanges {
       this.states.push({idx: idx, data: value, added: value.date});
     });
     this.states = this.states.reverse();
+  }
+
+  showTaxon(taxon) {
+    const taxonDialog = this.dialog.open(TaxonModalComponent, {height: '95%', width: '95%'});
+    taxonDialog.componentInstance.taxonId = taxon;
   }
 
 }

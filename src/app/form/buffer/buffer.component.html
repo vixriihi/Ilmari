@@ -2,13 +2,13 @@
   <h4 class="title">Keruun havainnot</h4>
   <md-list>
     <md-list-item *ngFor="let state of states">
-      <h4 md-line>
+      <h4 md-line (click)="showTaxon(state.data.name?.key)">
         {{state.data.name?.value}}
         <span class="cound" *ngIf="state.data.extra && state.data.extra['/gatherings/*/units/*/count']">
           {{state.data.extra['/gatherings/*/units/*/count']}}
         </span>
       </h4>
-      <p md-line>{{state.data.date}}</p>
+      <p md-line (click)="showTaxon(state.data.name?.key)">{{state.data.date}}</p>
       <button (click)="remove.emit(state.idx)" md-mini-fab color="warn"><md-icon svgIcon="delete"></md-icon></button>
     </md-list-item>
   </md-list>
