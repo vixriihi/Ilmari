@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../../environments/environment';
+import { MdDialogRef } from '@angular/material';
 
 @Component({
   selector: 'ilm-info',
@@ -11,7 +12,7 @@ export class InfoComponent implements OnInit {
   info = 'about';
   version;
 
-  constructor() { }
+  constructor(public dialogRef: MdDialogRef<InfoComponent>) { }
 
   ngOnInit() {
     this.version = environment.version;

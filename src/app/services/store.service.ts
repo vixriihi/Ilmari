@@ -17,7 +17,8 @@ export enum Stored {
   USE_SPEECH = 11,
   DATE_FILTER = 12,
   PLACE_FILTER = 13,
-  USER_TOKEN = 14
+  USER_TOKEN = 14,
+  ACCEPTED_VERSION = 15
 }
 
 @Injectable()

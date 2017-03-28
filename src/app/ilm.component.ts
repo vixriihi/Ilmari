@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { MdDialog, MdIconRegistry, MdSidenav, MdSlideToggleChange, MdSnackBar } from '@angular/material';
+import { MdDialog, MdDialogRef, MdIconRegistry, MdSidenav, MdSlideToggleChange, MdSnackBar } from '@angular/material';
 import { FormComponent } from './form/form.component';
 import { LocationStoreService } from './services/location-store.service';
 import { FormService } from './services/form.service';
@@ -22,11 +22,12 @@ import { Stored, StoreService } from './services/store.service';
 export class IlmComponent implements OnInit {
   @ViewChild(FormComponent) form: FormComponent;
   @ViewChild(MdSidenav) sideNav: MdSidenav;
-  activePage = 'form';
-  nearMeActive = false;
-  savePublically = false;
   record = false;
   records = 0;
+  activePage = 'form';
+  nearMeActive = false;
+  currentVersion = 1;
+  savePublically = false;
   imageRights;
   forms$;
 
@@ -84,10 +85,23 @@ export class IlmComponent implements OnInit {
   }
 
   checkLogin() {
-    this.userService.getUser(false)
-      .catch(err => {
-        this.showLogin();
-        return Observable.of({});
+    this.storeService.get(Stored.ACCEPTED_VERSION, 0)
+      .switchMap(version => {
+        if (this.currentVersion !== version) {
+          this.openInfo('accepted', { disableClose: true })
+            .afterClosed()
+            .switchMap(accept => {
+              return accept ? this.storeService.put(Stored.ACCEPTED_VERSION, this.currentVersion)
+                : Observable.of({});
+            })
+            .subscribe(accept => this.checkLogin());
+          return Observable.of({});
+        }
+        return this.userService.getUser(false)
+          .catch(err => {
+            this.showLogin();
+            return Observable.of({});
+          });
       })
       .subscribe();
   }
@@ -113,9 +127,10 @@ export class IlmComponent implements OnInit {
     });
   }
 
-  openInfo(type) {
-    const dialog = this.dialog.open(InfoComponent, {width: '350px'});
+  openInfo(type, options = {}): MdDialogRef<InfoComponent> {
+    const dialog = this.dialog.open(InfoComponent, options);
     dialog.componentInstance.info = type;
+    return dialog;
   }
 
   showPage(page) {

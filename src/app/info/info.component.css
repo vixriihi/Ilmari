@@ -1,7 +1,7 @@
 .info {
   margin-top: -23px;
   text-align: center;
-  padding: 20px 0;
+  padding: 10px;
 }
 
 .ilmari-icon {
@@ -17,6 +17,10 @@ p {
   max-width: 300px;
 }
 
-.howto p {
+.accept button {
+  margin-top: 20px;
+}
+
+.howto p, .accept p {
   text-align: left;
 }
