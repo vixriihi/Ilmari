@@ -4,7 +4,7 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  version: '0.0.1',
+  version: '0.0.2',
   production: false,
   apiBase: 'https://apitest.laji.fi/v0',
   accessToken: 'sSV6YSTFvtQAZcRsdaWK99PGrfFWDI72wYy9jKs0hlgtDkGV85OIB8K5yYFPw4UF',
