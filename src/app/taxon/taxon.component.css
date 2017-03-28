@@ -15,3 +15,11 @@
   top: 50vh;
   margin: -50px 0 0 -50px;
 }
+
+.media {
+  margin-top: 20px;
+}
+
+:host >>> .mat-card-image:first-child {
+  margin-top: -8px !important;
+}

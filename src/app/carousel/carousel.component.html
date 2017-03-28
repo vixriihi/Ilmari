@@ -1,0 +1,4 @@
+<img *ngIf="media.length > 0" md-card-image src="{{media[active].fullURL}}" (click)="moveToNext()">
+<span class="img-count">
+  {{active + 1}} / {{media.length}}
+</span>

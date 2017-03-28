@@ -11,4 +11,6 @@ export interface Taxon {
 
   media: TaxaMedia[];
 
+  activeMedia: number;
+
 }

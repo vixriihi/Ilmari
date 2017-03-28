@@ -40,4 +40,9 @@ export class TaxonComponent implements OnInit, OnChanges {
       });
   }
 
+  mediaChange(idx) {
+    this.taxonService
+      .setTaxonActiveMedia(this.taxonId, idx);
+  }
+
 }

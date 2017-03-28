@@ -18,18 +18,27 @@ export class TaxonService {
     return this._getTaxonLocal(id);
   }
 
+  setTaxonActiveMedia(id, idx) {
+    this._getTaxonLocal(id)
+      .switchMap((data: Taxon) => {
+        data.activeMedia = idx;
+        return this.taxaDb.set(data);
+      })
+      .subscribe();
+  }
+
   private _getTaxonLocal(id): Observable<Taxon> {
     return this.taxaDb.get(id)
-      .switchMap(data => {
+      .switchMap((data: Taxon) => {
         if (data) {
-          this._getTaxonRemote(id);
+          this._getTaxonRemote(id, data.activeMedia);
           return Observable.of(data);
         }
-        return this._getTaxonRemote(id);
+        return this._getTaxonRemote(id, 0);
       });
   }
 
-  private _getTaxonRemote(id): Observable<Taxon> {
+  private _getTaxonRemote(id, activeMedia): Observable<Taxon> {
     const url = environment.apiBase + '/taxa/' + id;
     return Observable.forkJoin(
       this.http.get( url + '?lang=fi&access_token=' + environment.accessToken)
@@ -37,8 +46,9 @@ export class TaxonService {
       this.http.get( url + '/descriptions?lang=fi&blacklist=eol:api&access_token=' + environment.accessToken)
         .map((response: Response) => response.json())
         .map(descriptions => {
-          if (descriptions.length < 2) return descriptions;
-
+          if (descriptions.length < 2) {
+            return descriptions;
+          }
           const result = [descriptions[0]];
           descriptions.map(desc => {
             if (desc.title && desc.title === 'Laji.fi lajikuvaukset') {
@@ -54,7 +64,8 @@ export class TaxonService {
       (info: Taxa, description: TaxaDescription[], media: TaxaMedia[]) => ({
         info: info,
         descriptions: description,
-        media: media
+        media: media,
+        activeMedia: activeMedia
       }))
       .do((taxon) => {
         this.taxaDb.set(taxon);

@@ -17,7 +17,7 @@
       </span>
     </md-card-subtitle>
   </md-card-header>
-  <img *ngIf="taxon.media.length > 0" md-card-image src="{{taxon.media[0].fullURL}}">
+  <ilm-carousel class="media" [media]="taxon.media" [active]="taxon.activeMedia" (activeChanged)="mediaChange($event)"></ilm-carousel>
   <md-card-content>
     <span *ngIf="taxon.media.length > 0" class="image-caption">Kuva: {{taxon.media[0].author}} {{taxon.media[0].licenseDescription || taxon.media[0].licenseAbbreviation}}</span>
     <div *ngIf="taxon.info.alsoKnownAs">
