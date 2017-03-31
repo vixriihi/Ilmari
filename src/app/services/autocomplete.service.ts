@@ -4,7 +4,6 @@ import { Http, Response } from '@angular/http';
 import { environment } from '../../environments/environment';
 import { StoreService, Stored } from './store.service';
 
-
 export interface TaxonAutocomplete {
   key: string;
   value: string;
@@ -72,7 +71,11 @@ export class AutocompleteService {
         } else {
           return response.json();
         }
-      });
+      })
+      .catch(err => Observable.of([{
+        key: '',
+        value: name
+      }]));
   }
 
   private getUsedNames(name: string, group: string): Observable<TaxonAutocomplete[]> {

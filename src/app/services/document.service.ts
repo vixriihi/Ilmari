@@ -13,15 +13,35 @@ import { Identifications } from '../model/Identifications';
 import { Geometry } from '../model/Geometry';
 import * as jsonpatch from 'fast-json-patch';
 import PublicityRestrictionsEnum = Document.PublicityRestrictionsEnum;
+import { DocumentDatabase } from '../db/document.database';
+import { Subscription } from 'rxjs/Subscription';
+
+const RETRY_INTERVAL = 180; // sec
 
 @Injectable()
 export class DocumentService {
 
+  private resendInterval;
+  private subResend: Subscription;
+
   constructor(
     private http: Http,
     private storeService: StoreService,
-    private userService: UserService
-  ) { }
+    private userService: UserService,
+    private docDb: DocumentDatabase
+  ) {
+    this.resendInterval = setInterval(() => {
+      if (this.subResend) {
+        return;
+      }
+      this.subResend = this._resendFailed()
+        .subscribe(count => {
+          console.log(count);
+          this.subResend.unsubscribe();
+          delete this.subResend;
+        });
+    }, 1000 * RETRY_INTERVAL);
+  }
 
   formStatesToDocument(states: FormState[], gatheringData: Gatherings): Observable<Document> {
     const gathering: Gatherings = {};
@@ -45,7 +65,6 @@ export class DocumentService {
       gathering.units[idx] = unit;
       unit.unitType = [state.group];
       unit.identifications = [identification];
-      identification.taxonID = state.name.key || '';
       identification.taxon = state.name.value || '';
       unit.unitGathering = {};
       unit.unitGathering.dateBegin = state.date;
@@ -56,7 +75,6 @@ export class DocumentService {
       const patches = [];
       Object.keys(state.extra).map(path => {
         if (typeof state.extra[path] !== 'undefined') {
-          console.log(state.extra[path]);
           const normalizePath = path
             .replace(/\/units\/\*\//g, '/units/' + idx + '/')
             .replace(/\/\*\//g, '/0/');
@@ -64,39 +82,37 @@ export class DocumentService {
         }
       });
       if (patches.length > 0) {
-        console.log(document);
-        console.log(patches);
         jsonpatch.apply(document, patches);
       }
       if (!unit.recordBasis) {
         unit.recordBasis = Units.RecordBasisEnum.RecordBasisHumanObservation;
       }
     });
-    return Observable.of(document);
-  }
 
-  sendDocument(data: Document): Observable<any> {
     return Observable.combineLatest(
       this.storeService.get(Stored.ACTIVE_FORM, 'JX.519'),
       this.userService.getUser(),
       this.storeService.get(Stored.SAVE_PUBLIC, false),
-      this.storeService.get(Stored.USER_TOKEN, ''),
-      (s1, s2: Person, s3, s4) => {
-        data.formID = s1;
-        data.publicityRestrictions = s3 ?
+      (s1, s2: Person, s3) => {
+        document.formID = s1;
+        document.publicityRestrictions = s3 ?
           PublicityRestrictionsEnum.PublicityRestrictionsPublic :
           PublicityRestrictionsEnum.PublicityRestrictionsPrivate;
-        if (!data.gatheringEvent) {
-          data.gatheringEvent = {};
+        if (!document.gatheringEvent) {
+          document.gatheringEvent = {};
         }
-        data.gatheringEvent.leg = data.gatheringEvent.leg ? [s2.id, ...data.gatheringEvent.leg] : [s2.id];
-        return {document: data, token: s4};
-      })
-      .switchMap(docWrap => this.http.post(environment.apiBase +
+        document.gatheringEvent.leg = document.gatheringEvent.leg ? [s2.id, ...document.gatheringEvent.leg] : [s2.id];
+        return document;
+      });
+  }
+
+  sendDocument(document: Document, isResend = false): Observable<any> {
+    return this.storeService.get(Stored.USER_TOKEN, '')
+      .switchMap(token => this.http.post(environment.apiBase +
         '/documents' +
-        '?personToken=' + docWrap.token +
+        '?personToken=' + token +
         '&access_token=' + environment.accessToken,
-        docWrap.document
+        document
       ))
       .map((response: Response) => {
         if (response.status === 204) {
@@ -104,6 +120,13 @@ export class DocumentService {
         } else {
           return response.json();
         }
+      })
+      .catch(err => {
+        if (!isResend) {
+          this.docDb.push(document)
+            .subscribe();
+        }
+        return Observable.of(false);
       });
   }
 
@@ -117,4 +140,22 @@ export class DocumentService {
       && document.gatherings[0].units[0].identifications[0]
       && document.gatherings[0].units[0].identifications[0].taxon);
   };
+
+  private _resendFailed(): Observable<number> {
+    return this.docDb
+      .count()
+      .switchMap(count => count === 0 ?
+        Observable.of(count) :
+        this.docDb
+          .peak()
+          .switchMap(document => this.sendDocument(document, true))
+          .switchMap(success => {
+            if (success) {
+              return this.docDb.pop()
+                .switchMap(() => count > 1 ? this._resendFailed() : Observable.of(0));
+            }
+            return Observable.of(count);
+          })
+      );
+  }
 }
