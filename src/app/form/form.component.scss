@@ -55,6 +55,7 @@ $file-wrap: 10 + $map-size;
 }
 
 .file.input {
+  display: none;
   float: left;
   width: calc(100% - #{$file-wrap});
 }
