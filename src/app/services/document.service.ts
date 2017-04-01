@@ -36,7 +36,6 @@ export class DocumentService {
       }
       this.subResend = this._resendFailed()
         .subscribe(count => {
-          console.log(count);
           this.subResend.unsubscribe();
           delete this.subResend;
         });
@@ -106,7 +105,23 @@ export class DocumentService {
       });
   }
 
-  sendDocument(document: Document, isResend = false): Observable<any> {
+  sendDocument(document: Document): void {
+    this._sendDocument(document)
+      .subscribe();
+  }
+
+  isEmpty(document: Document): boolean {
+    return !(document
+      && document.gatherings
+      && document.gatherings[0]
+      && document.gatherings[0].units
+      && document.gatherings[0].units[0]
+      && document.gatherings[0].units[0].identifications
+      && document.gatherings[0].units[0].identifications[0]
+      && document.gatherings[0].units[0].identifications[0].taxon);
+  };
+
+  private _sendDocument(document: Document, isResend = false): Observable<boolean> {
     return this.storeService.get(Stored.USER_TOKEN, '')
       .switchMap(token => this.http.post(environment.apiBase +
         '/documents' +
@@ -130,17 +145,6 @@ export class DocumentService {
       });
   }
 
-  isEmpty(document: Document): boolean {
-    return !(document
-      && document.gatherings
-      && document.gatherings[0]
-      && document.gatherings[0].units
-      && document.gatherings[0].units[0]
-      && document.gatherings[0].units[0].identifications
-      && document.gatherings[0].units[0].identifications[0]
-      && document.gatherings[0].units[0].identifications[0].taxon);
-  };
-
   private _resendFailed(): Observable<number> {
     return this.docDb
       .count()
@@ -148,7 +152,7 @@ export class DocumentService {
         Observable.of(count) :
         this.docDb
           .peak()
-          .switchMap(document => this.sendDocument(document, true))
+          .switchMap(document => this._sendDocument(document, true))
           .switchMap(success => {
             if (success) {
               return this.docDb.pop()

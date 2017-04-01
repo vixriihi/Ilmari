@@ -189,7 +189,8 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
             return Observable.of(false);
           }
           this.snackBar.open('Havaintoerä lähetetty', undefined, {duration: 1500});
-          return this.documentService.sendDocument(document);
+          this.documentService.sendDocument(document);
+          return Observable.of(true);
         })
         .subscribe();
     });

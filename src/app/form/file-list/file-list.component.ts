@@ -5,6 +5,8 @@ import { UserService } from '../../services/user.service';
 import { Observable } from 'rxjs/Observable';
 import { Person } from '../../model/Person';
 
+export const DEFAUL_IMGRIGHTS = 'MZ.intellectualRightsARR';
+
 @Component({
   selector: 'ilm-file-list',
   templateUrl: './file-list.component.html',
@@ -45,7 +47,7 @@ export class FileListComponent implements OnInit {
   tryToSendImage(idx) {
     const image = this.images[idx];
     Observable.combineLatest(
-      this.storeService.get(Stored.IMAGE_RIGHTS, 'MZ.intellectualRightsARR'),
+      this.storeService.get(Stored.IMAGE_RIGHTS, DEFAUL_IMGRIGHTS),
       this.userService.getUser(),
       (s1, s2: Person) => ({
         intellectualRights: s1,
