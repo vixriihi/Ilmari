@@ -114,6 +114,7 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
         }
         data.group = this.activeGroup.id;
         const document: FormState = JSON.parse(JSON.stringify(data));
+        document.images = this.files.images.reduce((cum, curr) => curr.id ? [...cum, curr.id] : cum, []);
         this.autocompleteService.addUsedTaxon(data.name, this.activeGroup.id);
         this.extras.setDefaultValues(true);
         this.store.dispatch(this.formActions.reset());

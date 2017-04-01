@@ -54,6 +54,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CollectionComponent } from './form/extra/field/collection/collection.component';
 import { BufferComponent } from './form/buffer/buffer.component';
 import { CarouselComponent } from './carousel/carousel.component';
+import { ImageDatabase } from './db/image.database';
 
 const appRoutes: Routes = [
   { path: 'user/login', component: LoginSuccessComponent },
@@ -117,6 +118,7 @@ const appRoutes: Routes = [
     AutocompleteService,
     LocationStoreService,
     FormService,
+    ImageDatabase,
     DocumentDatabase,
     StoreDatabase,
     TaxaDatabase,

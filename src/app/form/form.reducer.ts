@@ -18,6 +18,7 @@ export interface FormState {
   location?: FormLocation;
   extra?: Object;
   group?: string;
+  images?: string[];
 }
 
 const initialState: FormState = {

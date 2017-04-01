@@ -5,7 +5,7 @@ import { UserService } from '../../services/user.service';
 import { Observable } from 'rxjs/Observable';
 import { Person } from '../../model/Person';
 
-export const DEFAUL_IMGRIGHTS = 'MZ.intellectualRightsARR';
+export const DEFAULT_IMAGE_RIGHTS = 'MZ.intellectualRightsARR';
 
 @Component({
   selector: 'ilm-file-list',
@@ -14,13 +14,13 @@ export const DEFAUL_IMGRIGHTS = 'MZ.intellectualRightsARR';
 })
 export class FileListComponent implements OnInit {
 
-  images = [{idx: 0, img: '', filename: ''}];
+  images = [{idx: 0, id: '', src: ''}];
   idx = 1;
   image: any;
 
   constructor(private storeService: StoreService,
               private userService: UserService,
-              private imageService: ImageService
+              public imageService: ImageService
   ) { }
 
   ngOnInit() {
@@ -32,28 +32,28 @@ export class FileListComponent implements OnInit {
   }
 
   reset() {
-    this.images = [{idx: 0, img: '', filename: ''}];
+    this.images = [{idx: 0, id: '', src: ''}];
     this.storeService.set(Stored.IMAGES, this.images);
     this.idx = this.images.length;
   }
 
-  addImage(img, filename = '') {
-    this.images = [...this.images, {idx: this.idx, img: img, filename: filename}];
-    this.tryToSendImage(this.idx);
-    this.storeService.set(Stored.IMAGES, this.images);
-    this.idx++;
-  }
-
-  tryToSendImage(idx) {
-    const image = this.images[idx];
+  addImage(data) {
     Observable.combineLatest(
-      this.storeService.get(Stored.IMAGE_RIGHTS, DEFAUL_IMGRIGHTS),
+      this.storeService.get(Stored.IMAGE_RIGHTS, DEFAULT_IMAGE_RIGHTS),
       this.userService.getUser(),
       (s1, s2: Person) => ({
         intellectualRights: s1,
         capturerVerbatim: [s2.fullName]
       }))
-      .switchMap(meta => this.imageService.addImage(image, meta));
+      .switchMap(meta => this.imageService.addImage(data.img, meta, data.filename))
+      .switchMap(id => this.imageService.getImageSrc(id)
+        .switchMap((src) => Observable.of({idx: this.idx, id: id, src: src}))
+      )
+      .subscribe(img => {
+        this.images = [ ...this.images, img];
+        this.storeService.set(Stored.IMAGES, this.images);
+        this.idx++;
+      });
   }
 
 }

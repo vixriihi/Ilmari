@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 
 @Component({
   selector: 'ilm-file-upload',
@@ -16,6 +16,7 @@ export class FileUploadComponent {
   imageLoaded = false;
   @Input() imageSrc = '';
   @Output() onAdd = new EventEmitter();
+  private filename;
 
   handleDragEnter() {
     this.dragging = true;
@@ -41,12 +42,20 @@ export class FileUploadComponent {
     const pattern = /image-*/;
     const reader = new FileReader();
 
+    if (!file || !file.type) {
+      return;
+    }
     if (!file.type.match(pattern)) {
       alert('invalid format');
       return;
     }
 
     this.loaded = false;
+    try {
+      this.filename = e.target.value.replace(/^.*[\\\/]/, '');
+    } catch (e) {
+      this.filename = 'unknown';
+    }
 
     reader.onload = this._handleReaderLoaded.bind(this);
     reader.readAsDataURL(file);
@@ -55,6 +64,7 @@ export class FileUploadComponent {
   _handleReaderLoaded(e) {
     const reader = e.target;
     this.loaded = true;
-    this.onAdd.emit(reader.result);
+    this.onAdd.emit({img: reader.result, filename: this.filename});
   }
+
 }

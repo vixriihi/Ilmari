@@ -170,7 +170,7 @@ export interface Units {
     /**
      * QName for MM.image
      */
-    images?: string;
+    images?: string[];
 
     movingStatus?: string;
 

@@ -71,6 +71,9 @@ export class DocumentService {
         'type': Geometry.TypeEnum.Point,
         'coordinates': [state.location.lng, state.location.lat]
       };
+      if (state.images && state.images.length > 0) {
+        unit.images = state.images;
+      }
       const patches = [];
       Object.keys(state.extra).map(path => {
         if (typeof state.extra[path] !== 'undefined') {
