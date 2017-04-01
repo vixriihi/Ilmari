@@ -2,7 +2,14 @@
   <h4 class="title">Keruun havainnot</h4>
   <md-list>
     <md-list-item *ngFor="let state of states">
-      <h4 md-line (click)="showTaxon(state.data.name?.key)">
+      <md-icon md-list-avatar>
+        <button md-icon-button type="button"
+                *ngIf="state.data && state.data.name && state.data.name.key"
+                (click)="showTaxon(state.data.name?.key)">
+          <md-icon [svgIcon]="'info'"></md-icon>
+        </button>
+      </md-icon>
+      <h4 md-line>
         {{state.data.name?.value}}
         <span class="cound" *ngIf="state.data.extra && state.data.extra['/gatherings/*/units/*/count']">
           {{state.data.extra['/gatherings/*/units/*/count']}}

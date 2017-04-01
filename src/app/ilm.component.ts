@@ -49,6 +49,10 @@ export class IlmComponent implements OnInit {
 
   ngOnInit() {
     // this.clearLocal();
+    this.locationService.isRecording()
+      .subscribe(recording => this.record = recording);
+    this.storeService.get(Stored.FORM_STATES, [])
+      .subscribe(states => this.records = states.length);
     this.checkLogin();
     this.formService.getForm(environment.imageForm)
       .map(form => form.fields || [])

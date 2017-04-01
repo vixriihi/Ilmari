@@ -4,12 +4,15 @@ import { Geometry } from '../model/Geometry';
 import { WindowRef } from '../ref/window.ref';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
+import { Stored, StoreService } from './store.service';
 
 const proj4 = require('proj4').default;
 
 proj4.defs('WGS84', '+title=*GPS (WGS84) (deg) +proj=longlat +ellps=WGS84 +datum=WGS84 +units=degrees');
 proj4.defs('EPSG:2393', '+title=KKJ Zone 3 +proj=tmerc +lat_0=0 +lon_0=27 +k=1 +x_0=3500000 +y_0=0 +ellps=intl ' +
   '+towgs84=-96.0617,-82.4278,-121.7435,4.80107,0.34543,-1.37646,1.4964 +units=m +no_defs');
+
+const LOCATION_INTERVAL = 10; // sec
 
 @Injectable()
 export class LocationStoreService {
@@ -22,13 +25,28 @@ export class LocationStoreService {
   _record = false;
   _timer;
 
-  constructor(private windowRef: WindowRef) {
+  constructor(
+    private windowRef: WindowRef,
+    private storeService: StoreService
+  ) {
+    Observable.forkJoin(
+      this.storeService.get(Stored.IS_RECORDING, this._record),
+      this.storeService.get(Stored.LOCATIONS, this.coordinates)
+    ).subscribe((data) => {
+      this._record = data[0];
+      this.coordinates = data[1];
+      this.initTimer();
+    })
     if (this.windowRef.nativeWindow.navigator.geolocation) {
       this.geoLocationEnabled = true;
     }
   }
 
-  isRecording() {
+  isRecording(): Observable<boolean> {
+    return this.storeService.get(Stored.IS_RECORDING, this._record);
+  }
+
+  isCurrentlyRecording() {
     return this._record;
   }
 
@@ -36,16 +54,15 @@ export class LocationStoreService {
     this.timeStart = this.getCurrentTime();
     if (this.geoLocationEnabled) {
       this._record = true;
+      this.storeService.set(Stored.IS_RECORDING, this._record);
       this.addLocation();
-      if (!this._timer) {
-        this._timer = setInterval(this.addLocation.bind(this), 10000);
-      }
     }
   }
 
   stopRecording() {
     if (this._timer) {
       this._record = false;
+      this.storeService.set(Stored.IS_RECORDING, this._record);
       clearInterval(this._timer);
       delete this._timer;
     }
@@ -102,6 +119,8 @@ export class LocationStoreService {
         const longitude = crd.longitude;
         if (this.isNewLocation(latitude, longitude)) {
           this.coordinates.push([longitude, latitude]);
+          this.initTimer();
+          this.storeService.set(Stored.LOCATIONS, this.coordinates);
         }
       });
   }
@@ -141,6 +160,12 @@ export class LocationStoreService {
 
   convertToWgsToYkj(lat, lng) {
     return this.toInteger(proj4('WGS84', 'EPSG:2393', [lng, lat])).reverse();
+  }
+
+  private initTimer() {
+    if (this._record && !this._timer) {
+      this._timer = setInterval(this.addLocation.bind(this), 1000 * LOCATION_INTERVAL);
+    }
   }
 
   private toInteger(val: any[]) {

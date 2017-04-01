@@ -18,6 +18,7 @@ import { SpeechInputComponent } from './speech-input/speech-input.component';
 import { LocationStoreService } from '../services/location-store.service';
 import { SpeechResponse } from './speech-input/types/speech-type.interface';
 import { setTimeout } from 'timers';
+import { stat } from 'fs';
 
 @Component({
   selector: 'ilm-form',
@@ -61,6 +62,8 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
     public dialog: MdDialog
   ) {
     this.formState = this.store.select<FormState>(state => state.form);
+    this.storeService.get(Stored.FORM_STATES, this.formStates)
+      .subscribe(states => this.formStates = states);
   }
 
   ngOnInit() {
@@ -163,7 +166,7 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
 
   saveForm() {
     this.save().subscribe(data => {
-      this.formStates = [...this.formStates, data];
+      this.updateFormStates([...this.formStates, data]);
       this.onSave.emit(data);
       this.snackBar.open('Havainto lisätty', undefined, {
         duration: 1500
@@ -174,12 +177,12 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
   sendDocument() {
     this.save().subscribe(data => {
       this.documentService.formStatesToDocument(
-        this.locationService.isRecording() ? this.formStates : [data],
+        this.locationService.isCurrentlyRecording() ? this.formStates : [data],
         this.locationService.getGathering()
       )
         .switchMap(document => {
           this.onDocumentSend.emit(JSON.parse(JSON.stringify(this.formStates)));
-          this.formStates = [];
+          this.updateFormStates([]);
           this.locationService.stopRecording();
           if (this.documentService.isEmpty(document)) {
             this.snackBar.open('Tyhjennetty', undefined, {duration: 1500});
@@ -194,10 +197,10 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
 
   removeState(idx) {
     this.onRemove.emit(true);
-    this.formStates = [
+    this.updateFormStates([
       ...this.formStates.slice(0, idx),
       ...this.formStates.slice(idx + 1)
-    ];
+    ]);
   }
 
   onSettingChange(settings) {
@@ -260,6 +263,11 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
         data.extra[value.field.path] = value.result.value;
         this.updateExtra(data.extra);
       });
+  }
+
+  private updateFormStates(states) {
+    this.formStates = states;
+    this.storeService.set(Stored.FORM_STATES, states);
   }
 
   private resetName() {

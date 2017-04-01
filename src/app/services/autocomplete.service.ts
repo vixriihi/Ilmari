@@ -37,22 +37,33 @@ export class AutocompleteService {
   }
 
   addUsedTaxon(taxon: TaxonAutocomplete, group: string) {
-    if (!taxon.value) {
+    if (!taxon.key) {
       return;
     }
     if (!this.usedNames[group]) {
       this.usedNames[group] = [];
     }
-    if (!this.usedNames[group].some(usedTaxon => usedTaxon.value === taxon.value)) {
+    const idx = this.usedNames[group].findIndex(usedTaxon => usedTaxon.value === taxon.value);
+    if (idx === -1) {
       this.usedNames[group] = [taxon, ...this.usedNames[group]]
         .sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
+      this.store.set(Stored.AUTOCOMPLETE, this.usedNames);
+    } else if (idx > -1 && taxon.key && taxon.key.length > 3 && !this.usedNames[group][idx].key) {
+      this.usedNames[group][idx] = taxon;
       this.store.set(Stored.AUTOCOMPLETE, this.usedNames);
     }
   }
 
   makeValue(value) {
     if (value && typeof value !== 'object') {
-      value = {value: value};
+      value = {value: this.capitalize(value)};
+    }
+    return value;
+  }
+
+  private capitalize(value) {
+    if (typeof value === 'string' && value.length > 2) {
+      return value.charAt(0).toUpperCase() + value.slice(1);
     }
     return value;
   }
@@ -72,6 +83,10 @@ export class AutocompleteService {
           return response.json();
         }
       })
+      .map(data => data.map(auto => ({
+        key: auto.key,
+        value: this.capitalize(auto.value)
+      })))
       .catch(err => Observable.of([{
         key: '',
         value: name
