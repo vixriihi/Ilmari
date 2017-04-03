@@ -1,0 +1,14 @@
+<md-dialog-content>
+  <div class="confirm">
+    <h3>{{ title }}</h3>
+    {{ message }}
+  </div>
+</md-dialog-content>
+<md-dialog-actions>
+  <button type="button" md-raised-button
+          class="ok"
+          (click)="dialogRef.close(true)">Kyllä</button>
+  <button type="button" md-raised-button
+          class="cancel"
+          (click)="dialogRef.close()">En</button>
+</md-dialog-actions>

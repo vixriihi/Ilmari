@@ -1,21 +1,24 @@
 <md-progress-bar *ngIf="loading" mode="indeterminate"></md-progress-bar>
 <md-card class="taxon-card" *ngIf="taxon">
   <md-card-header>
-    <md-card-title><h2 class="vernacularName">{{taxon.info.vernacularName}}</h2></md-card-title>
-    <md-card-subtitle>
-      <span [ngClass]="{cursive: taxon.info.cursiveName}">
-        {{taxon.info.scientificName}}
-      </span>
-      <span *ngIf="taxon.info.synonyms">
-        (
-        <span *ngFor="let synonym of taxon.info.synonyms">
-          <span [ngClass]="{cursive: synonym.cursiveName}">
-            {{synonym.scientificName}}
+    <md-card-title>
+      <h2 class="vernacularName">{{taxon.info.vernacularName | capitalize}}
+        <small class="scientificName">
+          <span [ngClass]="{cursive: taxon.info.cursiveName}">
+            {{taxon.info.scientificName}}
           </span>
-        </span>
-        )
-      </span>
-    </md-card-subtitle>
+            <span *ngIf="taxon.info.synonyms">
+            (
+            <span *ngFor="let synonym of taxon.info.synonyms">
+              <span [ngClass]="{cursive: synonym.cursiveName}">
+                {{synonym.scientificName}}
+              </span>
+            </span>
+            )
+          </span>
+        </small>
+      </h2>
+    </md-card-title>
   </md-card-header>
   <ilm-carousel class="media" [media]="taxon.media" [active]="taxon.activeMedia" (activeChanged)="mediaChange($event)"></ilm-carousel>
   <md-card-content>

@@ -55,6 +55,9 @@ import { CollectionComponent } from './form/extra/field/collection/collection.co
 import { BufferComponent } from './form/buffer/buffer.component';
 import { CarouselComponent } from './carousel/carousel.component';
 import { ImageDatabase } from './db/image.database';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { DialogsService } from './services/dialog.service';
+import { CapitalizePipe } from './pipes/capitalize.pipe';
 
 const appRoutes: Routes = [
   { path: 'user/login', component: LoginSuccessComponent },
@@ -68,7 +71,8 @@ const appRoutes: Routes = [
     LoginComponent,
     SettingsComponent,
     SpeechSelectComponent,
-    TaxonModalComponent
+    TaxonModalComponent,
+    ConfirmDialogComponent
   ],
   declarations: [
     IlmRootComponent,
@@ -93,7 +97,9 @@ const appRoutes: Routes = [
     LoginSuccessComponent,
     CollectionComponent,
     BufferComponent,
-    CarouselComponent
+    CarouselComponent,
+    ConfirmDialogComponent,
+    CapitalizePipe
   ],
   imports: [
     BrowserAnimationsModule,
@@ -130,7 +136,8 @@ const appRoutes: Routes = [
     WindowRef,
     SpeechService,
     WarehouseService,
-    TaxonService
+    TaxonService,
+    DialogsService
   ],
   bootstrap: [IlmRootComponent]
 })

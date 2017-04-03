@@ -38,7 +38,6 @@ cdk-focus-trap {
   position: relative;
   max-width: 100% !important;
   max-height: 100vh !important;
-  padding: 3px !important;;
 }
 
 .mat-dialog-container::-webkit-scrollbar {

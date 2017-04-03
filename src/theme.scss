@@ -2,7 +2,8 @@
 @import '/assets/datatable/material.css';
 @import '/assets/datatable/icons.css';
 // @import '~@swimlane/ngx-datatable/release/themes/material.css';
-@import '~@angular/material/_theming';
+// @import '~@angular/material/_theming';
+@import '~@angular/material/core/theming/all-theme';
 // Plus imports for other components in your app.
 
 // Include the base styles for Angular Material core. We include this here so that you only

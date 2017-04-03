@@ -4,6 +4,7 @@ import { ImageService } from '../../services/image.service';
 import { UserService } from '../../services/user.service';
 import { Observable } from 'rxjs/Observable';
 import { Person } from '../../model/Person';
+import { DialogsService } from '../../services/dialog.service';
 
 export const DEFAULT_IMAGE_RIGHTS = 'MZ.intellectualRightsARR';
 
@@ -20,6 +21,7 @@ export class FileListComponent implements OnInit {
 
   constructor(private storeService: StoreService,
               private userService: UserService,
+              private dialogService: DialogsService,
               public imageService: ImageService
   ) { }
 
@@ -57,15 +59,20 @@ export class FileListComponent implements OnInit {
   }
 
   delImage(id) {
-    this.imageService.deleteImage(id)
-      .subscribe(
-        () => this.delLocalImage(id),
-        (err) => {
-          if (err.status === 404) {
-            this.delLocalImage(id);
-          }
-        }
-      );
+    this.dialogService.confirm('Oletko varma', 'että haluat poistaa kuvan')
+      .subscribe(res => {
+        if (!res) return;
+
+        this.imageService.deleteImage(id)
+          .subscribe(
+            () => this.delLocalImage(id),
+            (err) => {
+              if (err.status === 404) {
+                this.delLocalImage(id);
+              }
+            }
+          );
+      });
   }
 
   private delLocalImage(id) {

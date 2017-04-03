@@ -20,6 +20,11 @@
   margin-top: 20px;
 }
 
+.scientificName {
+  font-size: 12px;
+  font-weight: normal;
+}
+
 :host >>> .mat-card-image:first-child {
   margin-top: -8px !important;
 }

@@ -19,6 +19,7 @@ import { LocationStoreService } from '../services/location-store.service';
 import { SpeechResponse } from './speech-input/types/speech-type.interface';
 import { setTimeout } from 'timers';
 import { stat } from 'fs';
+import { DialogsService } from '../services/dialog.service';
 
 @Component({
   selector: 'ilm-form',
@@ -58,6 +59,7 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
     private formActions: FormActions,
     private documentService: DocumentService,
     private locationService: LocationStoreService,
+    private dialogService: DialogsService,
     public snackBar: MdSnackBar,
     public dialog: MdDialog
   ) {
@@ -198,11 +200,16 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   removeState(idx) {
-    this.onRemove.emit(true);
-    this.updateFormStates([
-      ...this.formStates.slice(0, idx),
-      ...this.formStates.slice(idx + 1)
-    ]);
+    this.dialogService.confirm('Oletko varma että' , 'haluat poistaa kyseisen havainnon?')
+      .subscribe(confirm => {
+        if (confirm) {
+          this.onRemove.emit(true);
+          this.updateFormStates([
+            ...this.formStates.slice(0, idx),
+            ...this.formStates.slice(idx + 1)
+          ]);
+        }
+      });
   }
 
   onSettingChange(settings) {

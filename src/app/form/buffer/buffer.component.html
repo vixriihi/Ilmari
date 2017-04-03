@@ -16,7 +16,7 @@
         </span>
       </h4>
       <p md-line (click)="showTaxon(state.data.name?.key)">{{state.data.date}}</p>
-      <button (click)="remove.emit(state.idx)" md-mini-fab color="warn"><md-icon svgIcon="delete"></md-icon></button>
+      <button type="button" tabindex="-1" (click)="remove.emit(state.idx)" md-mini-fab color="warn"><md-icon svgIcon="delete"></md-icon></button>
     </md-list-item>
   </md-list>
 </div>
