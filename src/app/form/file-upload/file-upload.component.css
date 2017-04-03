@@ -62,3 +62,9 @@
 .uploader img.loaded {
   opacity: 1;
 }
+
+.remove {
+  position: absolute;
+  bottom: -12px;
+  right: -12px;
+}

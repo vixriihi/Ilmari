@@ -1,3 +1,7 @@
 <div *ngFor="let image of images; let i = index; trackBy image?.idx;" class="image">
-  <ilm-file-upload [imageSrc]="i === 0 ? '' : image.src" (onAdd)="addImage($event)"></ilm-file-upload>
+  <ilm-file-upload
+    [imageSrc]="i === 0 ? '' : image.src"
+    (onAdd)="addImage($event)"
+    (onRemove)="delImage(image.id)"
+  ></ilm-file-upload>
 </div>

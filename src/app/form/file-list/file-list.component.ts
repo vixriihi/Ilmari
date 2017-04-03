@@ -56,4 +56,25 @@ export class FileListComponent implements OnInit {
       });
   }
 
+  delImage(id) {
+    this.imageService.deleteImage(id)
+      .subscribe(
+        () => this.delLocalImage(id),
+        (err) => {
+          if (err.status === 404) {
+            this.delLocalImage(id);
+          }
+        }
+      );
+  }
+
+  private delLocalImage(id) {
+    const idx = this.images.findIndex(img => img.id === id);
+    if (idx === -1) {
+      return;
+    }
+    this.images = [...this.images.slice(0, idx), ...this.images.slice(idx + 1)];
+    this.storeService.set(Stored.IMAGES, this.images);
+  }
+
 }

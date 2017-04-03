@@ -8,4 +8,5 @@
   <md-icon *ngIf="!imageSrc || imageSrc.length == 0" [svgIcon]="'camera'" class="upload"></md-icon>
   <img [src]="imageSrc" (load)="handleImageLoad()" [class.loaded]="imageLoaded" alt="ladattu kuva"/>
   <input *ngIf="!imageLoaded" type="file" name="file" accept="image/*;capture=camera" (change)="handleInputChange($event)">
+  <button *ngIf="imageSrc.length > 0" (click)="onRemove.emit()" md-mini-fab color="warn" class="remove"><md-icon svgIcon="delete"></md-icon></button>
 </label>

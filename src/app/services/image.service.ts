@@ -64,6 +64,24 @@ export class ImageService {
       );
   }
 
+  deleteImage(id: string): Observable<boolean> {
+    return this.storeService.get(Stored.USER_TOKEN, '')
+      .switchMap(personToken => this.http.delete(
+        environment.apiBase +
+        '/images' +
+        '/' + id +
+        '?personToken=' + personToken +
+        '&access_token=' + environment.accessToken
+      ))
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
+
   private dataUrlToBlob(dataURI): Blob {
     const byteString = atob(dataURI.split(',')[1]);
     const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];

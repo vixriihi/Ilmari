@@ -16,6 +16,7 @@ export class FileUploadComponent {
   imageLoaded = false;
   @Input() imageSrc = '';
   @Output() onAdd = new EventEmitter();
+  @Output() onRemove = new EventEmitter();
   private filename;
 
   handleDragEnter() {
