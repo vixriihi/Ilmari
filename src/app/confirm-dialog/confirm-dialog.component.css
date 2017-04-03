@@ -7,3 +7,7 @@ h3 {
 .cancel {
   margin-left: 20px;
 }
+
+.ok, .cancel {
+  margin-bottom: 10px;
+}
