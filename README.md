@@ -13,8 +13,8 @@ Currently all the data is send to apitest.laji.fi.
 | Send observations   | Available   |
 | Choose form fields  | Available   |
 | Group observations  | Available   |
-| Group gatherings    | Not started |
-| Add images          | WIP         |
+| Add images          | Available   |
+| Offline support     | WIP         |
 | Voice input         | Available   |
 | User login          | Available   |
 | Close by species    | Available   |
