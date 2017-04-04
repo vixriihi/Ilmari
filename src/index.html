@@ -11,7 +11,11 @@
   <link rel="manifest" href="/manifest.json">
 </head>
 <body>
-  <ilm-root>Hetki...</ilm-root>
+  <ilm-root>
+    <div style="position:fixed;text-align: center;top: 50%;left: 50%;width:128px;height:148px;margin-top: -84px;margin-left: -64px;">      <img src="assets/icons/Ilmari-192.png" style="width: 120px; height: 120px;"><br>
+      Hetki...
+    </div>
+  </ilm-root>
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
