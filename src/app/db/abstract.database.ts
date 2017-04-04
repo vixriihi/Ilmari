@@ -34,7 +34,8 @@ export abstract class AbstractDatabase<T> {
   private initDB() {
     if (!this.db) {
       this.db = LocalForage.createInstance({
-        name: this.getCollection()
+        name: 'ilmari',
+        storeName: this.getCollection()
       });
     }
   }

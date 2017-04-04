@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 export class StoreDatabase extends AbstractDatabase<any> {
 
   protected getCollection() {
-    return 'ilmari-store';
+    return 'store';
   }
 
   get(key: string, emptyValue: any = ''): Observable<any> {
