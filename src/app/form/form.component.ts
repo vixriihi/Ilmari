@@ -142,6 +142,7 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
   selectGroup(group) {
     this.activeGroup = group;
     this.storeService.set(Stored.ACTIVE_GROUP, group);
+    this.nameControl.setValue('');
   }
 
   showMap() {
