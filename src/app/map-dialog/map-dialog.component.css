@@ -1,7 +1,7 @@
 .my-location {
   position: absolute;
-  bottom: -40px;
-  left: 0;
+  bottom: 8px;
+  left: 8px;
 }
 
 md-dialog-content {
