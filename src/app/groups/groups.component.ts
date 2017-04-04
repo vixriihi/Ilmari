@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { GroupsService } from '../services/groups.service';
 import { Observable } from 'rxjs/Observable';
 import { InformalTaxonGroup } from '../model/InformalTaxonGroup';
-import { StoreService, Stored } from '../services/store.service';
+import { StoreService } from '../services/store.service';
 
 @Component({
   selector: 'ilm-groups',

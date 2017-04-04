@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SpeechTypeInterface, AnalysedResponse } from './speech-type.interface';
+import { AnalysedResponse, SpeechTypeInterface } from './speech-type.interface';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()

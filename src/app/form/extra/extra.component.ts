@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormService } from '../../services/form.service';
-import { StoreService, Stored } from '../../services/store.service';
+import { Stored, StoreService } from '../../services/store.service';
 import { Field } from './field/field.component';
 import { MdDialog } from '@angular/material';
 import { SettingsComponent } from './settings/settings.component';

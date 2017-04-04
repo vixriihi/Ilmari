@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { Field } from '../field/field.component';
 import { MdDialogRef } from '@angular/material';
 import { FormService } from '../../../services/form.service';

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { StoreService, Stored } from '../../services/store.service';
+import { Stored, StoreService } from '../../services/store.service';
 import { ImageService } from '../../services/image.service';
 import { UserService } from '../../services/user.service';
 import { Observable } from 'rxjs/Observable';

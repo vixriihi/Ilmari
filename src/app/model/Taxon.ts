@@ -1,4 +1,3 @@
-
 import { Taxa } from './Taxa';
 import { TaxaDescription } from './TaxaDescription';
 import { TaxaMedia } from './TaxaMedia';

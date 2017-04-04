@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SpeechTypeInterface, AnalysedResponse, SpeechMeta } from './speech-type.interface';
+import { AnalysedResponse, SpeechMeta, SpeechTypeInterface } from './speech-type.interface';
 import { Observable } from 'rxjs/Observable';
 import { AutocompleteService } from '../../../services/autocomplete.service';
 

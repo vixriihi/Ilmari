@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SpeechTypeInterface, SpeechMeta, AnalysedResponse } from './speech-type.interface';
+import { AnalysedResponse, SpeechTypeInterface } from './speech-type.interface';
 import { Observable } from 'rxjs/Observable';
 import { MdDialog } from '@angular/material';
 import { SpeechSelectComponent } from './speech-select/speech-select.component';

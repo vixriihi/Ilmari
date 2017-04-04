@@ -6,7 +6,7 @@ import { MdDialog, MdSnackBar } from '@angular/material';
 import { InformalTaxonGroup } from '../model/InformalTaxonGroup';
 import { MapDialogComponent } from '../map-dialog/map-dialog.component';
 import { FileListComponent } from './file-list/file-list.component';
-import { StoreService, Stored } from '../services/store.service';
+import { Stored, StoreService } from '../services/store.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 import { FormState } from './form.reducer';
@@ -18,7 +18,6 @@ import { SpeechInputComponent } from './speech-input/speech-input.component';
 import { LocationStoreService } from '../services/location-store.service';
 import { SpeechResponse } from './speech-input/types/speech-type.interface';
 import { setTimeout } from 'timers';
-import { stat } from 'fs';
 import { DialogsService } from '../services/dialog.service';
 
 @Component({

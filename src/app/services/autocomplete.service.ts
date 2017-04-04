@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Http, Response } from '@angular/http';
 import { environment } from '../../environments/environment';
-import { StoreService, Stored } from './store.service';
+import { Stored, StoreService } from './store.service';
 
 export interface TaxonAutocomplete {
   key: string;

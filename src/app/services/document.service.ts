@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { environment } from '../../environments/environment';
-import { StoreService, Stored } from './store.service';
+import { Stored, StoreService } from './store.service';
 import { Person } from '../model/Person';
 import { UserService } from './user.service';
 import { Document } from '../model/Document';
@@ -12,9 +12,9 @@ import { Units } from '../model/Units';
 import { Identifications } from '../model/Identifications';
 import { Geometry } from '../model/Geometry';
 import * as jsonpatch from 'fast-json-patch';
-import PublicityRestrictionsEnum = Document.PublicityRestrictionsEnum;
 import { DocumentDatabase } from '../db/document.database';
 import { Subscription } from 'rxjs/Subscription';
+import PublicityRestrictionsEnum = Document.PublicityRestrictionsEnum;
 
 const RETRY_INTERVAL = 180; // sec
 

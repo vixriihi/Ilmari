@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { SebmGoogleMap } from 'angular2-google-maps/core';
 import { FormLocation } from '../form/form.reducer';
 

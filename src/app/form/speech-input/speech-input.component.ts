@@ -1,9 +1,9 @@
-import { Component, OnInit, Input, OnDestroy, NgZone, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, NgZone, OnDestroy, OnInit, Output } from '@angular/core';
 import { SpeechService } from '../../services/speech.service';
 import { Subscription } from 'rxjs/Subscription';
 import { BooleanType } from './types/boolean.type';
 import { TextType } from './types/text.type';
-import { SpeechTypeInterface, AnalysedResponse, SpeechResponse } from './types/speech-type.interface';
+import { AnalysedResponse, SpeechResponse, SpeechTypeInterface } from './types/speech-type.interface';
 import { Observable } from 'rxjs/Observable';
 import { DatetimeType } from './types/datetime.type';
 import { AutocompleteType } from './types/autocomplete.type';
