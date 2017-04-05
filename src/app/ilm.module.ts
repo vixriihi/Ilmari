@@ -58,6 +58,8 @@ import { ImageDatabase } from './db/image.database';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { DialogsService } from './services/dialog.service';
 import { CapitalizePipe } from './pipes/capitalize.pipe';
+import { MarkdownToHtmlPipe } from 'markdown-to-html-pipe';
+
 
 const appRoutes: Routes = [
   { path: 'user/login', component: LoginSuccessComponent },
@@ -99,7 +101,8 @@ const appRoutes: Routes = [
     BufferComponent,
     CarouselComponent,
     ConfirmDialogComponent,
-    CapitalizePipe
+    CapitalizePipe,
+    MarkdownToHtmlPipe
   ],
   imports: [
     BrowserAnimationsModule,

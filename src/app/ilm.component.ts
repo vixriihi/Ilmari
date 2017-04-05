@@ -32,6 +32,7 @@ export class IlmComponent implements OnInit {
   currentVersion = 2;
   savePublicly = false;
   imageRights;
+  version;
   forms$;
 
   constructor(
@@ -49,6 +50,7 @@ export class IlmComponent implements OnInit {
     public userService: UserService,
     public dialog: MdDialog
   ) {
+    this.version = environment.version;
     iconRegistry.addSvgIconSet(sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/icons.svg'));
   }
 

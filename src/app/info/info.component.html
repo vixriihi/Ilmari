@@ -1,50 +1,63 @@
-<div class="info" *ngIf="info === 'about'">
-  <h1>ILMARI</h1>
-  <div class="ilmari-icon"></div>
-  <small>v. {{version}}</small>
-  <p>
-    Tämä sovellus käyttää Suomen Lajitietokeskuksen avoimia <a href="https://api.laji.fi">rajapintoja</a>
-    ja tarjoaa mobiiliystävällisen tavan ilmoittaa lajihavaintoja <a href="https://beta.laji.fi">laji.fi:hin</a>.
-    Sovellus toimii myös offline-tilassa, mukaan lukien kartta (kunhan olet ensin käynyt kartalla kohdissa, joiden haluat näkyvän offline).
-  </p>
-  <p>
-    Vaikka olenkin töissä Luomuksessa, niin tämä ei ole Lajitietokeskuksen virallinen sovellus.
-    Tämä sovelluksen tarkoituksena on ollut rakentaa sovellus, jonka avulla voimme lasteni kanssa viettää yhteistä aikaa luonnossa.
-  </p>
-  <p>
-    Sovellus on avointa lähdekoodia ja löytyy <a href="https://github.com/vixriihi/ilmari" target="_blank">githubista</a>.
-    Kehitys ideat ja bugi raportit voi myös kirjata samaan paikkaan.
-    Sovellus käyttää mm. seuraavia web-tekniikkoja: Angular, Material design, Redux, IndexDB ja Service Worker.
-  </p>
-  <p>
-    Tekijä: Ville-Matti Riihikoski
-  </p>
-</div>
-<div class="info howto" *ngIf="info === 'howto'">
-  <h1>Käyttöohje</h1>
-  <p>
-    TODO
-  </p>
-</div>
-<div class="info accept" *ngIf="info === 'accepted'">
-  <h1>Ilmarin käyttö</h1>
-  <p>
-    Kun kirjaudut, niin sitoudut noudattamaan lajitietokeskuksen <a href="https://beta.laji.fi/vihko/terms-of-service">käyttöehtoja</a>.
-    Ilmari toimii täysin <a href="https://beta.laji.fi">lajitietokeskuksen</a>:n tarjoamien <a href="https://api.laji.fi">rajapintojen</a>
-    päällä ja on vielä testausvaiheessa, joten käyttö omalla vastuulla ja harkiten.
-  </p>
-  <p>
-    Käyttääksesi Ilmaria sinulla tulee olla lajitietokeskuksen käyttäjätunnus ja kun hyväksyt ylläolevat ehdot, niin sinut ohjataan kirjautumaan
-    palveluun. Kirjautuminen on voimassa noin kaksi viikkoa, jonka jälkeen saat samanlaisen kirjautumisikkunan.
-  </p>
-  <p>
-    <strong>Huom: Tätä kautta ilmoitettu data menee <a href="https://beta.laji.fi">beta.laji.fi:hin</a>, joten lähetä vain oikeita havaintoja.</strong>
-    Kuvien lisäys ei vielä toimi offline-tilassa, mutta muuten sovelluksessa ei ole tunnettuja ongelmia. Jos kuitenkin törmäät ongelmiin, niin voit
-    ilmoittaa niistä (sekä kehitysideoista) <a href="https://github.com/vixriihi/ilmari/issues">githubissa</a>.
-  </p>
+<md-dialog-content>
+  <div class="info" *ngIf="info === 'about'">
+    <h1>ILMARI</h1>
+    <div class="ilmari-icon"></div>
+    <small>v. {{version}}</small>
+    <p>
+      Tämä sovellus käyttää Suomen Lajitietokeskuksen avoimia <a href="https://api.laji.fi">rajapintoja</a>
+      ja tarjoaa mobiiliystävällisen tavan ilmoittaa lajihavaintoja <a href="https://beta.laji.fi">laji.fi:hin</a>.
+      Sovellus toimii myös offline-tilassa, mukaan lukien kartta (kunhan olet ensin käynyt kartalla kohdissa, joiden haluat näkyvän offline).
+    </p>
+    <p>
+      Vaikka olenkin töissä Luomuksessa, niin tämä ei ole Lajitietokeskuksen virallinen sovellus.
+      Tämä sovelluksen tarkoituksena on ollut rakentaa sovellus, jonka avulla voimme lasteni kanssa viettää yhteistä aikaa luonnossa.
+    </p>
+    <p>
+      Sovellus on avointa lähdekoodia ja löytyy <a href="https://github.com/vixriihi/ilmari" target="_blank">githubista</a>.
+      Kehitys ideat ja bugi raportit voi myös kirjata samaan paikkaan.
+      Sovellus käyttää mm. seuraavia web-tekniikkoja: Angular, Material design, Redux, IndexDB ja Service Worker.
+    </p>
+    <p>
+      Tekijä: Ville-Matti Riihikoski
+    </p>
+  </div>
+  <div class="info changes" *ngIf="info === 'changes'">
+    <h1>Muutosloki</h1>
+    <div [innerHTML]="changeLog | MarkdownToHtml"></div>
+  </div>
+  <div class="info howto" *ngIf="info === 'howto'">
+    <h1>Käyttöohje</h1>
+    <p>
+      TODO
+    </p>
+  </div>
+  <div class="info accept" *ngIf="info === 'accepted'">
+    <h1>Ilmarin käyttö</h1>
+    <p>
+      Kun kirjaudut, niin sitoudut noudattamaan lajitietokeskuksen <a href="https://beta.laji.fi/vihko/terms-of-service">käyttöehtoja</a>.
+      Ilmari toimii täysin <a href="https://beta.laji.fi">lajitietokeskuksen</a>:n tarjoamien <a href="https://api.laji.fi">rajapintojen</a>
+      päällä ja on vielä testausvaiheessa, joten käyttö omalla vastuulla ja harkiten.
+    </p>
+    <p>
+      Käyttääksesi Ilmaria sinulla tulee olla lajitietokeskuksen käyttäjätunnus ja kun hyväksyt ylläolevat ehdot, niin sinut ohjataan kirjautumaan
+      palveluun. Kirjautuminen on voimassa noin kaksi viikkoa, jonka jälkeen saat samanlaisen kirjautumisikkunan.
+    </p>
+    <p>
+      <strong>Huom: Tätä kautta ilmoitettu data menee <a href="https://beta.laji.fi">beta.laji.fi:hin</a>, joten lähetä vain oikeita havaintoja.</strong>
+      Kuvien lisäys ei vielä toimi offline-tilassa, mutta muuten sovelluksessa ei ole tunnettuja ongelmia. Jos kuitenkin törmäät ongelmiin, niin voit
+      ilmoittaa niistä (sekä kehitysideoista) <a href="https://github.com/vixriihi/ilmari/issues">githubissa</a>.
+    </p>
+    <button
+      md-raised-button
+      color="primary"
+      (click)="dialogRef.close(true)">
+      Hyväksy</button>
+  </div>
+</md-dialog-content>
+<md-dialog-actions *ngIf="info === 'changes'">
   <button
     md-raised-button
     color="primary"
-    (click)="dialogRef.close(true)">
-    Hyväksy</button>
-</div>
+    (click)="dialogRef.close()">
+    Sulje</button>
+</md-dialog-actions>

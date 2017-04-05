@@ -33,7 +33,7 @@
           <button md-button (click)="sidenav.open()" class="menu-button" tabindex="-1 ">
             <md-icon [svgIcon]="'menu'"></md-icon>
           </button>
-          <span><h1>ilmari <small>(testiversio)</small></h1></span>
+          <span><h1>ilmari <small (click)="openInfo('changes', {height: '80%', width: '95%' })">{{version}}</small></h1></span>
           <span class="fill-remaining"></span>
           <span class="units" *ngIf="activePage === 'form'">
             <md-chip-list *ngIf="record">
