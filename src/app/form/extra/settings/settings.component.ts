@@ -16,7 +16,7 @@ export class SettingsComponent implements OnInit, OnChanges {
   @Input() userSelected: string[];
   @Input() selectedForm = 'JX.519';
   @Input() selectedImageRights = 'MZ.intellectualRightsARR';
-  @Input() savePublically = false;
+  @Input() savePublicly = false;
   @Input() useSpeech = false;
 
   @Output() onFormSelect = new EventEmitter<string>();
@@ -97,8 +97,8 @@ export class SettingsComponent implements OnInit, OnChanges {
   }
 
   togglePublic() {
-    this.savePublically = !this.savePublically;
-    this.onSavePublicallyChange.emit(this.savePublically);
+    this.savePublicly = !this.savePublicly;
+    this.onSavePublicallyChange.emit(this.savePublicly);
   }
 
   toggleSpeech() {
@@ -109,7 +109,7 @@ export class SettingsComponent implements OnInit, OnChanges {
   close() {
     this.dialogRef.close({
       selectedForm: this.selectedForm,
-      savePublically: this.savePublically,
+      savePublicly: this.savePublicly,
       useSpeech: this.useSpeech,
       selectedImageRights: this.selectedImageRights
     });

@@ -166,7 +166,7 @@ export class ExtraComponent implements OnInit, OnChanges {
     component.allFields = this.allFields;
     component.selectedForm = this.formId;
     component.selectedImageRights = this.imageRights;
-    component.savePublically = this.savePublicly;
+    component.savePublicly = this.savePublicly;
     component.useSpeech = this.useSpeech;
   }
 
