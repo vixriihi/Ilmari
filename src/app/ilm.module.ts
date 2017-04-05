@@ -58,7 +58,7 @@ import { ImageDatabase } from './db/image.database';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { DialogsService } from './services/dialog.service';
 import { CapitalizePipe } from './pipes/capitalize.pipe';
-import { MarkdownToHtmlPipe } from 'markdown-to-html-pipe';
+import { MarkdownToHtmlModule } from 'markdown-to-html-pipe';
 
 
 const appRoutes: Routes = [
@@ -101,8 +101,7 @@ const appRoutes: Routes = [
     BufferComponent,
     CarouselComponent,
     ConfirmDialogComponent,
-    CapitalizePipe,
-    MarkdownToHtmlPipe
+    CapitalizePipe
   ],
   imports: [
     BrowserAnimationsModule,
@@ -119,7 +118,8 @@ const appRoutes: Routes = [
     AgmCoreModule.forRoot({
       apiKey: environment.mapsToken
     }),
-    NgxDatatableModule
+    NgxDatatableModule,
+    MarkdownToHtmlModule
   ],
   providers: [
     LiveAnnouncer,

@@ -260,7 +260,7 @@ export interface Document {
     /**
      * QName for MM.image
      */
-    images?: string;
+    images?: string[];
 
     /**
      * The history of the sample

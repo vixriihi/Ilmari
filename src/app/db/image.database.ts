@@ -3,7 +3,7 @@ import { AbstractDatabase } from './abstract.database';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
-export class ImageDatabase extends AbstractDatabase<string> {
+export class ImageDatabase extends AbstractDatabase<any> {
 
   protected getCollection() {
     return 'images';
