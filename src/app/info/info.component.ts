@@ -31,7 +31,7 @@ export class InfoComponent implements OnInit {
     if (this.changeLog === '') {
       this.http.get('/CHANGELOG.md')
         .catch(() => Observable.of('väliaikaisesti poissa käytöstä'))
-        .map((response: Response) => response.toString())
+        .map((response: Response) => response.text())
         .do(changelog => InfoComponent.cache = changelog)
         .subscribe(changelog => this.changeLog = changelog);
     }
