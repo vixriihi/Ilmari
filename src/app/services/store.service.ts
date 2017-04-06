@@ -21,7 +21,8 @@ export enum Stored {
   ACCEPTED_VERSION = 15,
   IS_RECORDING = 16,
   LOCATIONS = 17,
-  FORM_STATES = 18
+  FORM_STATES = 18,
+  GATHERING_START = 19
 }
 
 @Injectable()

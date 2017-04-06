@@ -130,9 +130,12 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
     this.store.dispatch(this.formActions.locationToHere());
   }
 
-  resetForm() {
+  resetForm(all = false) {
     this.resetName();
     this.parsed = {};
+    if (all) {
+      this.updateFormStates([]);
+    }
   }
 
   displayTaxon(taxon: TaxonAutocomplete) {

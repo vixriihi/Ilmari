@@ -29,14 +29,6 @@ export class LocationStoreService {
     private windowRef: WindowRef,
     private storeService: StoreService
   ) {
-    Observable.forkJoin(
-      this.storeService.get(Stored.IS_RECORDING, this._record),
-      this.storeService.get(Stored.LOCATIONS, this.coordinates)
-    ).subscribe((data) => {
-      this._record = data[0];
-      this.coordinates = data[1];
-      this.initTimer();
-    })
     if (this.windowRef.nativeWindow.navigator.geolocation) {
       this.geoLocationEnabled = true;
     }
@@ -50,22 +42,31 @@ export class LocationStoreService {
     return this._record;
   }
 
+  resumeRecording() {
+    Observable.forkJoin(
+      this.storeService.get(Stored.LOCATIONS, this.coordinates),
+      this.storeService.get(Stored.GATHERING_START, this.timeStart)
+    )
+      .subscribe(data => {
+        this.coordinates = data[0];
+        this.timeStart = data[1];
+        this._startRecording();
+      });
+  }
+
   startRecording() {
     this.timeStart = this.getCurrentTime();
-    if (this.geoLocationEnabled) {
-      this._record = true;
-      this.storeService.set(Stored.IS_RECORDING, this._record);
-      this.addLocation();
-    }
+    this.storeService.set(Stored.GATHERING_START, this.timeStart);
+    this._startRecording();
   }
 
   stopRecording() {
+    this._record = false;
     if (this._timer) {
-      this._record = false;
-      this.storeService.set(Stored.IS_RECORDING, this._record);
       clearInterval(this._timer);
       delete this._timer;
     }
+    this.storeService.set(Stored.IS_RECORDING, this._record);
   }
 
   getGathering(): Gatherings {
@@ -143,7 +144,19 @@ export class LocationStoreService {
     return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
   }
 
-  getCurrentTime() {
+  convertToWgsToYkj(lat, lng) {
+    return this.toInteger(proj4('WGS84', 'EPSG:2393', [lng, lat])).reverse();
+  }
+
+  private _startRecording() {
+    this._record = true;
+    if (this.geoLocationEnabled) {
+      this.addLocation();
+    }
+    this.storeService.set(Stored.IS_RECORDING, this._record);
+  }
+
+  private getCurrentTime() {
     const now = new Date();
     function pad(number) {
       if (number < 10) {
@@ -156,10 +169,6 @@ export class LocationStoreService {
       '-' + pad(now.getDate()) +
       'T' + pad(now.getHours()) +
       ':' + pad(now.getMinutes());
-  }
-
-  convertToWgsToYkj(lat, lng) {
-    return this.toInteger(proj4('WGS84', 'EPSG:2393', [lng, lat])).reverse();
   }
 
   private initTimer() {

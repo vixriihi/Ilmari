@@ -44,7 +44,7 @@ export class IlmComponent implements OnInit {
     private taxaDB: TaxaDatabase,
     private storeService: StoreService,
     private locationService: LocationStoreService,
-    private dialogSerivce: DialogsService,
+    private dialogService: DialogsService,
     public snackBar: MdSnackBar,
     public formService: FormService,
     public userService: UserService,
@@ -57,6 +57,11 @@ export class IlmComponent implements OnInit {
   ngOnInit() {
     // this.clearLocal();
     this.locationService.isRecording()
+      .switchMap(recording => recording ?
+        this.dialogService.confirm('Haluatko jatkaa', 'siitä mihin jäit') :
+        Observable.of(false)
+      )
+      .do(recording => recording ? this.locationService.resumeRecording() : this.form.resetForm(true))
       .subscribe(recording => this.record = recording);
     this.storeService.get(Stored.FORM_STATES, [])
       .subscribe(states => this.records = states.length);
@@ -92,6 +97,7 @@ export class IlmComponent implements OnInit {
       this.record ?
         this.locationService.startRecording() :
         this.locationService.stopRecording();
+      this.records = 0;
     }
   }
 
@@ -130,7 +136,7 @@ export class IlmComponent implements OnInit {
   }
 
   clearLocal() {
-    this.dialogSerivce.confirm('Oletko varma että', 'haluat tyhjentään kaikki paikallisesti tallennetun datan?')
+    this.dialogService.confirm('Oletko varma että', 'haluat tyhjentään kaikki paikallisesti tallennetun datan?')
       .subscribe((confirm) =>  {
         if (confirm) {
           this.docDB.destroy();

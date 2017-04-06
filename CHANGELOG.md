@@ -1,3 +1,11 @@
+<a name="1.1.3"></a>
+# 1.1.3 (2017-04-06)
+
+### Muutokset
+
+* Jos keruu on päällä ja sivu latautuu uudelleen, niin kysytään ensin haluaako käyttäjä
+  tallessa olevaan keruuseen
+
 <a name="1.1.2"></a>
 # 1.1.2 (2017-04-06)
 
@@ -40,5 +48,5 @@
 
 ### Erityiskiitos
 
-* Koko perheelleni
+* Koko uskomattomalle perheelleni. Ilman heidän tukeaan tämä ei olisi ollut mahdollista
 * Kaikille testanneille ja palautetta antaneille
