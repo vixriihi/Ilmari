@@ -1,11 +1,17 @@
-<a name="1.1.0"></a>
+<a name="1.1.2"></a>
+# 1.1.2 (2017-04-06)
+
+### Muutokset
+
+* dialogien kokoa muutettu
+
+<a name="1.1.1"></a>
 # 1.1.1 (2017-04-05)
 
 ### Muutokset
 
 * Lisätty versio näkymän yläpalkissa
 * Lisätty dialogi josta näkee tehdyt muutokset
-* Lisätty muutos loki
 
 ### Bugi korjauksia
 

@@ -1,5 +1,5 @@
 export const environment = {
-  version: '1.1.1',
+  version: '1.1.2',
   production: false,
   apiBase: 'https://api.laji.fi/v0',
   accessToken: '8MLDhw0J3RGirLaMzfneuglPDFtWWfEEaq7GIM20xWA2fQOHfU5M0Fe6CBOdGsgQ',

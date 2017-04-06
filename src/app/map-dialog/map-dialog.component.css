@@ -4,7 +4,3 @@
   left: 8px;
 }
 
-md-dialog-content {
-  margin: -20px -20px 0 -20px !important;
-  height: calc(100% - 10px) !important;
-}

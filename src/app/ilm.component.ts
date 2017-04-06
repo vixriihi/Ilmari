@@ -144,7 +144,7 @@ export class IlmComponent implements OnInit {
       });
   }
 
-  openInfo(type, options = {}): MdDialogRef<InfoComponent> {
+  openInfo(type, options: any = {}): MdDialogRef<InfoComponent> {
     const dialog = this.dialog.open(InfoComponent, options);
     dialog.componentInstance.info = type;
     return dialog;
