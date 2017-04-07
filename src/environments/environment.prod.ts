@@ -1,5 +1,7 @@
+const packageJson = require('../../package.json');
+
 export const environment = {
-  version: '1.1.3',
+  version: packageJson.version,
   production: false,
   apiBase: 'https://api.laji.fi/v0',
   accessToken: '8MLDhw0J3RGirLaMzfneuglPDFtWWfEEaq7GIM20xWA2fQOHfU5M0Fe6CBOdGsgQ',
