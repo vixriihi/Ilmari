@@ -34,14 +34,27 @@ export class LocationStoreService {
     }
   }
 
+  /**
+   * Returns currently stored recording state
+   *
+   * @returns {Observable<boolean>}
+   */
   isRecording(): Observable<boolean> {
     return this.storeService.get(Stored.IS_RECORDING, this._record);
   }
 
+  /**
+   * Is recording active
+   *
+   * @returns {boolean}
+   */
   isCurrentlyRecording() {
     return this._record;
   }
 
+  /**
+   * Resume location recording
+   */
   resumeRecording() {
     Observable.forkJoin(
       this.storeService.get(Stored.LOCATIONS, this.coordinates),
@@ -54,12 +67,18 @@ export class LocationStoreService {
       });
   }
 
+  /**
+   * Start recording loaction
+   */
   startRecording() {
     this.timeStart = this.getCurrentTime();
     this.storeService.set(Stored.GATHERING_START, this.timeStart);
     this._startRecording();
   }
 
+  /**
+   * Stop recording location
+   */
   stopRecording() {
     this._record = false;
     if (this._timer) {
@@ -69,6 +88,11 @@ export class LocationStoreService {
     this.storeService.set(Stored.IS_RECORDING, this._record);
   }
 
+  /**
+   * Get the currently stored locations as Gatherings
+   *
+   * @returns {Gatherings}
+   */
   getGathering(): Gatherings {
     if (!this._record) {
       return {};
@@ -85,6 +109,11 @@ export class LocationStoreService {
     return gathering;
   }
 
+  /**
+   * Get current location observable
+   *
+   * @returns {Observable<Position>}
+   */
   getCurrentLocation(): Observable<Position> {
     if (this.windowRef.nativeWindow.navigator.geolocation) {
       return new Observable((observer: Observer<Position>) => {
@@ -106,7 +135,58 @@ export class LocationStoreService {
     }
   }
 
-  addLocation() {
+  /**
+   * Distance between coordinates in km
+   *
+   * @param lat1
+   * @param lon1
+   * @param lat2
+   * @param lon2
+   * @returns {number}
+   */
+  distance(lat1, lon1, lat2, lon2): number {
+    const p = 0.017453292519943295;    // Math.PI / 180
+    const c = Math.cos;
+    const a = 0.5 - c((lat2 - lat1) * p) / 2 +
+      c(lat1 * p) * c(lat2 * p) *
+      (1 - c((lon2 - lon1) * p)) / 2;
+    return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
+  }
+
+  /**
+   * Checks if current position is far from given coordinates
+   *
+   * @param lat
+   * @param lng
+   * @param maxDistKm
+   * @param minAccuracy
+   * @returns {Observable<boolean>}
+   */
+  isCurrentLocationFar(lat, lng, maxDistKm = 0.1, minAccuracy = 100): Observable<boolean> {
+    return this.getCurrentLocation()
+      .switchMap((pos) => {
+        const crd = pos.coords;
+        if (crd.accuracy > minAccuracy) {
+          return Observable.of(true);
+        }
+        const latitude = crd.latitude;
+        const longitude = crd.longitude;
+        return Observable.of(this.distance(lat, lng, latitude, longitude) > maxDistKm);
+      });
+  }
+
+  /**
+   * Convert wgs84 coordinates to ykj
+   *
+   * @param lat
+   * @param lng
+   * @returns {number[]}
+   */
+  convertToWgsToYkj(lat, lng) {
+    return this.toInteger(proj4('WGS84', 'EPSG:2393', [lng, lat])).reverse();
+  }
+
+  private addLocation() {
     if (!this._record) {
       return;
     }
@@ -126,26 +206,13 @@ export class LocationStoreService {
       });
   }
 
-  isNewLocation(lat, lng) {
+  private isNewLocation(lat, lng) {
     if (!this.lastLat || !this.lastLng || this.distance(lat, lng, this.lastLat, this.lastLng) > 0.05) {
       this.lastLat = lat;
       this.lastLng = lng;
       return true;
     }
     return false;
-  }
-
-  distance(lat1, lon1, lat2, lon2) {
-    const p = 0.017453292519943295;    // Math.PI / 180
-    const c = Math.cos;
-    const a = 0.5 - c((lat2 - lat1) * p) / 2 +
-      c(lat1 * p) * c(lat2 * p) *
-      (1 - c((lon2 - lon1) * p)) / 2;
-    return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
-  }
-
-  convertToWgsToYkj(lat, lng) {
-    return this.toInteger(proj4('WGS84', 'EPSG:2393', [lng, lat])).reverse();
   }
 
   private _startRecording() {

@@ -15,8 +15,9 @@ import * as jsonpatch from 'fast-json-patch';
 import { DocumentDatabase } from '../db/document.database';
 import { Subscription } from 'rxjs/Subscription';
 import PublicityRestrictionsEnum = Document.PublicityRestrictionsEnum;
+import { ImageService } from './image.service';
 
-const RETRY_INTERVAL = 180; // sec
+const RETRY_INTERVAL = 10; // sec
 
 @Injectable()
 export class DocumentService {
@@ -27,10 +28,12 @@ export class DocumentService {
   constructor(
     private http: Http,
     private storeService: StoreService,
+    private imageService: ImageService,
     private userService: UserService,
     private docDb: DocumentDatabase
   ) {
     this.resendInterval = setInterval(() => {
+      console.log('RESEND');
       if (this.subResend) {
         return;
       }
@@ -125,7 +128,8 @@ export class DocumentService {
   };
 
   private _sendDocument(document: Document, isResend = false): Observable<boolean> {
-    return this.storeService.get(Stored.USER_TOKEN, '')
+    return this._sendImage(document)
+      .switchMap(() => this.storeService.get(Stored.USER_TOKEN, ''))
       .switchMap(token => this.http.post(environment.apiBase +
         '/documents' +
         '?personToken=' + token +
@@ -146,6 +150,53 @@ export class DocumentService {
         }
         return Observable.of(false);
       });
+  }
+
+  private _sendImage(document: Document): Observable<any> {
+    if (document.images) {
+      for (const idx in document.images) {
+        if (this.imageService.isTempImage(document.images[idx])) {
+          return this.imageService.sendLocalImage(document.images[idx])
+            .map(imgId => document.images[idx] = imgId)
+            .switchMap(() => this._sendImage(document));
+        }
+      }
+    }
+    if (document.gatherings) {
+      for (const gIdx in document.gatherings) {
+        if (!document.gatherings.hasOwnProperty(gIdx)) {
+          continue;
+        }
+        if (document.gatherings[gIdx].images) {
+          for (const idx in document.gatherings[gIdx].images) {
+            if (document.gatherings[gIdx].images.hasOwnProperty(idx) &&
+              this.imageService.isTempImage(document.gatherings[gIdx].images[idx])
+            ) {
+              return this.imageService.sendLocalImage(document.gatherings[gIdx].images[idx])
+                .map(imgId => document.gatherings[gIdx].images[idx] = imgId)
+                .switchMap(() => this._sendImage(document));
+            }
+          }
+        }
+        if (document.gatherings[gIdx].units) {
+          for (const uIdx in document.gatherings[gIdx].units) {
+            if (!document.gatherings[gIdx].units.hasOwnProperty(uIdx)) {
+              continue;
+            }
+            if (document.gatherings[gIdx].units[uIdx].images) {
+              for (const idx in document.gatherings[gIdx].units[uIdx].images) {
+                if (this.imageService.isTempImage(document.gatherings[gIdx].units[uIdx].images[idx])) {
+                  return this.imageService.sendLocalImage(document.gatherings[gIdx].units[uIdx].images[idx])
+                    .map(imgId => document.gatherings[gIdx].units[uIdx].images[idx] = imgId)
+                    .switchMap(() => this._sendImage(document));
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    return Observable.of(true);
   }
 
   private _resendFailed(): Observable<number> {

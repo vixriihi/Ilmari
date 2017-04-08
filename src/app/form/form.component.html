@@ -49,7 +49,10 @@
       ></ilm-extra>
     </div>
     <div class="buffer-wrap">
-      <ilm-buffer [formStates]="formStates" (remove)="removeState($event)"></ilm-buffer>
+      <ilm-buffer [formStates]="formStates"
+                  (remove)="removeState($event)"
+                  (copy)="makeCopy($event)"
+      ></ilm-buffer>
     </div>
   </form>
   <div fxFlex="none" class="form-footer">

@@ -19,6 +19,7 @@ import { LocationStoreService } from '../services/location-store.service';
 import { SpeechResponse } from './speech-input/types/speech-type.interface';
 import { setTimeout } from 'timers';
 import { DialogsService } from '../services/dialog.service';
+import { GroupsService } from '../services/groups.service';
 
 @Component({
   selector: 'ilm-form',
@@ -59,6 +60,7 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
     private documentService: DocumentService,
     private locationService: LocationStoreService,
     private dialogService: DialogsService,
+    private groupService: GroupsService,
     public snackBar: MdSnackBar,
     public dialog: MdDialog
   ) {
@@ -79,10 +81,7 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
       if (!data) {
         return;
       }
-      this.store.dispatch(this.formActions.updateState(data));
-      setTimeout(() => {
-        this.store.dispatch(this.formActions.dateToNow());
-      }, 100);
+      this.setState(data);
     });
     this.storeService.get(Stored.USE_SPEECH, this.useSpeech).subscribe(value => this.useSpeech = value);
     this.filteredOptions = this.nameControl.valueChanges
@@ -200,6 +199,26 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
         })
         .subscribe();
     });
+  }
+
+  makeCopy(state: FormState) {
+    this.groupService.getGroup(state.group)
+      .subscribe(group => {
+        this.activeGroup = group;
+        this.setState({
+          name: state.name,
+          group: state.group,
+          location: state.location,
+          extra: {}
+        });
+      });
+  }
+
+  setState(state: FormState) {
+    this.store.dispatch(this.formActions.updateState(state));
+    setTimeout(() => {
+      this.store.dispatch(this.formActions.dateToNow());
+    }, 100);
   }
 
   removeState(idx) {

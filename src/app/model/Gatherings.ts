@@ -217,7 +217,7 @@ export interface Gatherings {
     /**
      * QName for MM.image
      */
-    images?: string;
+    images?: string[];
 
     /**
      * Alkuperäislähteen käyttäjätunnus
@@ -225,11 +225,6 @@ export interface Gatherings {
     legUserID?: Array<string>;
 
     predominantTree?: Gatherings.PredominantTreeEnum;
-
-    /**
-     * QName for MY.unit
-     */
-    unit?: string;
 
 }
 export namespace Gatherings {

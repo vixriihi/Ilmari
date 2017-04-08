@@ -59,6 +59,8 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
 import { DialogsService } from './services/dialog.service';
 import { CapitalizePipe } from './pipes/capitalize.pipe';
 import { MarkdownToHtmlModule } from 'markdown-to-html-pipe';
+import { MomentModule } from 'angular2-moment';
+import 'moment/locale/fi';
 
 
 const appRoutes: Routes = [
@@ -104,6 +106,7 @@ const appRoutes: Routes = [
     CapitalizePipe
   ],
   imports: [
+    MomentModule,
     BrowserAnimationsModule,
     RouterModule.forRoot(appRoutes),
     BrowserModule,

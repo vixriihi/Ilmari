@@ -12,6 +12,11 @@ export class GroupsService {
 
   constructor(private http: Http, private store: StoreService) { }
 
+  getGroup(id: string): Observable<InformalTaxonGroup> {
+    return this.getAllGroups()
+      .map(groups => groups.filter(group => group.id === id)[0]);
+  }
+
   getAllGroups(): Observable<InformalTaxonGroup[]> {
     if (!this.groups) {
       return this.store.get(Stored.GROUPS)

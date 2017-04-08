@@ -16,14 +16,35 @@ export class ImageService {
               private imageDb: ImageDatabase
   ) { }
 
+  isTempImage(id): boolean {
+    return id.indexOf('MM.') !== 0;
+  }
+
   getImageSrc(id): Observable<string> {
-    if (id.indexOf('MM.') === 0) {
+    if (!this.isTempImage(id)) {
       return Observable.of(environment.apiBase + '/images/' + id + '/thumbnail.jpg?access_token=' + environment.accessToken);
     }
-    return this.imageDb.get(id, '');
+    return this.imageDb.get(id, '')
+      .map(result => result.data);
+  }
+
+  sendLocalImage(id): Observable<string> {
+    return this.imageDb.get(id, '')
+      .switchMap((local) => this.sendImage(local.data, local.meta, local.fileName))
+      .do(() => this.imageDb.remove(id).subscribe());
   }
 
   addImage(data, meta: Image, fileName = ''): Observable<string> {
+    return this.sendImage(data, meta, fileName)
+      .catch((err) => {
+        console.log(err);
+        const uuid = this.generateUUID();
+        return this.imageDb.put(uuid, {data: data, meta: meta, fileName: fileName})
+          .map(() => uuid);
+      });
+  }
+
+  sendImage(data, meta: Image, fileName = ''): Observable<string> {
     if (!data) {
       return Observable.of('');
     } else if (data.startsWith('MM.')) {
@@ -40,27 +61,27 @@ export class ImageService {
           '&access_token=' + environment.accessToken,
           formData
         )
-        .map((response: Response) => {
-          if (response.status === 204) {
-            return undefined;
-          } else {
-            return response.json();
-          }
-        })
-        .switchMap(response => this.http.post( environment.apiBase +
-          '/images/' + response[0].id +
-          '?personToken=' + personToken +
-          '&access_token=' + environment.accessToken,
-          meta
-        ))
-        .map((response: Response) => {
-          if (response.status === 204) {
-            return undefined;
-          } else {
-            return response.json();
-          }
-        })
-        .map(response => response.id)
+          .map((response: Response) => {
+            if (response.status === 204) {
+              return undefined;
+            } else {
+              return response.json();
+            }
+          })
+          .switchMap(response => this.http.post( environment.apiBase +
+            '/images/' + response[0].id +
+            '?personToken=' + personToken +
+            '&access_token=' + environment.accessToken,
+            meta
+          ))
+          .map((response: Response) => {
+            if (response.status === 204) {
+              return undefined;
+            } else {
+              return response.json();
+            }
+          })
+          .map(response => response.id)
       );
   }
 
@@ -97,7 +118,7 @@ export class ImageService {
     return new Blob([ab], {type: mimeString});
   }
 
-  private generateUUID () {
+  private generateUUID() {
     let d = new Date().getTime();
     if (typeof performance !== 'undefined' && typeof performance.now === 'function') {
       d += performance.now();

@@ -3,19 +3,26 @@
   <md-list>
     <md-list-item *ngFor="let state of states">
       <md-icon md-list-avatar>
-        <button md-icon-button type="button"
+        <button md-icon-button type="button" class="info"
                 *ngIf="state.data && state.data.name && state.data.name.key"
                 (click)="showTaxon(state.data.name?.key)">
           <md-icon [svgIcon]="'info'"></md-icon>
         </button>
+        <button md-icon-button type="button" class="add-same"
+                *ngIf="state.data && state.data.name && state.data.name.key"
+                (click)="add(state)">
+          <md-icon [svgIcon]="'circle-plus'"></md-icon>
+        </button>
       </md-icon>
       <h4 md-line>
         {{state.data.name?.value}}
-        <span class="cound" *ngIf="state.data.extra && state.data.extra['/gatherings/*/units/*/count']">
+        <span class="count" *ngIf="state.data.extra && state.data.extra['/gatherings/*/units/*/count']">
           {{state.data.extra['/gatherings/*/units/*/count']}}
         </span>
       </h4>
-      <p md-line (click)="showTaxon(state.data.name?.key)">{{state.data.date}}</p>
+      <p md-line (click)="showTaxon(state.data.name?.key)">
+        {{state.data.date | amTimeAgo}}
+      </p>
       <button type="button" tabindex="-1" (click)="remove.emit(state.idx)" md-mini-fab color="warn"><md-icon svgIcon="delete"></md-icon></button>
     </md-list-item>
   </md-list>
