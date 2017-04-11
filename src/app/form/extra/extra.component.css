@@ -5,10 +5,10 @@
   margin-right: -10px;
 }
 .select-fields {
-  position: absolute;
-  right: 10px;
-  margin-bottom: 10px;
+  position: fixed;
+  bottom: 10px;
+  z-index: 10000;
 }
 :host >>> .select-fields svg {
-  fill: #2980B9;
+  fill: #ffffff;
 }

@@ -4,23 +4,23 @@
       <span>Valikko</span>
     </md-toolbar>
     <md-nav-list class="nav-pages">
-      <md-list-item>
-        <a (click)="showPage('form')" [ngClass]="{active: activePage === 'form'}" md-line>Ilmoita havaintojasi</a>
+      <md-list-item (click)="showPage('form')">
+        <a [ngClass]="{active: activePage === 'form'}" md-line>Ilmoita havaintojasi</a>
       </md-list-item>
-      <md-list-item>
-        <a (click)="showPage('nearMe')" [ngClass]="{active: activePage === 'nearMe'}" md-line>Havaintoja lähelläni</a>
+      <md-list-item (click)="showPage('nearMe')">
+        <a [ngClass]="{active: activePage === 'nearMe'}" md-line>Havaintoja lähelläni</a>
       </md-list-item>
     </md-nav-list>
     <md-list class="settings-list">
       <h3 md-subheader>Muuta</h3>
-      <md-list-item>
-        <button md-button (click)="openInfo('howto')">Käyttöohjeet</button>
+      <md-list-item (click)="openInfo('howto')">
+        <button md-button>Käyttöohjeet</button>
       </md-list-item>
-      <md-list-item>
-        <button md-button (click)="openInfo('about')">Tietoa sovelluksesta</button>
+      <md-list-item (click)="openInfo('about')">
+        <button md-button>Tietoa sovelluksesta</button>
       </md-list-item>
-      <md-list-item>
-        <button md-button (click)="clearLocal()">Tyhjennä paikallisesti tallennettu data</button>
+      <md-list-item (click)="clearLocal()">
+        <button md-button>Tyhjennä paikallisesti tallennettu data</button>
       </md-list-item>
     </md-list>
   </md-sidenav>

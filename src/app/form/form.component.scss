@@ -20,6 +20,10 @@ $file-wrap: 10 + $map-size;
   z-index: 10;
 }
 
+.speech-button {
+  margin-left: 40px;
+}
+
 .group-select, .adjust-button {
   float: left;
   width: #{$button-width};

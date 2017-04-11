@@ -14,7 +14,6 @@ import { FormComponent } from './form/form.component';
 import { FileUploadComponent } from './form/file-upload/file-upload.component';
 import { FileListComponent } from './form/file-list/file-list.component';
 import { environment } from '../environments/environment';
-import { Ng2Webstorage } from 'ng2-webstorage';
 import { AutocompleteService } from './services/autocomplete.service';
 import 'hammerjs';
 import { StoreModule } from '@ngrx/store';
@@ -113,7 +112,6 @@ const appRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    Ng2Webstorage,
     EffectsModule.run(FormEffects),
     StoreModule.provideStore(rootReducer),
     MaterialRootModule,

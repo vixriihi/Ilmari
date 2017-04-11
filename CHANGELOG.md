@@ -1,13 +1,18 @@
-<a name="1.2.0"></a>
-# 1.2.0 (2017-04-08)
-* Kuvien lisäys toimii nyt myös offline
-* Lisätty plus-nappi ilmoitettujen havaintojen yhteyteen nopeuttamaan havaintojen kirjaamista samasta lajista
-* Muutettu tallessa olevan havainnon aika-esitystä 
+<a name="1.2.1"></a>
+# 1.2.1 (2017-04-10)
 
 ### Muutokset
 
-* Jos keruu on päällä ja sivu latautuu uudelleen, niin kysytään ensin haluaako käyttäjä palata
-  tallessa olevaan keruuseen
+* Lomakkeen asetukset-nappi siirretty alas
+
+<a name="1.2.0"></a>
+# 1.2.0 (2017-04-08)
+
+### Muutokset
+
+* Kuvien lisäys toimii nyt myös offline
+* Lisätty plus-nappi ilmoitettujen havaintojen yhteyteen nopeuttamaan havaintojen kirjaamista samasta lajista
+* Muutettu tallessa olevan havainnon aika-esitystä 
   
 <a name="1.1.3"></a>
 # 1.1.3 (2017-04-06)
