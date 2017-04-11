@@ -45,6 +45,8 @@ export class NearMeComponent implements OnInit {
       .subscribe(time => this.timeLimit = time);
     this.storeService.get(Stored.PLACE_FILTER, this.place)
       .subscribe(place => this.place = place);
+    this.storeService.get(Stored.NEAR_ME_GROUP, this.group)
+      .subscribe(group => this.group = group);
   }
 
   ngOnInit() {
@@ -144,11 +146,12 @@ export class NearMeComponent implements OnInit {
     }
     this.group = group;
     this.initList();
+    this.storeService.set(Stored.NEAR_ME_GROUP, this.group);
   }
 
   private filter(auto) {
     const input = auto && auto.value && auto.value.toLowerCase() || '';
-    this.rows = this.allRows.filter(data => data.name.toLowerCase().indexOf(input) > -1)
+    this.rows = this.allRows.filter(data => data.name.toLowerCase().indexOf(input) > -1);
     if (this.table) {
       this.table.offset = 0;
     }

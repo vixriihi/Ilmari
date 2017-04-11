@@ -1,9 +1,10 @@
 <a name="1.2.1"></a>
-# 1.2.1 (2017-04-10)
+# 1.2.1 (2017-04-11)
 
 ### Muutokset
 
 * Lomakkeen asetukset nappi siirretty alas
+* Muista lähellä minua sivun muotoryhmä valinta
 
 ### Bugi korjauksia
 

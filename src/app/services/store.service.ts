@@ -22,7 +22,8 @@ export enum Stored {
   IS_RECORDING = 16,
   LOCATIONS = 17,
   FORM_STATES = 18,
-  GATHERING_START = 19
+  GATHERING_START = 19,
+  NEAR_ME_GROUP = 20
 }
 
 @Injectable()
