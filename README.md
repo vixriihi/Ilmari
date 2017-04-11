@@ -2,9 +2,9 @@
 
 Is a webapp/mobileapp that uses [api](https://api.laji.fi) provided by 
 [Finnish Biodiversity Information Facility](https://beta.laji.fi).
-It's main purpose is to be a mobile friendly way to send observation data.
-**This is still very much work in progress**. 
-Currently all the data is send to apitest.laji.fi. 
+It's main purpose is to be a mobile friendly way to send observation data. 
+
+ Application can be found running at [ilmari.riihikoski.net](https://ilmari.riihikoski.net).
  
 ## Current status
 | Feature             | Status      |
@@ -14,7 +14,7 @@ Currently all the data is send to apitest.laji.fi.
 | Choose form fields  | Available   |
 | Group observations  | Available   |
 | Add images          | Available   |
-| Offline support     | WIP         |
+| Offline support     | Available   |
 | Voice input         | Available   |
 | User login          | Available   |
 | Close by species    | Available   |
