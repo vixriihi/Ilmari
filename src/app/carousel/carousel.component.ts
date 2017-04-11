@@ -22,8 +22,13 @@ export class CarouselComponent implements OnInit, OnChanges {
     this.initActive();
   }
 
+  moveToIndex(idx) {
+    this.active = idx;
+    this.activeChanged.emit(this.active);
+  }
+
   moveToNext() {
-    this.active++
+    this.active++;
     if (!this.media[this.active]) {
       this.active = 0;
     }

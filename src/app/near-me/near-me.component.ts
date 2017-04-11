@@ -87,19 +87,18 @@ export class NearMeComponent implements OnInit {
           coordinates: this.grid + ':YKJ'
         };
       })
-      .switchMap((base: AggregateQuery) => {
-        base.pageSize = 1000;
-        base.onlyCount = false;
-        base.time = this.timeLimit;
-        base.aggregateBy = 'unit.linkings.taxon.speciesId,' +
-          'unit.linkings.taxon.speciesNameFinnish,' +
-          'unit.linkings.taxon.scientificName';
-        if (this.group && this.group.id) {
-          base.informalTaxonGroupId = this.group.id;
-        }
-        return this.warehouseService
-          .aggregate(base);
-      })
+      .switchMap((base: AggregateQuery) => this.warehouseService
+          .aggregate({
+            pageSize: 1000,
+            onlyCount: false,
+            time: this.timeLimit,
+            aggregateBy: 'unit.linkings.taxon.speciesId,' +
+            'unit.linkings.taxon.speciesNameFinnish,' +
+            'unit.linkings.taxon.scientificName',
+            informalTaxonGroupId: this.group && this.group.id ? this.group.id : undefined,
+            ...base
+          })
+      )
       .map(result => result.results)
       .map(rows => rows.map(row => ({
         id: row.aggregateBy['unit.linkings.taxon.speciesId'].replace('http://tun.fi/', ''),
@@ -121,8 +120,8 @@ export class NearMeComponent implements OnInit {
       return;
     }
     this.timeLimit = toggleChange.value;
-    this.storeService.set(Stored.DATE_FILTER, this.timeLimit);
     this.initList();
+    this.storeService.set(Stored.DATE_FILTER, this.timeLimit);
   }
 
   placeChange(toggleChange: MdButtonToggleChange) {
@@ -130,8 +129,8 @@ export class NearMeComponent implements OnInit {
       return;
     }
     this.place = toggleChange.value;
-    this.storeService.set(Stored.PLACE_FILTER, this.place);
     this.initList();
+    this.storeService.set(Stored.PLACE_FILTER, this.place);
   }
 
   displayTaxon(taxon: TaxonAutocomplete) {

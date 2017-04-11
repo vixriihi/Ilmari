@@ -5,8 +5,9 @@
 
 * Lomakkeen asetukset nappi siirretty alas
 * Muista lähellä minua sivun muotoryhmä valinta
+* Lisätty pikku kuvat taxon korttiin 
 
-### Bugi korjauksia
+### Bugikorjauksia
 
 * Korjattu havainnot lähelläni tilanne missä scrollattu lista ei näytä havaintoja jos haku kriteereitä muutetaan
 
@@ -42,7 +43,7 @@
 * Lisätty versio näkymän yläpalkissa
 * Lisätty dialogi josta näkee tehdyt muutokset
 
-### Bugi korjauksia
+### Bugikorjauksia
 
 * Korjattu tilanne jossa "Tallenna havaintoerät julkisesti" valinta ei pysynyt
 

@@ -1,6 +1,18 @@
 <div *ngIf="media.length > 0">
-  <img md-card-image src="{{media[active].fullURL}}" (click)="moveToNext()">
-  <span class="img-count">
-    {{active + 1}} / {{media.length}}
-  </span>
+  <div class="image">
+    <img md-card-image src="{{media[active].fullURL}}" (click)="moveToNext()">
+    <span class="img-caption">
+      {{active + 1}} / {{media.length}}
+      Kuva: {{media[active].author}}
+      {{media[active].licenseDescription || media[active].licenseAbbreviation}}
+    </span>
+  </div>
+  <div class="small-images">
+    <ul  [ngStyle]="{ width: (83 * media.length) + 'px' }">
+      <li *ngFor="let image of media; let idx = index">
+        <img src="{{image.thumbnailURL}}" (click)="moveToIndex(idx)">
+      </li>
+    </ul>
+    <div class="clear"></div>
+  </div>
 </div>

@@ -37,6 +37,7 @@ cdk-focus-trap {
   max-width: 100% !important;
   max-height: 100vh !important;
   padding: 5px !important;
+  overflow: hidden !important;
 }
 
 .mat-select {
