@@ -37,7 +37,6 @@ export class ImageService {
   addImage(data, meta: Image, fileName = ''): Observable<string> {
     return this.sendImage(data, meta, fileName)
       .catch((err) => {
-        console.log(err);
         const uuid = this.generateUUID();
         return this.imageDb.put(uuid, {data: data, meta: meta, fileName: fileName})
           .map(() => uuid);

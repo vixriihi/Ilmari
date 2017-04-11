@@ -11,7 +11,7 @@ export class WarehouseService {
     return this.http.get( environment.apiBase +
       '/warehouse/query/aggregate' +
       '?access_token=' + environment.accessToken +
-      '&' + this.queryToQueryparams(query)
+      this.queryToQueryParams(query)
     )
       .map((response: Response) => {
         if (response.status === 204) {
@@ -22,8 +22,13 @@ export class WarehouseService {
       });
   }
 
-  private queryToQueryparams(query) {
-    return Object.keys(query).map(k => k + '=' + encodeURIComponent(query[k])).join('&');
+  private queryToQueryParams(query) {
+    return Object.keys(query).reduce((cumm, k) => {
+      if (typeof query[k] === 'undefined') {
+        return cumm;
+      }
+      return cumm + '&' + k + '=' + encodeURIComponent(query[k]);
+    }, '');
   }
 }
 

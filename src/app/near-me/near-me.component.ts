@@ -64,6 +64,7 @@ export class NearMeComponent implements OnInit {
     this.current = key;
     this.loader = true;
     this.rows = [];
+    this.allRows = [];
     if (this.subList) {
       this.subList.unsubscribe();
     }
@@ -104,7 +105,6 @@ export class NearMeComponent implements OnInit {
         name: row.aggregateBy['unit.linkings.taxon.speciesNameFinnish'] || row.aggregateBy['unit.linkings.taxon.scientificName']
       })))
       .subscribe(result => {
-        this.table.offset = 0;
         this.rows = result;
         this.allRows = [...result];
         this.loader = false;
@@ -148,7 +148,9 @@ export class NearMeComponent implements OnInit {
 
   private filter(auto) {
     const input = auto && auto.value && auto.value.toLowerCase() || '';
-    this.rows = this.allRows.filter(data => data.name.toLowerCase().indexOf(input) > -1);
-    this.table.offset = 0;
+    this.rows = this.allRows.filter(data => data.name.toLowerCase().indexOf(input) > -1)
+    if (this.table) {
+      this.table.offset = 0;
+    }
   }
 }

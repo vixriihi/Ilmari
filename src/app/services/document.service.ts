@@ -33,7 +33,6 @@ export class DocumentService {
     private docDb: DocumentDatabase
   ) {
     this.resendInterval = setInterval(() => {
-      console.log('RESEND');
       if (this.subResend) {
         return;
       }

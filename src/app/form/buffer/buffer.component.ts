@@ -50,7 +50,6 @@ export class BufferComponent implements OnInit, OnChanges {
   }
 
   add(state: BufferedState) {
-    console.log(state);
     this.locationService
       .isCurrentLocationFar(state.data.location.lat, state.data.location.lng)
       .subscribe(isFar => {

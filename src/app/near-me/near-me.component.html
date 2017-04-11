@@ -68,6 +68,7 @@
     </md-autocomplete>
 
     <ngx-datatable
+        *ngIf="!loader"
         class="material fullscreen"
         [rows]="rows"
         [headerHeight]="50"

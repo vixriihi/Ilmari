@@ -3,7 +3,11 @@
 
 ### Muutokset
 
-* Lomakkeen asetukset-nappi siirretty alas
+* Lomakkeen asetukset nappi siirretty alas
+
+### Bugi korjauksia
+
+* Korjattu havainnot lähelläni tilanne missä scrollattu lista ei näytä havaintoja jos haku kriteereitä muutetaan
 
 <a name="1.2.0"></a>
 # 1.2.0 (2017-04-08)
