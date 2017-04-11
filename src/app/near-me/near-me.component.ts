@@ -40,17 +40,20 @@ export class NearMeComponent implements OnInit {
     public warehouseService: WarehouseService,
     public locationSerivce: LocationStoreService,
     public dialog: MdDialog
-  ) {
-    this.storeService.get(Stored.DATE_FILTER, this.timeLimit)
-      .subscribe(time => this.timeLimit = time);
-    this.storeService.get(Stored.PLACE_FILTER, this.place)
-      .subscribe(place => this.place = place);
-    this.storeService.get(Stored.NEAR_ME_GROUP, this.group)
-      .subscribe(group => this.group = group);
-  }
+  ) { }
 
   ngOnInit() {
-    this.initList();
+    Observable.forkJoin(
+      this.storeService.get(Stored.DATE_FILTER, this.timeLimit),
+      this.storeService.get(Stored.PLACE_FILTER, this.place),
+      this.storeService.get(Stored.NEAR_ME_GROUP, this.group)
+    )
+      .subscribe(data => {
+        this.timeLimit = data[0];
+        this.place = data[1];
+        this.group = data[2];
+        this.initList();
+      });
     this.filteredOptions = this.taxonControl.valueChanges
       .map(name => this.autocompleteService.makeValue(name))
       .do(name => this.taxon = name)
