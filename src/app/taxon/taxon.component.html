@@ -4,6 +4,7 @@
     <md-card-title>
       <h2 class="vernacularName">{{taxon.info.vernacularName | capitalize}}
         <small class="scientificName">
+          <br>
           <span [ngClass]="{cursive: taxon.info.cursiveName}">
             {{taxon.info.scientificName}}
           </span>
