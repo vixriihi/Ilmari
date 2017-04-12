@@ -16,7 +16,7 @@ export class SettingsComponent implements OnInit, OnChanges {
   @Input() userSelected: string[];
   @Input() selectedForm = 'JX.519';
   @Input() selectedImageRights = 'MZ.intellectualRightsARR';
-  @Input() savePublicly = false;
+  @Input() savePublicly = true;
   @Input() useSpeech = false;
 
   @Output() onFormSelect = new EventEmitter<string>();

@@ -19,7 +19,7 @@
         </md-list-item>
         <md-list-item class="public-toggle checkbox">
           <div md-line>
-            <md-checkbox (change)="togglePublic()" [checked]="savePublicly">Tallenna havaintoerät julkisesti</md-checkbox>
+            <md-checkbox (change)="togglePublic()" [checked]="!savePublicly">Tallenna vain omaan käyttöön </md-checkbox>
           </div>
         </md-list-item>
         <md-list-item class="speech-toggle checkbox" *ngIf="isSpeechCapable">

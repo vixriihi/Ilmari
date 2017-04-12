@@ -19,7 +19,7 @@ export class ExtraComponent implements OnInit, OnChanges {
 
   formId = 'JX.519';
   imageRights = 'MZ.intellectualRightsARR';
-  savePublicly = false;
+  savePublicly = true;
   subItems = ['collection', 'fieldset'];
   skip = ['editors', 'dateBegin', 'dateEnd', 'geometry', 'images', 'taxon', 'taxonID'];
   field: any;
