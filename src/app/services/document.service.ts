@@ -83,7 +83,7 @@ export class DocumentService {
     return Observable.combineLatest(
       this.storeService.get(Stored.ACTIVE_FORM, 'JX.519'),
       this.userService.getUser(),
-      this.storeService.get(Stored.SAVE_PUBLIC, false),
+      this.storeService.get(Stored.SAVE_PUBLIC, true),
       (s1, s2: Person, s3) => {
         document.formID = s1;
         document.publicityRestrictions = s3 ?

@@ -11,7 +11,7 @@ export class StoreDatabase extends AbstractDatabase<any> {
 
   get(key: string, emptyValue: any = ''): Observable<any> {
     return super.get('' + key)
-      .map(data => data || emptyValue);
+      .map(data => typeof data === 'undefined' || data === null ? emptyValue : data);
   }
 
 }
