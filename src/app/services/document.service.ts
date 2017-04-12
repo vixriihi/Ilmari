@@ -61,37 +61,24 @@ export class DocumentService {
 
     gathering.units = [];
     states.map((state, idx) => {
-      const unit: Units = {};
-      const identification: Identifications = {};
-      gathering.units[idx] = unit;
-      unit.unitType = [state.group];
-      unit.identifications = [identification];
-      identification.taxon = state.name.value || '';
-      unit.unitGathering = {};
-      unit.unitGathering.dateBegin = state.date;
-      unit.unitGathering.geometry = {
-        'type': Geometry.TypeEnum.Point,
-        'coordinates': [state.location.lng, state.location.lat]
-      };
-      if (state.images && state.images.length > 0) {
-        unit.images = state.images;
-      }
-      const patches = [];
-      Object.keys(state.extra).map(path => {
-        if (typeof state.extra[path] !== 'undefined') {
-          const normalizePath = path
-            .replace(/\/units\/\*\//g, '/units/' + idx + '/')
-            .replace(/\/\*\//g, '/0/');
-          patches.push({'op': 'replace', 'path': normalizePath, 'value': state.extra[path] });
+      gathering.units[idx] = this.getUnitFromState(state, idx);
+    });
+
+    // Needed so that the gathering would be valid
+    if (states.length === 1 && !gatheringData.geometry && gathering.units[0] && gathering.units[0].unitGathering) {
+      Object.keys(gathering.units[0].unitGathering).map((key: string) => {
+        if (key === 'dateBegin') {
+          document.gatheringEvent.dateBegin = gathering.units[0].unitGathering[key];
+        } else {
+          gathering[key] = gathering.units[0].unitGathering[key];
         }
       });
-      if (patches.length > 0) {
-        jsonpatch.apply(document, patches);
-      }
-      if (!unit.recordBasis) {
-        unit.recordBasis = Units.RecordBasisEnum.RecordBasisHumanObservation;
-      }
-    });
+      gathering.units[0].unitGathering = undefined;
+    } else if (states.length > 1 && !gatheringData.geometry) {
+      console.log('GATHEIGN!!!');
+      gathering.geometry = this.getBoundingBox(gathering.units);
+      console.log(gathering.geometry);
+    }
 
     return Observable.combineLatest(
       this.storeService.get(Stored.ACTIVE_FORM, 'JX.519'),
@@ -125,6 +112,74 @@ export class DocumentService {
       && document.gatherings[0].units[0].identifications[0]
       && document.gatherings[0].units[0].identifications[0].taxon);
   };
+
+  private getBoundingBox(units: Units[]) {
+    let latMin = 999;
+    let latMax = -999;
+    let lngMin = 999;
+    let lngMax = -999;
+    units.map(unit => {
+      if (unit.unitGathering && unit.unitGathering.geometry && unit.unitGathering.geometry.coordinates) {
+        const lng = unit.unitGathering.geometry.coordinates[0];
+        const lat = unit.unitGathering.geometry.coordinates[1];
+        if (lng > lngMax) {
+          lngMax = lng;
+        }
+        if (lng < lngMin) {
+          lngMin = lng;
+        }
+        if (lat > latMax) {
+          latMax = lat;
+        }
+        if (lat < latMin) {
+          latMin = lat;
+        }
+      }
+    });
+    return{
+      'type': Geometry.TypeEnum.Polygon,
+      'coordinates': [[
+        [lngMin, latMin],
+        [lngMax, latMin],
+        [lngMax, latMax],
+        [lngMin, latMax],
+        [lngMin, latMin]
+      ]]
+    };
+  }
+
+  private getUnitFromState(state: FormState, idx: number) {
+    const unit: Units = {};
+    const identification: Identifications = {};
+    unit.unitType = [state.group];
+    unit.identifications = [identification];
+    identification.taxon = state.name.value || '';
+    unit.unitGathering = {};
+    unit.unitGathering.dateBegin = state.date;
+    unit.unitGathering.geometry = {
+      'type': Geometry.TypeEnum.Point,
+      'coordinates': [state.location.lng, state.location.lat]
+    };
+    if (state.images && state.images.length > 0) {
+      unit.images = state.images;
+    }
+    const patches = [];
+    Object.keys(state.extra).map(path => {
+      if (typeof state.extra[path] !== 'undefined') {
+        const normalizePath = path
+          .replace(/\/units\/\*\//g, '/units/' + idx + '/')
+          .replace(/\/\*\//g, '/0/');
+        patches.push({'op': 'replace', 'path': normalizePath, 'value': state.extra[path] });
+      }
+    });
+    if (patches.length > 0) {
+      jsonpatch.apply(document, patches);
+    }
+    if (!unit.recordBasis) {
+      unit.recordBasis = Units.RecordBasisEnum.RecordBasisHumanObservation;
+    }
+    return unit;
+  }
 
   private _sendDocument(document: Document, isResend = false): Observable<boolean> {
     return this._sendImage(document)
