@@ -1,7 +1,12 @@
 .info {
-  margin-top: -23px;
   text-align: center;
   padding: 10px;
+  max-height: calc(100vh - 70px);
+}
+
+
+:host >>> .mat-dialog-actions {
+  display: inherit;
 }
 
 .changes {
