@@ -1,3 +1,13 @@
+<a name="1.3.0"></a>
+# 1.3.0 (2017-04-13)
+
+### Muutokset
+
+* Muutettu tallettamaan havainnot oletuksena julkisesti
+* Pidetään kentissä, jotka ovat unit tasoa ylempänä, niiden arvot
+* Tallennetaan keruutiedot gatheringin alle jos keruu ei ole käynnissä
+* Havainnon kopiointi poistettu, koska ei ollut toimiva
+
 <a name="1.2.1"></a>
 # 1.2.1 (2017-04-11)
 
