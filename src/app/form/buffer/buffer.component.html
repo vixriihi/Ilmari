@@ -8,11 +8,6 @@
                 (click)="showTaxon(state.data.name?.key)">
           <md-icon [svgIcon]="'info'"></md-icon>
         </button>
-        <button md-icon-button type="button" class="add-same"
-                *ngIf="state.data && state.data.name && state.data.name.key"
-                (click)="add(state)">
-          <md-icon [svgIcon]="'circle-plus'"></md-icon>
-        </button>
       </md-icon>
       <h4 md-line>
         {{state.data.name?.value}}

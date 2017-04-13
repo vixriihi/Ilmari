@@ -203,19 +203,6 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  makeCopy(state: FormState) {
-    this.groupService.getGroup(state.group)
-      .subscribe(group => {
-        this.activeGroup = group;
-        this.setState({
-          name: state.name,
-          group: state.group,
-          location: state.location,
-          extra: {}
-        });
-      });
-  }
-
   setState(state: FormState) {
     this.store.dispatch(this.formActions.updateState(state));
     setTimeout(() => {

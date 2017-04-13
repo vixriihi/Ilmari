@@ -19,13 +19,11 @@ export class BufferComponent implements OnInit, OnChanges {
 
   @Input() formStates: FormState[] = [];
   @Output() remove = new EventEmitter<number>();
-  @Output() copy   = new EventEmitter<FormState>();
 
   states: BufferedState[];
 
   constructor(
-    public dialog: MdDialog,
-    private locationService: LocationStoreService
+    public dialog: MdDialog
   ) { }
 
   ngOnInit() {
@@ -47,26 +45,6 @@ export class BufferComponent implements OnInit, OnChanges {
   showTaxon(taxon) {
     const taxonDialog = this.dialog.open(TaxonModalComponent, {height: '95%', width: '95%'});
     taxonDialog.componentInstance.taxonId = taxon;
-  }
-
-  add(state: BufferedState) {
-    this.locationService
-      .isCurrentLocationFar(state.data.location.lat, state.data.location.lng)
-      .subscribe(isFar => {
-        if (isFar) {
-          return this.copy.emit(state.data);
-        }
-        if (state.data.extra &&
-          state.data.extra['/gatherings/*/units/*/count'] &&
-          state.data.extra['/gatherings/*/units/*/count'].match(/^\d*$/)
-        ) {
-          state.data.extra['/gatherings/*/units/*/count'] = '' + (parseInt(state.data.extra['/gatherings/*/units/*/count'], 10) + 1);
-        } else {
-          return this.copy.emit(state.data);
-        }
-      },
-      err => this.copy.emit(state.data))
-    ;
   }
 
 }
