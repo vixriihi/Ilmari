@@ -66,7 +66,7 @@
       ></ilm-speech-input>
       <span class="fill-remaining"></span>
       <span *ngIf="hasName || record || formStates.length > 0">
-        <button *ngIf="record && hasName" md-raised-button color="accent" (click)="saveForm()" tabindex="-1">
+        <button *ngIf="record && hasName" md-raised-button color="accent" (click)="addUnit()" tabindex="-1">
           <md-icon svgIcon="plus"></md-icon>
         </button>
         <button *ngIf="!(record && hasName)" md-raised-button color="accent" (click)="sendDocument()" tabindex="-1">

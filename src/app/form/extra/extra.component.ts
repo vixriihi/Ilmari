@@ -90,6 +90,16 @@ export class ExtraComponent implements OnInit, OnChanges {
       .filter(value => value !== undefined);
   }
 
+  emptyUnit(extras) {
+    this.setDefaultValues(true);
+    Object.keys(extras).map(path => {
+      if (path.indexOf('/units/') === -1) {
+        this.value[path] = extras[path];
+      }
+    });
+    this.valueChange.emit(this.value);
+  }
+
   setDefaultValues(reset = false) {
     if (!this.fields) {
       return;
@@ -101,9 +111,7 @@ export class ExtraComponent implements OnInit, OnChanges {
       }
     });
     this.value = values;
-    if (reset) {
-      setTimeout(() => this.valueChange.emit(values));
-    }
+    this.valueChange.emit(values);
   }
 
   pickDefault(field: Field) {

@@ -20,6 +20,7 @@ import { SpeechResponse } from './speech-input/types/speech-type.interface';
 import { setTimeout } from 'timers';
 import { DialogsService } from '../services/dialog.service';
 import { GroupsService } from '../services/groups.service';
+import { State } from '../../../node_modules/@ngrx/store/src/state';
 
 @Component({
   selector: 'ilm-form',
@@ -108,17 +109,18 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
   save(): Observable<FormState> {
     return this.formState
       .take(1)
-      .switchMap(data => {
+      .switchMap((data: FormState) => {
         if (this.speech) {
           this.speech.stopSpeech();
         }
         data.group = this.activeGroup.id;
+        const extras = JSON.parse(JSON.stringify(data.extra));
         const document: FormState = JSON.parse(JSON.stringify(data));
         document.images = this.files.images.reduce((cum, curr) => curr.id ? [...cum, curr.id] : cum, []);
         this.autocompleteService.addUsedTaxon(data.name, this.activeGroup.id);
-        this.extras.setDefaultValues(true);
         this.store.dispatch(this.formActions.reset());
         this.storeService.set(Stored.FORM_STATE, false);
+        this.extras.emptyUnit(extras);
         this.files.reset();
         return Observable.of(document);
       });
@@ -169,7 +171,7 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
     this.store.dispatch(this.formActions.updateDate(value));
   }
 
-  saveForm() {
+  addUnit() {
     this.save().subscribe(data => {
       this.updateFormStates([...this.formStates, data]);
       this.onSave.emit(data);
@@ -282,7 +284,7 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
           break;
         case 'submit':
           this.record ?
-            this.saveForm() :
+            this.addUnit() :
             this.sendDocument();
           break;
       }
