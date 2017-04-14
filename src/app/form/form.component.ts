@@ -17,10 +17,7 @@ import { DocumentService } from '../services/document.service';
 import { SpeechInputComponent } from './speech-input/speech-input.component';
 import { LocationStoreService } from '../services/location-store.service';
 import { SpeechResponse } from './speech-input/types/speech-type.interface';
-import { setTimeout } from 'timers';
 import { DialogsService } from '../services/dialog.service';
-import { GroupsService } from '../services/groups.service';
-import { State } from '../../../node_modules/@ngrx/store/src/state';
 
 @Component({
   selector: 'ilm-form',
@@ -28,25 +25,24 @@ import { State } from '../../../node_modules/@ngrx/store/src/state';
   styleUrls: ['form.component.scss', 'form-host.css']
 })
 export class FormComponent implements OnInit, OnChanges, OnDestroy {
-  @ViewChild(FileListComponent) files: FileListComponent;
   @ViewChild(ExtraComponent) extras: ExtraComponent;
+  @ViewChild(FileListComponent) files: FileListComponent;
   @ViewChild(SpeechInputComponent) speech: SpeechInputComponent;
   @ViewChild('ilmForm') form;
 
   @Input() record: boolean;
-  @Output() onDocumentSend = new EventEmitter();
   @Output() onSave = new EventEmitter();
   @Output() onRemove = new EventEmitter();
   @Output() nameChange = new EventEmitter();
+  @Output() onDocumentSend = new EventEmitter();
 
   formStates: FormState[] = [];
   formState: Observable<FormState>;
   nameControl = new FormControl();
   filteredOptions: Observable<TaxonAutocomplete[]>;
   activeGroup: InformalTaxonGroup = {id: 'MVL.1', icon: 'MVL-1', name: 'Linnut'};
-  parsed = {};
   extra = {};
-  names = [];
+  parsed = {};
   hasName = false;
   useSpeech = false;
   fields = [];
@@ -54,41 +50,39 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
   private changeSub: Subscription;
 
   constructor(
-    private autocompleteService: AutocompleteService,
-    private storeService: StoreService,
+
+    public dialog: MdDialog,
+    public snackBar: MdSnackBar,
     private store: Store<AppState>,
     private formActions: FormActions,
+    private storeService: StoreService,
+    private dialogService: DialogsService,
     private documentService: DocumentService,
     private locationService: LocationStoreService,
-    private dialogService: DialogsService,
-    private groupService: GroupsService,
-    public snackBar: MdSnackBar,
-    public dialog: MdDialog
+    private autocompleteService: AutocompleteService
   ) {
     this.formState = this.store.select<FormState>(state => state.form);
-    this.storeService.get(Stored.FORM_STATES, this.formStates)
-      .subscribe(states => this.formStates = states);
   }
 
   ngOnInit() {
     this.resetForm();
-    this.storeService.get(Stored.ACTIVE_GROUP, false).subscribe(group => {
-      if (!group) {
-        return;
-      }
-      this.activeGroup = group;
-    });
-    this.storeService.get(Stored.FORM_STATE, false).subscribe((data: FormState) => {
-      if (!data) {
-        return;
-      }
-      this.setState(data);
-    });
-    this.storeService.get(Stored.USE_SPEECH, this.useSpeech).subscribe(value => this.useSpeech = value);
+    Observable.forkJoin(
+      this.storeService.get(Stored.FORM_STATE, false),
+      this.storeService.get(Stored.USE_SPEECH, this.useSpeech),
+      this.storeService.get(Stored.FORM_STATES, this.formStates),
+      this.storeService.get(Stored.ACTIVE_GROUP, this.activeGroup)
+    )
+      .subscribe(data => {
+        this.setState(data[0]);
+        this.useSpeech = data[1];
+        this.formStates = data[2];
+        this.activeGroup = data[3];
+      });
     this.filteredOptions = this.nameControl.valueChanges
       .map(name => this.autocompleteService.makeValue(name))
       .do(name => this.store.dispatch(this.formActions.updateName(name)))
       .do(name => this.hasName = !!(name && name.value || ''))
+      .debounceTime(400)
       .switchMap(name => this.autocompleteService.filterByTaxon(name && name.value || '', this.activeGroup.id));
     this.changeSub = this.formState
       .debounceTime(3000)
@@ -191,23 +185,17 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
           this.onDocumentSend.emit(JSON.parse(JSON.stringify(this.formStates)));
           this.updateFormStates([]);
           this.locationService.stopRecording();
-          if (this.documentService.isEmpty(document)) {
-            this.snackBar.open('Tyhjennetty', undefined, {duration: 1500});
-            return Observable.of(false);
-          }
-          this.snackBar.open('Havaintoerä lähetetty', undefined, {duration: 1500});
-          this.documentService.sendDocument(document);
-          return Observable.of(true);
+          return Observable.of(!this.documentService.isEmpty(document));
         })
+        .do(hasData => this.snackBar.open(hasData ? 'Tyhjennetty' : 'Havaintoerä lähetetty', undefined, {duration: 1500}))
         .subscribe();
     });
   }
 
   setState(state: FormState) {
-    this.store.dispatch(this.formActions.updateState(state));
-    setTimeout(() => {
-      this.store.dispatch(this.formActions.dateToNow());
-    }, 100);
+    if (state) {
+      this.store.dispatch(this.formActions.updateState(state));
+    }
   }
 
   removeState(idx) {

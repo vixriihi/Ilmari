@@ -15,7 +15,6 @@ import { LoginComponent } from './login/login.component';
 import { Stored, StoreService } from './services/store.service';
 import { DialogsService } from './services/dialog.service';
 import { WindowRef } from './ref/window.ref';
-import { setTimeout } from 'timers';
 
 @Component({
   selector: 'ilm-root',
@@ -55,7 +54,7 @@ export class IlmComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.clearLocal();
+    // this._clearLocal();
     this.locationService.isRecording()
       .switchMap(recording => recording ?
         this.dialogService.confirm('Haluatko jatkaa', 'siitä mihin jäit') :
@@ -139,13 +138,7 @@ export class IlmComponent implements OnInit {
     this.dialogService.confirm('Oletko varma että', 'haluat tyhjentään kaikki paikallisesti tallennetun datan?')
       .subscribe((confirm) =>  {
         if (confirm) {
-          this.docDB.destroy();
-          this.storeDB.destroy();
-          this.taxaDB.destroy();
-          this.snackBar.open('Tiedot poistettu', undefined, {
-            duration: 1500
-          });
-          setTimeout(() => this.windowRef.nativeWindow.location.reload(), 2000);
+          this._clearLocal();
         }
       });
   }
@@ -162,5 +155,14 @@ export class IlmComponent implements OnInit {
     }
     this.activePage = page;
     this.sideNav.close();
+  }
+
+  private _clearLocal() {
+    this.docDB.destroy();
+    this.storeDB.destroy();
+    this.taxaDB.destroy();
+    this.snackBar.open('Tiedot poistettu', undefined, {duration: 1500})
+      .afterDismissed()
+      .subscribe(() => this.windowRef.nativeWindow.location.reload());
   }
 }
