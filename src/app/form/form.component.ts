@@ -176,20 +176,23 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   sendDocument() {
-    this.save().subscribe(data => {
-      this.documentService.formStatesToDocument(
+    this.save()
+      .switchMap(data => this.documentService.formStatesToDocument(
         this.locationService.isCurrentlyRecording() ? this.formStates : [data],
         this.locationService.getGathering()
-      )
-        .switchMap(document => {
-          this.onDocumentSend.emit(JSON.parse(JSON.stringify(this.formStates)));
-          this.updateFormStates([]);
-          this.locationService.stopRecording();
-          return Observable.of(!this.documentService.isEmpty(document));
-        })
-        .do(hasData => this.snackBar.open(hasData ? 'Tyhjennetty' : 'Havaintoerä lähetetty', undefined, {duration: 1500}))
-        .subscribe();
-    });
+      ))
+      .switchMap(document => {
+        const hasData = !this.documentService.isEmpty(document);
+        this.onDocumentSend.emit(JSON.parse(JSON.stringify(this.formStates)));
+        this.updateFormStates([]);
+        this.locationService.stopRecording();
+        if (hasData) {
+          this.documentService.sendDocument(document);
+        }
+        return Observable.of(hasData);
+      })
+      .do(hasData => this.snackBar.open(hasData ? 'Havaintoerä lähetetty' : 'Tyhjennetty', undefined, {duration: 1500}))
+      .subscribe();
   }
 
   setState(state: FormState) {

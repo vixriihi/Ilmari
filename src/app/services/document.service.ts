@@ -46,7 +46,7 @@ export class DocumentService {
 
   formStatesToDocument(states: FormState[], gatheringData: Gatherings): Observable<Document> {
     const gathering: Gatherings = {};
-    const document: Document = {
+    const doc: Document = {
       gatheringEvent: {},
       gatherings: [gathering]
     };
@@ -55,20 +55,32 @@ export class DocumentService {
       gathering.geometry = gatheringData.geometry;
     }
     if (gatheringData.dateBegin) {
-      document.gatheringEvent.dateBegin = document.gatheringEvent.dateBegin || gatheringData.dateBegin;
-      document.gatheringEvent.dateEnd = document.gatheringEvent.dateEnd || gatheringData.dateEnd;
+      doc.gatheringEvent.dateBegin = doc.gatheringEvent.dateBegin || gatheringData.dateBegin;
+      doc.gatheringEvent.dateEnd = doc.gatheringEvent.dateEnd || gatheringData.dateEnd;
     }
 
     gathering.units = [];
     states.map((state, idx) => {
       gathering.units[idx] = this.getUnitFromState(state, idx);
+      const patches = [];
+      Object.keys(state.extra).map(path => {
+        if (typeof state.extra[path] !== 'undefined') {
+          const normalizePath = path
+            .replace(/\/units\/\*\//g, '/units/' + idx + '/')
+            .replace(/\/\*\//g, '/0/');
+          patches.push({'op': 'replace', 'path': normalizePath, 'value': state.extra[path] });
+        }
+      });
+      if (patches.length > 0) {
+        jsonpatch.apply(doc, patches);
+      }
     });
 
     // Needed so that the gathering would be valid
     if (states.length === 1 && !gatheringData.geometry && gathering.units[0] && gathering.units[0].unitGathering) {
       Object.keys(gathering.units[0].unitGathering).map((key: string) => {
         if (key === 'dateBegin') {
-          document.gatheringEvent.dateBegin = gathering.units[0].unitGathering[key];
+          doc.gatheringEvent.dateBegin = gathering.units[0].unitGathering[key];
         } else {
           gathering[key] = gathering.units[0].unitGathering[key];
         }
@@ -83,15 +95,15 @@ export class DocumentService {
       this.userService.getUser(),
       this.storeService.get(Stored.SAVE_PUBLIC, true),
       (s1, s2: Person, s3) => {
-        document.formID = s1;
-        document.publicityRestrictions = s3 ?
+        doc.formID = s1;
+        doc.publicityRestrictions = s3 ?
           PublicityRestrictionsEnum.PublicityRestrictionsPublic :
           PublicityRestrictionsEnum.PublicityRestrictionsPrivate;
-        if (!document.gatheringEvent) {
-          document.gatheringEvent = {};
+        if (!doc.gatheringEvent) {
+          doc.gatheringEvent = {};
         }
-        document.gatheringEvent.leg = document.gatheringEvent.leg ? [s2.id, ...document.gatheringEvent.leg] : [s2.id];
-        return document;
+        doc.gatheringEvent.leg = doc.gatheringEvent.leg ? [s2.id, ...doc.gatheringEvent.leg] : [s2.id];
+        return doc;
       });
   }
 
@@ -150,6 +162,7 @@ export class DocumentService {
     const unit: Units = {};
     const identification: Identifications = {};
     unit.unitType = [state.group];
+    unit.recordBasis = Units.RecordBasisEnum.RecordBasisHumanObservation;
     unit.identifications = [identification];
     identification.taxon = state.name.value || '';
     unit.unitGathering = {};
@@ -160,21 +173,6 @@ export class DocumentService {
     };
     if (state.images && state.images.length > 0) {
       unit.images = state.images;
-    }
-    const patches = [];
-    Object.keys(state.extra).map(path => {
-      if (typeof state.extra[path] !== 'undefined') {
-        const normalizePath = path
-          .replace(/\/units\/\*\//g, '/units/' + idx + '/')
-          .replace(/\/\*\//g, '/0/');
-        patches.push({'op': 'replace', 'path': normalizePath, 'value': state.extra[path] });
-      }
-    });
-    if (patches.length > 0) {
-      jsonpatch.apply(document, patches);
-    }
-    if (!unit.recordBasis) {
-      unit.recordBasis = Units.RecordBasisEnum.RecordBasisHumanObservation;
     }
     return unit;
   }
