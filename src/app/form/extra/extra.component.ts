@@ -4,6 +4,7 @@ import { Stored, StoreService } from '../../services/store.service';
 import { Field } from './field/field.component';
 import { MdDialog } from '@angular/material';
 import { SettingsComponent } from './settings/settings.component';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'ilm-extra',
@@ -39,18 +40,19 @@ export class ExtraComponent implements OnInit, OnChanges {
     private storeService: StoreService,
     public dialog: MdDialog
   ) {
-    this.storeService.get(Stored.SELECTED_FIELDS, {})
-      .subscribe(fields => this.userFormFields = fields);
-    this.storeService.get(Stored.ACTIVE_FORM, this.formId)
-      .subscribe(formId => this.formId = formId);
-    this.storeService.get(Stored.SAVE_PUBLIC, this.savePublicly)
-      .subscribe(value => this.savePublicly = value);
-    this.storeService.get(Stored.IMAGE_RIGHTS, this.imageRights)
-      .subscribe(value => this.imageRights = value );
-    this.storeService.get(Stored.ACTIVE_FORM, this.formId)
-      .subscribe(value => this.formId = value);
-    this.storeService.get(Stored.USE_SPEECH, this.useSpeech)
-      .subscribe(value => this.useSpeech = value);
+    Observable.forkJoin(
+      this.storeService.get(Stored.ACTIVE_FORM, this.formId),
+      this.storeService.get(Stored.USE_SPEECH, this.useSpeech),
+      this.storeService.get(Stored.IMAGE_RIGHTS, this.imageRights),
+      this.storeService.get(Stored.SAVE_PUBLIC, this.savePublicly),
+      this.storeService.get(Stored.SELECTED_FIELDS, {})
+    ).subscribe(data => {
+      this.formId = data[0];
+      this.useSpeech = data[1];
+      this.imageRights = data[2];
+      this.savePublicly = data[3];
+      this.userFormFields = data[4];
+    });
   }
 
   ngOnInit() {
@@ -104,14 +106,13 @@ export class ExtraComponent implements OnInit, OnChanges {
     if (!this.fields) {
       return;
     }
-    const values = {};
-    this.fields.map(field => {
-      if (reset || typeof this.value[field.path] === 'undefined') {
-        values[field.path] = this.pickDefault(field);
+    this.value = this.fields.reduce((prev, curr) => {
+      if (reset || typeof this.value[curr.path] === 'undefined') {
+        prev[curr.path] = this.pickDefault(curr);
       }
-    });
-    this.value = values;
-    this.valueChange.emit(values);
+      return prev;
+    }, {});
+    this.valueChange.emit(this.value);
   }
 
   pickDefault(field: Field) {
@@ -153,11 +154,7 @@ export class ExtraComponent implements OnInit, OnChanges {
   }
 
   openFieldSelectDialog() {
-    const dialogRef = this.dialog.open(SettingsComponent, {
-      disableClose: true,
-      height: '100%',
-      width: '95%'
-    });
+    const dialogRef = this.dialog.open(SettingsComponent, {disableClose: true, height: '100%', width: '95%'});
     this.settingsDialog = dialogRef.componentInstance;
     this.setSettingDialog(this.settingsDialog);
     const onFormChange = this.settingsDialog.onFormSelect.subscribe(formId => {

@@ -55,26 +55,29 @@ export class IlmComponent implements OnInit {
 
   ngOnInit() {
     // this._clearLocal();
-    this.locationService.isRecording()
-      .switchMap(recording => recording ?
-        this.dialogService.confirm('Haluatko jatkaa', 'siitä mihin jäit') :
-        Observable.of(false)
-      )
-      .do(recording => recording ? this.locationService.resumeRecording() : this.form.resetForm(true))
-      .subscribe(recording => this.record = recording);
-    this.storeService.get(Stored.FORM_STATES, [])
-      .subscribe(states => this.records = states.length);
     this.checkLogin();
-    this.formService.getForm(environment.imageForm)
-      .map(form => form.fields || [])
-      .map(fields => fields.filter(field => field.name === 'intellectualRights')[0] || {})
-      .map(rights => {
-        const options = rights.options && rights.options.value_options || {};
-        return {
-          title: (rights.label || '').toLowerCase(),
-          select: Object.keys(options).map(key => ({key: key, value: options[key]})) || []};
-      })
-      .subscribe(form => this.imageRights = form);
+    Observable.forkJoin(
+      this.locationService.isRecording()
+        .switchMap(recording => recording ?
+          this.dialogService.confirm('Haluatko jatkaa', 'siitä mihin jäit') :
+          Observable.of(false)
+        )
+        .do(recording => recording ? this.locationService.resumeRecording() : this.form.resetForm(true)),
+      this.storeService.get(Stored.FORM_STATES, []),
+      this.formService.getForm(environment.imageForm)
+        .map(form => form.fields || [])
+        .map(fields => fields.filter(field => field.name === 'intellectualRights')[0] || {})
+        .map(rights => {
+          const options = rights.options && rights.options.value_options || {};
+          return {
+            title: (rights.label || '').toLowerCase(),
+            select: Object.keys(options).map(key => ({key: key, value: options[key]})) || []};
+        })
+    ).subscribe(data => {
+      this.record = data[0];
+      this.records = this.record ? data[1].length : 0;
+      this.imageRights = data[2];
+    });
     this.forms$ = this.formService.getAll();
   }
 

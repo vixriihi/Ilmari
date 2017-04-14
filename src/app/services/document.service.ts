@@ -37,7 +37,7 @@ export class DocumentService {
         return;
       }
       this.subResend = this._resendFailed()
-        .subscribe(count => {
+        .subscribe(() => {
           this.subResend.unsubscribe();
           delete this.subResend;
         });
@@ -75,9 +75,7 @@ export class DocumentService {
       });
       gathering.units[0].unitGathering = undefined;
     } else if (states.length > 1 && !gatheringData.geometry) {
-      console.log('GATHEIGN!!!');
       gathering.geometry = this.getBoundingBox(gathering.units);
-      console.log(gathering.geometry);
     }
 
     return Observable.combineLatest(

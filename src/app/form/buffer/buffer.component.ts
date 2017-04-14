@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angu
 import { FormState } from '../form.reducer';
 import { MdDialog } from '@angular/material';
 import { TaxonModalComponent } from '../../taxon-modal/taxon-modal.component';
-import { LocationStoreService } from '../../services/location-store.service';
 
 export interface BufferedState {
   idx: number;
@@ -35,11 +34,11 @@ export class BufferComponent implements OnInit, OnChanges {
   }
 
   initList() {
-    this.states = [];
-    this.formStates.map((value, idx) => {
-      this.states.push({idx: idx, data: value, added: value.date});
-    });
-    this.states = this.states.reverse();
+    this.states = this.formStates
+      .reduce(
+        (prev: BufferedState[], curr: FormState, idx: number) => [{idx, data: curr, added: curr.date}, ...prev],
+        []
+      );
   }
 
   showTaxon(taxon) {

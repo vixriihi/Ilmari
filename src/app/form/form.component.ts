@@ -79,9 +79,9 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
         this.activeGroup = data[3];
       });
     this.filteredOptions = this.nameControl.valueChanges
-      .map(name => this.autocompleteService.makeValue(name))
-      .do(name => this.store.dispatch(this.formActions.updateName(name)))
+      .do(name => typeof name === 'object' ? this.store.dispatch(this.formActions.updateName(name)) : '')
       .do(name => this.hasName = !!(name && name.value || ''))
+      .map(name => this.autocompleteService.makeValue(name))
       .debounceTime(400)
       .switchMap(name => this.autocompleteService.filterByTaxon(name && name.value || '', this.activeGroup.id));
     this.changeSub = this.formState
