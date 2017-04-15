@@ -13,7 +13,6 @@ import { Identifications } from '../model/Identifications';
 import { Geometry } from '../model/Geometry';
 import * as jsonpatch from 'fast-json-patch';
 import { DocumentDatabase } from '../db/document.database';
-import { Subscription } from 'rxjs/Subscription';
 import PublicityRestrictionsEnum = Document.PublicityRestrictionsEnum;
 import { ImageService } from './image.service';
 
@@ -22,8 +21,7 @@ const RETRY_INTERVAL = 10; // sec
 @Injectable()
 export class DocumentService {
 
-  private resendInterval;
-  private subResend: Subscription;
+  private sending = false;
 
   constructor(
     private http: Http,
@@ -32,16 +30,14 @@ export class DocumentService {
     private userService: UserService,
     private docDb: DocumentDatabase
   ) {
-    this.resendInterval = setInterval(() => {
-      if (this.subResend) {
-        return;
-      }
-      this.subResend = this._resendFailed()
-        .subscribe(() => {
-          this.subResend.unsubscribe();
-          delete this.subResend;
-        });
-    }, 1000 * RETRY_INTERVAL);
+    Observable
+      .interval(1000 * RETRY_INTERVAL)
+      .filter(() => !this.sending)
+      .do(() => this.sending = true)
+      .switchMap(() => this._resendFailed())
+      .subscribe(() => {
+        this.sending = false;
+      });
   }
 
   formStatesToDocument(states: FormState[], gatheringData: Gatherings): Observable<Document> {
@@ -61,7 +57,7 @@ export class DocumentService {
 
     gathering.units = [];
     states.map((state, idx) => {
-      gathering.units[idx] = this.getUnitFromState(state, idx);
+      gathering.units[idx] = this.getUnitFromState(state);
       const patches = [];
       Object.keys(state.extra).map(path => {
         if (typeof state.extra[path] !== 'undefined') {
@@ -90,7 +86,7 @@ export class DocumentService {
       gathering.geometry = this.getBoundingBox(gathering.units);
     }
 
-    return Observable.combineLatest(
+    return Observable.forkJoin(
       this.storeService.get(Stored.ACTIVE_FORM, 'JX.519'),
       this.userService.getUser(),
       this.storeService.get(Stored.SAVE_PUBLIC, true),
@@ -108,8 +104,7 @@ export class DocumentService {
   }
 
   sendDocument(document: Document): void {
-    this._sendDocument(document)
-      .subscribe();
+    this._sendDocument(document).subscribe();
   }
 
   isEmpty(document: Document): boolean {
@@ -158,23 +153,20 @@ export class DocumentService {
     };
   }
 
-  private getUnitFromState(state: FormState, idx: number) {
-    const unit: Units = {};
-    const identification: Identifications = {};
-    unit.unitType = [state.group];
-    unit.recordBasis = Units.RecordBasisEnum.RecordBasisHumanObservation;
-    unit.identifications = [identification];
-    identification.taxon = state.name.value || '';
-    unit.unitGathering = {};
-    unit.unitGathering.dateBegin = state.date;
-    unit.unitGathering.geometry = {
-      'type': Geometry.TypeEnum.Point,
-      'coordinates': [state.location.lng, state.location.lat]
+  private getUnitFromState(state: FormState): Units {
+    return {
+      recordBasis: Units.RecordBasisEnum.RecordBasisHumanObservation,
+      unitType: [state.group],
+      identifications: [{taxon: state.name.value || ''}],
+      images: state.images && state.images.length > 0 ? state.images : undefined,
+      unitGathering: {
+        dateBegin: state.date,
+        geometry: {
+          'type': Geometry.TypeEnum.Point,
+          'coordinates': [state.location.lng, state.location.lat]
+        }
+      }
     };
-    if (state.images && state.images.length > 0) {
-      unit.images = state.images;
-    }
-    return unit;
   }
 
   private _sendDocument(document: Document, isResend = false): Observable<boolean> {
@@ -193,7 +185,7 @@ export class DocumentService {
           return response.json();
         }
       })
-      .catch(err => {
+      .catch(() => {
         if (!isResend) {
           this.docDb.push(document)
             .subscribe();
@@ -252,8 +244,7 @@ export class DocumentService {
   private _resendFailed(): Observable<number> {
     return this.docDb
       .count()
-      .switchMap(count => count === 0 ?
-        Observable.of(count) :
+      .switchMap(count => count === 0 ? Observable.of(count) :
         this.docDb
           .peak()
           .switchMap(document => this._sendDocument(document, true))

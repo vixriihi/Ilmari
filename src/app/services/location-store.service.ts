@@ -162,28 +162,6 @@ export class LocationStoreService {
   }
 
   /**
-   * Checks if current position is far from given coordinates
-   *
-   * @param lat
-   * @param lng
-   * @param maxDistKm
-   * @param minAccuracy
-   * @returns {Observable<boolean>}
-   */
-  isCurrentLocationFar(lat, lng, maxDistKm = 0.1, minAccuracy = 100): Observable<boolean> {
-    return this.getCurrentLocation()
-      .switchMap((pos) => {
-        const crd = pos.coords;
-        if (crd.accuracy > minAccuracy) {
-          return Observable.of(true);
-        }
-        const latitude = crd.latitude;
-        const longitude = crd.longitude;
-        return Observable.of(this.distance(lat, lng, latitude, longitude) > maxDistKm);
-      });
-  }
-
-  /**
    * Convert wgs84 coordinates to ykj
    *
    * @param lat
@@ -196,7 +174,7 @@ export class LocationStoreService {
 
   private addLocation(pos) {
     const crd = pos.coords;
-    if (crd.accuracy > 20) {
+    if (crd.accuracy > 30) {
       return;
     }
     const latitude = crd.latitude;
@@ -222,7 +200,7 @@ export class LocationStoreService {
     this.storeService.set(Stored.IS_RECORDING, this._record);
     if (this.geoLocationEnabled) {
       this.watchId = this.windowRef.nativeWindow.navigator.geolocation
-        .watchPosition(this.addLocation, undefined, POSITION_OPTIONS);
+        .watchPosition(this.addLocation.bind(this), undefined, POSITION_OPTIONS);
     }
   }
 

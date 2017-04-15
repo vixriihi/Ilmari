@@ -1,9 +1,12 @@
-<a name="1.4.0"></a>
-# 1.4.0 (2017-04-15)
+<a name="1.4.1"></a>
+# 1.4.1 (2017-04-15)
 
 ### Muutokset
 
 * Paikannus käyttää nyt tarkempaa menetelmää seuratessaan keruun kulkua.
+
+### Bugikorjauksia
+* Keruun koordinaatit talteen tarkasti
 
 
 <a name="1.3.2"></a>

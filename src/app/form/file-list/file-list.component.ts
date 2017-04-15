@@ -40,7 +40,7 @@ export class FileListComponent implements OnInit {
   }
 
   addImage(data) {
-    Observable.combineLatest(
+    Observable.forkJoin(
       this.storeService.get(Stored.IMAGE_RIGHTS, DEFAULT_IMAGE_RIGHTS),
       this.userService.getUser(),
       (s1, s2: Person) => ({
@@ -61,27 +61,26 @@ export class FileListComponent implements OnInit {
   delImage(id) {
     this.dialogService.confirm('Oletko varma', 'että haluat poistaa kuvan')
       .subscribe(res => {
-        if (!res) return;
-
-        this.imageService.deleteImage(id)
-          .subscribe(
-            () => this.delLocalImage(id),
-            (err) => {
-              if (err.status === 404) {
-                this.delLocalImage(id);
+        if (res) {
+          this.imageService.deleteImage(id)
+            .subscribe(
+              () => this.delLocalImage(id),
+              (err) => {
+                if (err.status === 404) {
+                  this.delLocalImage(id);
+                }
               }
-            }
-          );
+            );
+        }
       });
   }
 
   private delLocalImage(id) {
     const idx = this.images.findIndex(img => img.id === id);
-    if (idx === -1) {
-      return;
+    if (idx > -1) {
+      this.images = [...this.images.slice(0, idx), ...this.images.slice(idx + 1)];
+      this.storeService.set(Stored.IMAGES, this.images);
     }
-    this.images = [...this.images.slice(0, idx), ...this.images.slice(idx + 1)];
-    this.storeService.set(Stored.IMAGES, this.images);
   }
 
 }

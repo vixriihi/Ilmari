@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { GroupsService } from '../services/groups.service';
 import { Observable } from 'rxjs/Observable';
 import { InformalTaxonGroup } from '../model/InformalTaxonGroup';
-import { StoreService } from '../services/store.service';
 
 @Component({
   selector: 'ilm-groups',
@@ -16,7 +15,7 @@ export class GroupsComponent implements OnInit {
   @Output() onSelect = new EventEmitter();
   public rootGroups: Observable<InformalTaxonGroup[]>;
 
-  constructor(public groupsService: GroupsService, private store: StoreService) { }
+  constructor(public groupsService: GroupsService) { }
 
   ngOnInit() {
     this.rootGroups = this.groupsService.getAllGroups();

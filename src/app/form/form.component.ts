@@ -33,7 +33,6 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
   @Input() record: boolean;
   @Output() onSave = new EventEmitter();
   @Output() onRemove = new EventEmitter();
-  @Output() nameChange = new EventEmitter();
   @Output() onDocumentSend = new EventEmitter();
 
   formStates: FormState[] = [];
