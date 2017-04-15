@@ -218,11 +218,10 @@ export class LocationStoreService {
   }
 
   private _startRecording() {
+    this._record = true;
+    this.storeService.set(Stored.IS_RECORDING, this._record);
     if (this.geoLocationEnabled) {
-      this._record = true;
-      this.storeService.set(Stored.IS_RECORDING, this._record);
-      this.watchId = this.windowRef.nativeWindow.navigator
-        .geolocation
+      this.watchId = this.windowRef.nativeWindow.navigator.geolocation
         .watchPosition(this.addLocation, undefined, POSITION_OPTIONS);
     }
   }
