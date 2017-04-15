@@ -9,12 +9,11 @@ import { Observable } from 'rxjs/Observable';
 import { FormState } from '../form/form.reducer';
 import { Gatherings } from '../model/Gatherings';
 import { Units } from '../model/Units';
-import { Identifications } from '../model/Identifications';
 import { Geometry } from '../model/Geometry';
 import * as jsonpatch from 'fast-json-patch';
 import { DocumentDatabase } from '../db/document.database';
-import PublicityRestrictionsEnum = Document.PublicityRestrictionsEnum;
 import { ImageService } from './image.service';
+import PublicityRestrictionsEnum = Document.PublicityRestrictionsEnum;
 
 const RETRY_INTERVAL = 10; // sec
 

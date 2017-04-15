@@ -9,26 +9,26 @@ import { GroupsService } from './services/groups.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {
   LiveAnnouncer,
+  MdAutocompleteModule,
+  MdButtonModule,
+  MdButtonToggleModule,
+  MdCardModule,
   MdCheckboxModule,
+  MdChipsModule,
+  MdDialogModule,
+  MdIconModule,
+  MdInputModule,
+  MdListModule,
+  MdMenuModule,
   MdProgressBarModule,
   MdSelectModule,
+  MdSidenavModule,
   MdSliderModule,
   MdSlideToggleModule,
-  MdIconModule,
-  MdDialogModule,
-  MdChipsModule,
-  MdTooltipModule,
-  MdMenuModule,
-  MdInputModule,
-  MdCardModule,
-  MdAutocompleteModule,
-  MdButtonToggleModule,
   MdSnackBarModule,
+  MdTabsModule,
   MdToolbarModule,
-  MdSidenavModule,
-  MdButtonModule,
-  MdListModule,
-  MdTabsModule
+  MdTooltipModule
 } from '@angular/material';
 import { AgmCoreModule } from 'angular2-google-maps/core';
 import { MapComponent } from './map/map.component';
