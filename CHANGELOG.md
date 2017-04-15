@@ -1,5 +1,13 @@
-<a name="1.3.1"></a>
-# 1.3.1 (2017-04-14)
+<a name="1.4.0"></a>
+# 1.4.0 (2017-04-15)
+
+### Muutokset
+
+* Paikannus käyttää nyt tarkempaa menetelmää seuratessaan keruun kulkua.
+
+
+<a name="1.3.2"></a>
+# 1.3.2 (2017-04-14)
 
 ### Muutokset
 
@@ -7,6 +15,7 @@
 
 ### Bugikorjauksia
 
+* Jumitus ongelma kun vaihtaa muotoryhmää
 * Edellisen version aikaansaama tallennus bugi korjattu
 
 <a name="1.3.0"></a>

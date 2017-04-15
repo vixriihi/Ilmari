@@ -112,7 +112,6 @@ export class ExtraComponent implements OnInit, OnChanges {
       }
       return prev;
     }, {});
-    this.valueChange.emit(this.value);
   }
 
   pickDefault(field: Field) {

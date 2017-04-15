@@ -47,6 +47,7 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
   useSpeech = false;
   fields = [];
 
+  private currentExtra = '';
   private changeSub: Subscription;
 
   constructor(
@@ -158,7 +159,13 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   updateExtra(value) {
-    this.store.dispatch(this.formActions.updateExtra(value));
+    if (value && Object.keys(value).length > 0) {
+      const key = JSON.stringify(value);
+      if (this.currentExtra !== key) {
+        this.currentExtra = key;
+        this.store.dispatch(this.formActions.updateExtra(value));
+      }
+    }
   }
 
   updateDate(value) {

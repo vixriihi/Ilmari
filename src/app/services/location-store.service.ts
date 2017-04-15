@@ -12,7 +12,11 @@ proj4.defs('WGS84', '+title=*GPS (WGS84) (deg) +proj=longlat +ellps=WGS84 +datum
 proj4.defs('EPSG:2393', '+title=KKJ Zone 3 +proj=tmerc +lat_0=0 +lon_0=27 +k=1 +x_0=3500000 +y_0=0 +ellps=intl ' +
   '+towgs84=-96.0617,-82.4278,-121.7435,4.80107,0.34543,-1.37646,1.4964 +units=m +no_defs');
 
-const LOCATION_INTERVAL = 10; // sec
+const POSITION_OPTIONS = {
+  enableHighAccuracy: true,
+  timeout: 10000,
+  maximumAge: 10000
+};
 
 @Injectable()
 export class LocationStoreService {
@@ -23,13 +27,17 @@ export class LocationStoreService {
   geoLocationEnabled = false;
   timeStart;
   _record = false;
-  _timer;
+
+  private watchId;
 
   constructor(
     private windowRef: WindowRef,
     private storeService: StoreService
   ) {
-    if (this.windowRef.nativeWindow.navigator.geolocation) {
+    if (
+      this.windowRef.nativeWindow.navigator.geolocation &&
+      this.windowRef.nativeWindow.navigator.geolocation.watchPosition
+    ) {
       this.geoLocationEnabled = true;
     }
   }
@@ -81,11 +89,11 @@ export class LocationStoreService {
    */
   stopRecording() {
     this._record = false;
-    if (this._timer) {
-      clearInterval(this._timer);
-      delete this._timer;
-    }
     this.storeService.set(Stored.IS_RECORDING, this._record);
+    if (this.watchId) {
+      this.windowRef.nativeWindow.navigator.geolocation.clearWatch(this.watchId);
+      delete this.watchId;
+    }
   }
 
   /**
@@ -186,24 +194,18 @@ export class LocationStoreService {
     return this.toInteger(proj4('WGS84', 'EPSG:2393', [lng, lat])).reverse();
   }
 
-  private addLocation() {
-    if (!this._record) {
+  private addLocation(pos) {
+    const crd = pos.coords;
+    if (crd.accuracy > 20) {
       return;
     }
-    this.getCurrentLocation()
-      .subscribe(pos => {
-        const crd = pos.coords;
-        if (crd.accuracy > 20) {
-          return;
-        }
-        const latitude = crd.latitude;
-        const longitude = crd.longitude;
-        if (this.isNewLocation(latitude, longitude)) {
-          this.coordinates.push([longitude, latitude]);
-          this.initTimer();
-          this.storeService.set(Stored.LOCATIONS, this.coordinates);
-        }
-      });
+    const latitude = crd.latitude;
+    const longitude = crd.longitude;
+    if (this.isNewLocation(latitude, longitude)) {
+      this.coordinates.push([longitude, latitude]);
+      this.initTimer();
+      this.storeService.set(Stored.LOCATIONS, this.coordinates);
+    }
   }
 
   private isNewLocation(lat, lng) {
@@ -216,11 +218,13 @@ export class LocationStoreService {
   }
 
   private _startRecording() {
-    this._record = true;
     if (this.geoLocationEnabled) {
-      this.addLocation();
+      this._record = true;
+      this.storeService.set(Stored.IS_RECORDING, this._record);
+      this.watchId = this.windowRef.nativeWindow.navigator
+        .geolocation
+        .watchPosition(this.addLocation, undefined, POSITION_OPTIONS);
     }
-    this.storeService.set(Stored.IS_RECORDING, this._record);
   }
 
   private getCurrentTime() {
@@ -239,8 +243,8 @@ export class LocationStoreService {
   }
 
   private initTimer() {
-    if (this._record && !this._timer) {
-      this._timer = setInterval(this.addLocation.bind(this), 1000 * LOCATION_INTERVAL);
+    if (this._record && !this.watchId) {
+      this.startRecording();
     }
   }
 
