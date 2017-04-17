@@ -79,7 +79,9 @@ export class LocationStoreService {
    * Start recording loaction
    */
   startRecording() {
+    this.coordinates = [];
     this.timeStart = this.getCurrentTime();
+    this.storeService.set(Stored.LOCATIONS, this.coordinates);
     this.storeService.set(Stored.GATHERING_START, this.timeStart);
     this._startRecording();
   }
