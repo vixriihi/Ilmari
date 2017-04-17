@@ -60,7 +60,6 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
   private changeSub: Subscription;
 
   constructor(
-
     public dialog: MdDialog,
     public snackBar: MdSnackBar,
     private store: Store<AppState>,
@@ -192,7 +191,13 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   sendDocument() {
-    this.save()
+    this.dialogService.confirm(
+      'Oletko varma että haluat',
+      !this.hasName && this.locationService.isCurrentlyRecording() && this.formStates.length === 0 ?
+        'haluat tyhjentää lomakkeen' : 'haluat lähettää havainnot'
+    )
+      .filter(sure => sure === true)
+      .switchMap(sure => this.save())
       .switchMap(data => this.documentService.formStatesToDocument(
         this.locationService.isCurrentlyRecording() ? this.formStates : [data],
         this.locationService.getGathering()
