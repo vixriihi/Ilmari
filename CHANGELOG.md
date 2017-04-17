@@ -1,3 +1,10 @@
+<a name="1.4.2"></a>
+# 1.4.2 (2017-04-17)
+
+### Muutokset
+
+* Lisätty varmistus havaintoerän lähettämäiseen ja tyhjentämiseen
+
 <a name="1.4.1"></a>
 # 1.4.1 (2017-04-15)
 
