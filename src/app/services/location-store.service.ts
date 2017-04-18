@@ -76,7 +76,7 @@ export class LocationStoreService {
   }
 
   /**
-   * Start recording loaction
+   * Start recording location
    */
   startRecording() {
     this.coordinates = [];
@@ -146,7 +146,7 @@ export class LocationStoreService {
   }
 
   /**
-   * Distance between coordinates in km
+   * Distance between wgs84 coordinates in km
    *
    * @param lat1
    * @param lon1
