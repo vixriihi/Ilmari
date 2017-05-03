@@ -1,3 +1,10 @@
+<a name="1.4.1"></a>
+# 1.4.3 (2017-05-03)
+
+### Bugikorjauksia
+* Korjattu tilanne missä taxon nimi tulkittiin tyhjäksi kun ollaan offline tilassa
+
+
 <a name="1.4.2"></a>
 # 1.4.2 (2017-04-17)
 
