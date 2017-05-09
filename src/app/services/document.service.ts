@@ -10,11 +10,11 @@ import { FormState } from '../form/form.reducer';
 import { Gatherings } from '../model/Gatherings';
 import { Units } from '../model/Units';
 import { Geometry } from '../model/Geometry';
-import * as jsonpatch from 'fast-json-patch';
 import { DocumentDatabase } from '../db/document.database';
 import { ImageService } from './image.service';
 import PublicityRestrictionsEnum = Document.PublicityRestrictionsEnum;
 
+const jsonpatch = require('fast-json-patch');
 const RETRY_INTERVAL = 10; // sec
 
 @Injectable()

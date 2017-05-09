@@ -1,4 +1,11 @@
-<a name="1.4.1"></a>
+<a name="1.4.4"></a>
+# 1.4.4 (2017-05-XX)
+
+### Muutokset
+
+* Taustalla olevat kirjastot päivitetty uusimpaan.
+
+<a name="1.4.3"></a>
 # 1.4.3 (2017-05-03)
 
 ### Bugikorjauksia
