@@ -155,11 +155,7 @@ export class FormComponent implements OnInit, OnChanges, OnDestroy {
   showMap() {
     const mapDialog = this.dialog.open(MapDialogComponent, {height: '95%', width: '95%'});
     mapDialog.afterClosed()
-      .switchMap(() => mapDialog.componentInstance.location)
-      .take(1)
-      .subscribe(location => {
-        this.store.dispatch(this.formActions.updateLocation(location));
-      });
+      .subscribe(location => this.store.dispatch(this.formActions.updateLocation(location)));
   }
 
   saveState(value) {

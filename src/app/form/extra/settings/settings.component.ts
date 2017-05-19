@@ -111,7 +111,8 @@ export class SettingsComponent implements OnInit, OnChanges {
       selectedForm: this.selectedForm,
       savePublicly: this.savePublicly,
       useSpeech: this.useSpeech,
-      selectedImageRights: this.selectedImageRights
+      selectedImageRights: this.selectedImageRights,
+      selectedFields: this._selectedFields
     });
   }
 

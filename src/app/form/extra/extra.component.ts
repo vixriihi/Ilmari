@@ -162,7 +162,10 @@ export class ExtraComponent implements OnInit, OnChanges {
       this.initFormData();
       this.storeService.set(Stored.ACTIVE_FORM, formId);
     });
-    dialogRef.afterClosed().subscribe(result => this.updateSettings(result, dialogRef, onFormChange));
+    dialogRef.afterClosed().subscribe(result => {
+      onFormChange.unsubscribe();
+      this.updateSettings(result);
+    });
   }
 
   private setSettingDialog(component: SettingsComponent) {
@@ -174,8 +177,8 @@ export class ExtraComponent implements OnInit, OnChanges {
     component.useSpeech = this.useSpeech;
   }
 
-  private updateSettings(result, dialogRef, onFormChange) {
-    this.userFormFields[this.formId] = (dialogRef.componentInstance._selectedFields || []).map(field => field.path);
+  private updateSettings(result) {
+    this.userFormFields[this.formId] = (result.selectedFields || []).map(field => field.path);
     this.imageRights = result.selectedImageRights;
     this.savePublicly = result.savePublicly;
     this.useSpeech = result.useSpeech;
@@ -184,7 +187,6 @@ export class ExtraComponent implements OnInit, OnChanges {
     this.storeService.set(Stored.SAVE_PUBLIC, this.savePublicly);
     this.storeService.set(Stored.USE_SPEECH, this.useSpeech);
     this.storeService.set(Stored.SELECTED_FIELDS, this.userFormFields);
-    onFormChange.unsubscribe();
     this.setDefaultValues(true);
     this.settingsDialog = null;
     this.userFieldsChange.emit(this.fields);

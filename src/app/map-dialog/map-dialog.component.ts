@@ -28,7 +28,9 @@ export class MapDialogComponent implements OnInit {
   }
 
   selectLocation() {
-    this.dialogRef.close(this.location);
+    this.location
+      .take(1)
+      .subscribe(location => this.dialogRef.close(location));
   }
 
   setToMyLocation() {

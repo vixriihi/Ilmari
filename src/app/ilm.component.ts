@@ -117,7 +117,7 @@ export class IlmComponent implements OnInit {
           return Observable.of({});
         }
         return this.userService.getUser(false)
-          .catch(err => {
+          .catch(() => {
             this.showLogin();
             return Observable.of({});
           });
@@ -131,10 +131,9 @@ export class IlmComponent implements OnInit {
       height: '100%',
       width: '95%'
     });
-    dialog.afterClosed().subscribe(data => {
-      this.storeService.put(Stored.USER_TOKEN, data)
-        .subscribe(() => this.checkLogin());
-    });
+    dialog.afterClosed()
+      .switchMap(data => this.storeService.put(Stored.USER_TOKEN, data))
+      .subscribe(() => this.checkLogin());
   }
 
   clearLocal() {
