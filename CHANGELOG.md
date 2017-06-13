@@ -1,3 +1,10 @@
+<a name="1.4.5"></a>
+# 1.4.5 (2017-07-13)
+
+### Muutokset
+
+* Tallennus dataan lisätty parametri, joka kertoo viholle että kyseessä on tunnettu nimi.
+
 <a name="1.4.4"></a>
 # 1.4.4 (2017-05-19)
 

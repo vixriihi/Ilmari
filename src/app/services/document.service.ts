@@ -156,7 +156,7 @@ export class DocumentService {
     return {
       recordBasis: Units.RecordBasisEnum.RecordBasisHumanObservation,
       unitType: [state.group],
-      identifications: [{taxon: state.name.value || ''}],
+      identifications: [{taxon: state.name.value || '', taxonID: state.name.key || ''}],
       images: state.images && state.images.length > 0 ? state.images : undefined,
       unitGathering: {
         dateBegin: state.date,
