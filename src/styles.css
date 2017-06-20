@@ -25,8 +25,14 @@ cdk-focus-trap {
 }
 
 .mat-dialog-content {
+  flex: 1;
   height: calc(100% - 55px);
   max-height: 100vh !important;
+}
+
+.mat-dialog-actions {
+  position: relative;
+  height: 40px;
 }
 
 ::-webkit-scrollbar {
@@ -34,6 +40,8 @@ cdk-focus-trap {
 }
 
 .mat-dialog-container {
+  display: flex;
+  flex-direction: row;
   max-width: 100% !important;
   max-height: 100vh !important;
   padding: 5px !important;

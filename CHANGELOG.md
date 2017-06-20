@@ -1,3 +1,15 @@
+<a name="1.4.6"></a>
+# 1.4.6 (2017-07-20)
+
+### Bugikorjauksia
+
+* Korjattu tilanne missä dialogin napit saattoivat jäädä liian alas.
+
+
+### Muutokset
+
+* Ulkoiset kirjastot päivitetty uusimpiin versioihin.
+
 <a name="1.4.5"></a>
 # 1.4.5 (2017-07-13)
 
